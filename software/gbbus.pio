@@ -1,0 +1,20 @@
+;
+; Copyright (c) 2020 Raspberry Pi (Trading) Ltd.
+;
+; SPDX-License-Identifier: BSD-3-Clause
+;
+
+; SET pin 0 should be mapped to your LED GPIO
+
+.program gbbus
+
+.wrap_target
+    wait 0 pin 0    ; CLK is input pin 0
+    wait 1 pin 0
+    ; set x, 3
+    ; pull block
+    ;mov osr, x
+    out pins, 8     ; Shift out 8 bits
+    ;irq wait 0      ; Tell the CPU that it has data
+    ; set pins, 3
+.wrap
