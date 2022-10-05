@@ -4,17 +4,32 @@
 ; SPDX-License-Identifier: BSD-3-Clause
 ;
 
-; SET pin 0 should be mapped to your LED GPIO
+; Pin 0 = CLK
+; Pin 2 = RD
+; Pin 1 = WR
+
 
 .program gbbus
 
 .wrap_target
-    wait 0 pin 0    ; CLK is input pin 0
-    wait 1 pin 0
-    ; set x, 3
-    ; pull block
-    ;mov osr, x
-    out pins, 8     ; Shift out 8 bits
-    ;irq wait 0      ; Tell the CPU that it has data
-    ; set pins, 3
+wait_for_clk:
+    wait 1 gpio 0           ; Wait for rising edge of clock     (0ns)
+    set x 25                ; Delay for 25 cycles               (8ns)
+
+wait_for_rd:            
+    jmp x-- wait_for_rd     ; Nop loop                  (16ns - 216ns)
+
+    jmp pin skip_read       ; If RD is high, don't do the read
+    in pins 16              ; Shift in the 16 bits on the address bus
+    push                    ; maybe turn on autopush
+    irq wait 0              ; Tell the CPU that it has a read request
+    wait 0 gpio 0           ; Wait for falling edge of clock
+    pull                    ; maybe turn on autopull
+    out pins 8              ; Shift out 8 bits from the CPU
+    jmp wait_for_clk
+    
+skip_read:
+    wait 0 gpio 0            ; If the read is high, wait for next falling clock
+    jmp wait_for_clk        ; Now wait for the next high clock
+
 .wrap
