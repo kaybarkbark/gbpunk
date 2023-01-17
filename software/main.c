@@ -12,100 +12,275 @@
 #include <stdio.h>
 
 #include "pico/stdlib.h"
-#include "hardware/pio.h"
-#include "hardware/clocks.h"
-#include "gbbus.pio.h"
 #include "pins.h"
-#include "tetris.h"
 
-#define ADDR_LIMIT 0x100
+void writeb(uint8_t data, uint16_t addr);
+uint8_t readb(uint16_t addr);
+void set_dbus_direction(uint8_t dir);
+void init_bus();
+void reset_pin_states();
+void reset_cart();
+void pulse_clock();
 
-void data_bus_init(uint sm, uint offset);
-irq_handler_t clk_irq_handler();
-uint16_t addr_trace[ADDR_LIMIT] = {};
-uint16_t addr_index = 0;
-uint8_t data = 0x1;
-uint sm = 0;
-
-// Choose PIO instance (0 or 1)
-PIO pio = pio0;
+uint8_t gamebuf[0x8000] = {};
 
 int main() {
-    // Get first free state machine in PIO 0
-    sm = pio_claim_unused_sm(pio, true);
-    uint offset = pio_add_program(pio, &gbbus_program);
-    // Init the PIO
-    data_bus_init(sm, offset);
-    pio_sm_set_enabled(pio, sm, true);
-    while(true){
-
-    }
+    stdio_init_all();
+    init_bus();
+    reset_cart();
+    while(1){
+        // writeb(0xAA, 0x55);
+        // Dump out bottom 24K
+        for(uint16_t i = 0; i < 0x8000; i++){
+            gamebuf[i] = readb(i);
+        }
+        for(uint16_t i = 0; i < 0x8000; i++){
+            printf("0x%x: 0x%x (%c)\n", i, gamebuf[i] ,gamebuf[i]);
+        }
+        printf("Done\n");
+    }   
 }
 
-void data_bus_init(uint sm, uint offset) {
-    // Set the function of all the data pins to use PIO
-    pio_sm_config c = gbbus_program_get_default_config(offset);  // Generate a generic sm config
+void reset_cart(){
+    reset_pin_states();
+    gpio_put(RST, 0);
+    pulse_clock();
+    gpio_put(RST, 1);
+    pulse_clock();
+}
 
-    // Allow PIO to control data bus (as output)
-    for(uint i = 0; i < NUM_D_PINS; i++){
-        pio_gpio_init(pio, D0 + i);
-    }
-    // Allow PIO to control address bus (as input)
-    for(uint i = 0; i < NUM_A_PINS; i++){
-        pio_gpio_init(pio, A0 + i);
-    }
-    // Allow PIO to control clock (as input)
-    pio_gpio_init(pio, CLK);
-    // Allow PIO to control read (as input)
-    pio_gpio_init(pio, RD);
+void pulse_clock(){
+    gpio_put(CLK, 0);
+    sleep_us(1);
+    gpio_put(CLK, 1);
+    sleep_us(1);
+    gpio_put(CLK, 0);
+}
 
-    // Connect pin to OUT (control with 'out' instruction)
-    // TODO: might want to make these sticky
-    sm_config_set_out_pins(&c, D0, NUM_D_PINS);
-    // Connect pin to IN (control with 'in' instruction)
-    sm_config_set_in_pins(&c, A0);
-    // Tell it to shift left, don't autopush, push threshold 16 bits
-    sm_config_set_in_shift(&c, false, false, 16);
-    // Set up RD as JMP pin (JMP based on their status)
-    sm_config_set_jmp_pin(&c, RD);
 
-    // Turn on autopull so we refill the fifo after we have pulled 8 bits out of it
-    // sm_config_set_out_shift(&c, true /* shift right */, true /* enable autopull */, 8);
+void init_bus(){
+    // Init the address pins, always out
+    gpio_init(A0);
+    gpio_set_dir(A0, GPIO_OUT);
 
-    // Set the pin direction to output (in PIO)
-    pio_sm_set_consecutive_pindirs(pio, sm, D0, NUM_D_PINS, true);
+    gpio_init(A1);
+    gpio_set_dir(A1, GPIO_OUT);
+
+    gpio_init(A2);
+    gpio_set_dir(A2, GPIO_OUT);
+
+    gpio_init(A3);
+    gpio_set_dir(A3, GPIO_OUT);
+
+    gpio_init(A4);
+    gpio_set_dir(A4, GPIO_OUT);
+
+    gpio_init(A5);
+    gpio_set_dir(A5, GPIO_OUT);
+
+    gpio_init(A6);
+    gpio_set_dir(A6, GPIO_OUT);
+
+    gpio_init(A7);
+    gpio_set_dir(A7, GPIO_OUT);
+
+    gpio_init(A8);
+    gpio_set_dir(A8, GPIO_OUT);
     
-    // Set the pin direction to input (in PIO)
-    pio_sm_set_consecutive_pindirs(pio, sm, CLK, 1, false);
-    pio_sm_set_consecutive_pindirs(pio, sm, RD, 1, false);
-    pio_sm_set_consecutive_pindirs(pio, sm, A0, NUM_A_PINS, false);
+    gpio_init(A9);
+    gpio_set_dir(A9, GPIO_OUT);
 
-    // Enable the PIO0 IRQ
-    pio_set_irq0_source_enabled(pio, pis_interrupt0 , true); //setting IRQ0_INTE - interrupt enable register
-    // Set up the interrupt handler for the data bus
-    irq_set_exclusive_handler(PIO0_IRQ_0, clk_irq_handler);
-    // Enable the irq
-    irq_set_enabled(PIO0_IRQ_0, true); 
-    // Load configuration and jump to start of the program
-    pio_sm_init(pio, sm, offset, &c);
+    gpio_init(A10);
+    gpio_set_dir(A10, GPIO_OUT);
+
+    gpio_init(A11);
+    gpio_set_dir(A11, GPIO_OUT);
+
+    gpio_init(A12);
+    gpio_set_dir(A12, GPIO_OUT);
+
+    gpio_init(A13);
+    gpio_set_dir(A13, GPIO_OUT);
+
+    gpio_init(A14);
+    gpio_set_dir(A14, GPIO_OUT);
+
+    gpio_init(A15);
+    gpio_set_dir(A15, GPIO_OUT);
+
+    // Init the control pins, always out
+    gpio_init(RST);
+    gpio_set_dir(RST, GPIO_OUT);
+
+    gpio_init(CS);
+    gpio_set_dir(CS, GPIO_OUT);
+
+    gpio_init(RD);
+    gpio_set_dir(RD, GPIO_OUT);
+
+    gpio_init(WR);
+    gpio_set_dir(WR, GPIO_OUT);
+
+    gpio_init(CLK);
+    gpio_set_dir(CLK, GPIO_OUT);
+
+    // Init the data pins, bidirectional
+    // Init them as IN though
+    gpio_init(D0);
+    gpio_init(D1);
+    gpio_init(D2);
+    gpio_init(D3);
+    gpio_init(D4);
+    gpio_init(D5);
+    gpio_init(D6);
+    gpio_init(D7);
+    set_dbus_direction(GPIO_IN);
+
+    // Init the state of all the pins
+    reset_pin_states();
 }
 
-irq_handler_t clk_irq_handler(){
-    // Read out the contents of the ROM at that location
-    // Write it back to data bus
-    uint32_t addr = pio0->rxf[sm];
-    if ((addr & 0xFFFF) < 0x7FFF){
-        pio0->txf[sm] = tetris_rom[addr];
-        if((addr_index < ADDR_LIMIT) && (addr != 0)){
-            addr_trace[addr_index] = addr;
-            addr_index++;
-        }
-        if(addr_index >= ADDR_LIMIT){
-            addr_trace[addr_index] = addr;
-        }
-    }
-    // Clear the interrupt so the PIO resumes
-    pio_interrupt_clear(pio, 0);
+void reset_pin_states(){
+    // Address pins
+    gpio_put(A0, 0);
+    gpio_put(A1, 0);
+    gpio_put(A2, 0);
+    gpio_put(A3, 0);
+    gpio_put(A4, 0);
+    gpio_put(A5, 0);
+    gpio_put(A6, 0);
+    gpio_put(A7, 0);
+    gpio_put(A8, 0);
+    gpio_put(A9, 0);
+    gpio_put(A10, 0);
+    gpio_put(A11, 0);
+    gpio_put(A12, 0);
+    gpio_put(A13, 0);
+    gpio_put(A14, 0);
+    gpio_put(A15, 0);
 
+    set_dbus_direction(GPIO_IN);
+
+    // Control pins
+    gpio_put(RST, 1);
+    gpio_put(CS, 1);
+    gpio_put(RD, 1);
+    gpio_put(WR, 1);
+    gpio_put(CLK, 1);
+}
+
+void writeb(uint8_t data, uint16_t addr){
+    // Set the clock high
+    gpio_put(CLK, 1);
+    // Sleep 140 ns
+    sleep_us(1);
+    // Set read high
+    gpio_put(RD, 1);
+    // Set the address
+    gpio_put(A0, addr & (0x1 << 0));
+    gpio_put(A1, addr & (0x1 << 1));
+    gpio_put(A2, addr & (0x1 << 2));
+    gpio_put(A3, addr & (0x1 << 3));
+    gpio_put(A4, addr & (0x1 << 4));
+    gpio_put(A5, addr & (0x1 << 5));
+    gpio_put(A6, addr & (0x1 << 6));
+    gpio_put(A7, addr & (0x1 << 7));
+    gpio_put(A8, addr & (0x1 << 8));
+    gpio_put(A9, addr & (0x1 << 9));
+    gpio_put(A10, addr & (0x1 << 10));
+    gpio_put(A11, addr & (0x1 << 11));
+    gpio_put(A12, addr & (0x1 << 12));
+    gpio_put(A13, addr & (0x1 << 13));
+    gpio_put(A14, addr & (0x1 << 14));
+    gpio_put(A15, addr & (0x1 << 15));
+    // Sleep 240 ns
+    sleep_us(1);
+    // Set CS low
+    gpio_put(CS, 0);
+    // Sleep for 480 ns
+    sleep_us(1);
+    // Set WR low
+    gpio_put(WR, 0);
+    // Drive the data bus
+    set_dbus_direction(GPIO_OUT);
+    gpio_put(D0, data & (0x1 << 0));
+    gpio_put(D1, data & (0x1 << 1));
+    gpio_put(D2, data & (0x1 << 2));
+    gpio_put(D3, data & (0x1 << 3));
+    gpio_put(D4, data & (0x1 << 4));
+    gpio_put(D5, data & (0x1 << 5));
+    gpio_put(D6, data & (0x1 << 6));
+    gpio_put(D7, data & (0x1 << 7));
+    // Set clock low
+    gpio_put(CLK, 0);
+    // Wait 840 ns
+    sleep_us(1);
+    // Reset all control signals
+    gpio_put(CLK, 1);
+    sleep_us(1);
+    reset_pin_states();
+}
+uint8_t readb(uint16_t addr){
+    // Set direction accordingly
+    set_dbus_direction(GPIO_IN);
+    // Set the clock high
+    gpio_put(CLK, 1);
+    // Sleep ??? ns
+    //sleep_us(1);
+    // Set read low
+    gpio_put(RD, 0);
+    // Ensure write is high
+    gpio_put(WR, 1);
+    // Sleep ??? ns
+    //sleep_us(1);
+    // Put address on bus
+    gpio_put(A0, addr & (0x1 << 0));
+    gpio_put(A1, addr & (0x1 << 1));
+    gpio_put(A2, addr & (0x1 << 2));
+    gpio_put(A3, addr & (0x1 << 3));
+    gpio_put(A4, addr & (0x1 << 4));
+    gpio_put(A5, addr & (0x1 << 5));
+    gpio_put(A6, addr & (0x1 << 6));
+    gpio_put(A7, addr & (0x1 << 7));
+    gpio_put(A8, addr & (0x1 << 8));
+    gpio_put(A9, addr & (0x1 << 9));
+    gpio_put(A10, addr & (0x1 << 10));
+    gpio_put(A11, addr & (0x1 << 11));
+    gpio_put(A12, addr & (0x1 << 12));
+    gpio_put(A13, addr & (0x1 << 13));
+    gpio_put(A14, addr & (0x1 << 14));
+    gpio_put(A15, addr & (0x1 << 15));
+    // Sleep ??? ms
+    //sleep_us(1);
+    // Set CS low
+    gpio_put(CS, 0);
+    // Read back the data
+    sleep_us(1);
+    uint8_t data =
+        (gpio_get(D0) << 0) |
+        (gpio_get(D1) << 1) |
+        (gpio_get(D2) << 2) |
+        (gpio_get(D3) << 3) |
+        (gpio_get(D4) << 4) |
+        (gpio_get(D5) << 5) |
+        (gpio_get(D6) << 6) |
+        (gpio_get(D7) << 7);
+    // Set CLK low
+    gpio_put(CLK, 0);
+    // Sleep ??? ms
+    sleep_us(1);
+    gpio_put(CS, 1);
+    return data;
+}
+
+void set_dbus_direction(uint8_t dir){
+    gpio_set_dir(D0, dir);
+    gpio_set_dir(D1, dir);
+    gpio_set_dir(D2, dir);
+    gpio_set_dir(D3, dir);
+    gpio_set_dir(D4, dir);
+    gpio_set_dir(D5, dir);
+    gpio_set_dir(D6, dir);
+    gpio_set_dir(D7, dir);
 }
 
