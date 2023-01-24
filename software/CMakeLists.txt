@@ -17,7 +17,7 @@ pico_generate_pio_header(main ${CMAKE_CURRENT_LIST_DIR}/gbbus.pio)
 # however, alternatively you can choose to generate it somewhere else (in this case in the source tree for check in)
 #pico_generate_pio_header(main ${CMAKE_CURRENT_LIST_DIR}/blink.pio OUTPUT_DIR ${CMAKE_CURRENT_LIST_DIR})
 
-target_sources(main PRIVATE main.c)
+target_sources(main PRIVATE main.c gb.c mappers/gbcam.c mappers/mbc5.c)
 
 target_link_libraries(main PRIVATE pico_stdlib hardware_pio)
 pico_enable_stdio_usb(main 1)
