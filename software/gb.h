@@ -4,6 +4,7 @@
 #include <stdint.h>
 const uint8_t logo[0x30];
 
+#define CART_TYPE_ADDR        0x147
 #define ROM_BANK_SHIFT_ADDR 	0x148
 #define RAM_BANK_COUNT_ADDR 	0x149
 #define CART_TITLE_ADDR     	0x134
@@ -14,10 +15,13 @@ const uint8_t logo[0x30];
 
 #define ROM_BANK0_START_ADDR	0x0
 #define ROM_BANK0_END_ADDR		0x3FFF
+#define ROM_BANK_SIZE         ROM_BANK0_END_ADDR + 1
 #define ROM_BANKN_START_ADDR	0x4000
 #define ROM_BANKN_END_ADDR		0x7FFF
 #define SRAM_START_ADDR     	0xA000
 #define SRAM_END_ADDR       	0xBFFF
+#define SRAM_BANK_SIZE   SRAM_END_ADDR - SRAM_START_ADDR + 1
+#define SRAM_HALF_BANK_SIZE   SRAM_BANK_SIZE / 2
 
 struct Cart {
    uint8_t  cart_type;

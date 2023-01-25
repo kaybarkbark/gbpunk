@@ -10,7 +10,7 @@ const uint8_t logo[] = {0xCE, 0xED, 0x66, 0x66, 0xCC, 0x0D, 0x00, 0x0B, 0x03, 0x
 
 void get_cart_info(struct Cart *cart){
     // Get the cartridge type
-    cart->cart_type = readb(0x147);
+    cart->cart_type = readb(CART_TYPE_ADDR);
     // Get the human readible name for the cart type
     memset(cart->cart_type_str, 0, 30);
     switch(cart->cart_type){

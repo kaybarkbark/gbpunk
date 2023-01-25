@@ -73,12 +73,12 @@
     "files": [
       {
         "name": "gbpunk.kicad_sch",
-        "open": true,
+        "open": false,
         "window": {
           "display": 0,
           "maximized": true,
           "pos_x": 390,
-          "pos_y": 1204,
+          "pos_y": 124,
           "size_x": 500,
           "size_y": 579
         }
