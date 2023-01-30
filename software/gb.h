@@ -23,8 +23,21 @@ const uint8_t logo[0x30];
 #define SRAM_BANK_SIZE   SRAM_END_ADDR - SRAM_START_ADDR + 1
 #define SRAM_HALF_BANK_SIZE   SRAM_BANK_SIZE / 2
 
+#define MAPPER_UNKNOWN        0x0
+#define MAPPER_ROM_ONLY       0x1
+#define MAPPER_ROM_RAM        0x2
+#define MAPPER_MBC1           0x3
+#define MAPPER_MBC2           0x4
+#define MAPPER_MBC3           0x5
+#define MAPPER_MMM01          0x6
+#define MAPPER_MBC4           0x7
+#define MAPPER_MBC5           0x8
+#define MAPPER_GBCAM          0x9
+
+
 struct Cart {
    uint8_t  cart_type;
+   uint8_t  mapper_type;
    uint8_t  rom_banks;
    uint8_t  ram_banks;
    uint16_t ram_end_address;

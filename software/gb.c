@@ -10,37 +10,38 @@ const uint8_t logo[] = {0xCE, 0xED, 0x66, 0x66, 0xCC, 0x0D, 0x00, 0x0B, 0x03, 0x
 
 void get_cart_info(struct Cart *cart){
     // Get the cartridge type
-    cart->cart_type = readb(CART_TYPE_ADDR);
+    cart->cart_type = readb(0x147);
     // Get the human readible name for the cart type
     memset(cart->cart_type_str, 0, 30);
+    // FIXME for some reason this replaces the first char with 0. No idea why
     switch(cart->cart_type){
-        case 0: strncpy(cart->cart_type_str, "ROM ONLY", 8); break;
-        case 1: strncpy(cart->cart_type_str, "MBC1", 4); break;
-        case 2: strncpy(cart->cart_type_str, "MBC1+RAM", 8); break;
-        case 3: strncpy(cart->cart_type_str, "MBC1+RAM+BATTERY", 16); break;
-        case 5: strncpy(cart->cart_type_str, "MBC2", 4); break;
-        case 6: strncpy(cart->cart_type_str, "MBC2+BATTERY", 12); break;
-        case 8: strncpy(cart->cart_type_str, "ROM+RAM", 7); break;
-        case 9: strncpy(cart->cart_type_str, "ROM ONLY", 8); break;
-        case 11: strncpy(cart->cart_type_str, "MMM01", 5); break;
-        case 12: strncpy(cart->cart_type_str, "MMM01+RAM", 9); break;
-        case 13: strncpy(cart->cart_type_str, "MMM01+RAM+BATTERY", 17); break;
-        case 15: strncpy(cart->cart_type_str, "MBC3+TIMER+BATTERY", 18); break;
-        case 16: strncpy(cart->cart_type_str, "MBC3+TIMER+RAM+BATTERY", 22); break;
-        case 17: strncpy(cart->cart_type_str, "MBC3", 4); break;
-        case 18: strncpy(cart->cart_type_str, "MBC3+RAM", 8); break;
-        case 19: strncpy(cart->cart_type_str, "MBC3+RAM+BATTERY", 16); break;
-        case 21: strncpy(cart->cart_type_str, "MBC4", 4); break;
-        case 22: strncpy(cart->cart_type_str, "MBC4+RAM", 8); break;
-        case 23: strncpy(cart->cart_type_str, "MBC4+RAM+BATTERY", 16); break;
-        case 25: strncpy(cart->cart_type_str, "MBC5", 4); break;
-        case 26: strncpy(cart->cart_type_str, "MBC5+RAM", 8); break;
-        case 27: strncpy(cart->cart_type_str, "MBC5+RAM+BATTERY", 16); break;
-        case 28: strncpy(cart->cart_type_str, "MBC5+RUMBLE", 11); break;
-        case 29: strncpy(cart->cart_type_str, "MBC5+RUMBLE+RAM", 15); break;
-        case 30: strncpy(cart->cart_type_str, "MBC5+RUMBLE+RAM+BATTERY", 23); break;
-        case 252: strncpy(cart->cart_type_str, "GB CAMERA", 9); break;
-        default: strncpy(cart->cart_type_str, "UNKNOWN MAPPER", 14); break;
+        case 0: strncpy(cart->cart_type_str, "ROM ONLY", 8); cart->mapper_type = MAPPER_ROM_ONLY; break;
+        case 1: strncpy(cart->cart_type_str, "MBC1", 4); cart->mapper_type = MAPPER_MBC1; break;
+        case 2: strncpy(cart->cart_type_str, "MBC1+RAM", 8); cart->mapper_type = MAPPER_MBC1; break;
+        case 3: strncpy(cart->cart_type_str, "MBC1+RAM+BATTERY", 16); cart->mapper_type = MAPPER_MBC1; break;
+        case 5: strncpy(cart->cart_type_str, "MBC2", 4); cart->mapper_type = MAPPER_MBC2; break;
+        case 6: strncpy(cart->cart_type_str, "MBC2+BATTERY", 12); cart->mapper_type = MAPPER_MBC2; break;
+        case 8: strncpy(cart->cart_type_str, "ROM+RAM", 7); cart->mapper_type = MAPPER_ROM_RAM; break;
+        case 9: strncpy(cart->cart_type_str, "ROM ONLY", 8); cart->mapper_type = MAPPER_ROM_ONLY; break;
+        case 11: strncpy(cart->cart_type_str, "MMM01", 5); cart->mapper_type = MAPPER_MMM01; break;
+        case 12: strncpy(cart->cart_type_str, "MMM01+RAM", 9); cart->mapper_type = MAPPER_MMM01; break;
+        case 13: strncpy(cart->cart_type_str, "MMM01+RAM+BATTERY", 17); cart->mapper_type = MAPPER_MMM01; break;
+        case 15: strncpy(cart->cart_type_str, "MBC3+TIMER+BATTERY", 18); cart->mapper_type = MAPPER_MBC3; break;
+        case 16: strncpy(cart->cart_type_str, "MBC3+TIMER+RAM+BATTERY", 22); cart->mapper_type = MAPPER_MBC3; break;
+        case 17: strncpy(cart->cart_type_str, "MBC3", 4); cart->mapper_type = MAPPER_MBC3; break;
+        case 18: strncpy(cart->cart_type_str, "MBC3+RAM", 8); cart->mapper_type = MAPPER_MBC3; break;
+        case 19: strncpy(cart->cart_type_str, "MBC3+RAM+BATTERY", 16); cart->mapper_type = MAPPER_MBC3; break;
+        case 21: strncpy(cart->cart_type_str, "MBC4", 4); cart->mapper_type = MAPPER_MBC4; break;
+        case 22: strncpy(cart->cart_type_str, "MBC4+RAM", 8); cart->mapper_type = MAPPER_MBC4; break;
+        case 23: strncpy(cart->cart_type_str, "MBC4+RAM+BATTERY", 16); cart->mapper_type = MAPPER_MBC4; break;
+        case 25: strncpy(cart->cart_type_str, "MBC5", 4); cart->mapper_type = MAPPER_MBC5; break;
+        case 26: strncpy(cart->cart_type_str, "MBC5+RAM", 8); cart->mapper_type = MAPPER_MBC5; break;
+        case 27: strncpy(cart->cart_type_str, "MBC5+RAM+BATTERY", 16); cart->mapper_type = MAPPER_MBC5; break;
+        case 28: strncpy(cart->cart_type_str, "MBC5+RUMBLE", 11); cart->mapper_type = MAPPER_MBC5; break;
+        case 29: strncpy(cart->cart_type_str, "MBC5+RUMBLE+RAM", 15); cart->mapper_type = MAPPER_MBC5; break;
+        case 30: strncpy(cart->cart_type_str, "MBC5+RUMBLE+RAM+BATTERY", 23); cart->mapper_type = MAPPER_MBC5; break;
+        case 252: strncpy(cart->cart_type_str, "GB CAMERA", 9); cart->mapper_type = MAPPER_GBCAM; break;
+        default: strncpy(cart->cart_type_str, "UNKNOWN MAPPER", 14); cart->mapper_type = MAPPER_UNKNOWN; break;
     }
     // Calculate ROM banks
     cart->rom_banks = 2 << readb(ROM_BANK_SHIFT_ADDR);
@@ -236,7 +237,6 @@ void reset_pin_states(){
 
 void writeb(uint8_t data, uint16_t addr){
     // TODO: ensure clock always starts low, ends low. First thing should be posedge clock
-    // TODO: This is probably broken now
     // Set the clock high
     gpio_put(CLK, 1);
     // Set CS high. I know it seems wierd for this to go here, it's high from the previous transaction.
@@ -263,7 +263,7 @@ void writeb(uint8_t data, uint16_t addr){
     gpio_put(A14, addr & (0x1 << 14));
     gpio_put(A15, addr & (0x1 << 15));
     // 240 ns
-    sleep_us(1);
+    sleep_us(2);
     // Set CS low
     gpio_put(CS, 0);
     // 480 ns
@@ -283,13 +283,14 @@ void writeb(uint8_t data, uint16_t addr){
     gpio_put(D6, data & (0x1 << 6));
     gpio_put(D7, data & (0x1 << 7));
     // 840 ns
-    sleep_us(1);
+    sleep_us(2);
     // Set WR high
     gpio_put(WR, 1);
     // 960ns ns
     sleep_us(1);
     // Set CLK high
     gpio_put(CLK, 1);
+    gpio_put(CS, 1); // added for gbcam, remove if mbc5 no longer works
     // Stop driving bus
     set_dbus_direction(GPIO_IN);
     // Maybe put cs = 1 down here, if other things break. 
@@ -331,14 +332,14 @@ uint8_t readb(uint16_t addr){
     gpio_put(A14, addr & (0x1 << 14));
     gpio_put(A15, addr & (0x1 << 15));
     // Sleep ??? ms
-    sleep_us(1);
+    sleep_us(2);
     // Set CS low
     gpio_put(CS, 0);
     // Sleep ??? ns
     // Set clock low
     gpio_put(CLK, 0);
     /// Sleep ??? ns, wait for data on the bus
-    sleep_us(2);
+    sleep_us(4);
     // Read back the data
     uint8_t data =
         (gpio_get(D0) << 0) |

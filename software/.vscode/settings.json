@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "pins.h": "c"
+        "pins.h": "c",
+        "gbcam.h": "c"
     }
 }

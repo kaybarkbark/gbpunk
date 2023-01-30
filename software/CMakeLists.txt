@@ -10,7 +10,7 @@ project(gbpunk)
 pico_sdk_init()
 
 # rest of your project
-add_executable(main main.c gb.c mbc5.c)
+add_executable(main main.c gb.c mbc5.c gbcam.c utils.c)
 
 # by default the header is generated into the build dir
 # pico_generate_pio_header(main ${CMAKE_CURRENT_LIST_DIR}/gbbus.pio)
