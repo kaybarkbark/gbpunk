@@ -49,10 +49,10 @@ int main() {
             if(DO_UNIT_TEST){
                 printf("Performing cart unit tests...\n");
                 if(cart.mapper_type == MAPPER_MBC5){
-                    mbc5_unit_test_sram(&cart);
+                    mbc5_unit_test(&cart);
                 }
                 if(cart.mapper_type == MAPPER_GBCAM){
-                    gbcam_unit_test_sram();
+                    gbcam_unit_test();
                 }
             }
         }

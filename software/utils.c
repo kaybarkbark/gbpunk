@@ -17,3 +17,22 @@ char byte_to_printable(uint8_t byte_in){
     }
     return (char) byte_in;
 }
+
+uint8_t bufncmp(uint8_t *b1, uint8_t *b2, uint16_t len){
+    uint16_t samechars = 0;
+    for(uint8_t i = 0; i < len; i++){
+        if(b1[i] == b2[i]){
+            samechars++;
+        }
+    }
+    if(samechars < len){
+        return 0;
+    }
+    return 1;
+}
+
+void bufncpy(uint8_t *dest, uint8_t *src, uint16_t len){
+    for(uint8_t i = 0; i < len; i++){
+        dest[i] = src[i];
+    }
+}

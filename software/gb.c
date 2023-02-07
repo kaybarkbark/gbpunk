@@ -264,8 +264,11 @@ void writeb(uint8_t data, uint16_t addr){
     gpio_put(A15, addr & (0x1 << 15));
     // 240 ns
     sleep_us(2);
-    // Set CS low
-    gpio_put(CS, 0);
+    // Set CS low if we are doing a RAM access
+    // Revert back to always set low if everything brakes
+    if(addr >= SRAM_START_ADDR){
+        gpio_put(CS, 0);
+    }
     // 480 ns
     sleep_us(1);
     // Set clock low
