@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 const uint8_t logo[0x30];
+uint8_t working_mem[0x8000];
 
 #define CART_TYPE_ADDR        0x147
 #define ROM_BANK_SHIFT_ADDR 	0x148
@@ -33,7 +34,6 @@ const uint8_t logo[0x30];
 #define MAPPER_MBC4           0x7
 #define MAPPER_MBC5           0x8
 #define MAPPER_GBCAM          0x9
-
 
 struct Cart {
    uint8_t  cart_type;

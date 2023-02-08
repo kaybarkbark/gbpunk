@@ -140,6 +140,7 @@ uint8_t mbc5_unit_test_sram(struct Cart *cart){
 }
 
 uint8_t mbc5_unit_test_rom_bank_switching(struct Cart *cart){
+    const uint16_t slice_size = 10;
     printf("Unit testing ROM banks in %s...\n", cart->title);
     printf("ROM Banks: %i\n", cart->rom_banks);
     uint8_t successes = 0;
@@ -147,35 +148,32 @@ uint8_t mbc5_unit_test_rom_bank_switching(struct Cart *cart){
         printf("WARNING: This cart does not have extra ROM banks! Skipping...\n");
         return 0;
     }
-    uint8_t initial_slice[10] = {0};
-    uint8_t next_slice[10] = {0};
-
-    // Generate a start address for the buffer read, with at least 10 bytes of space tp read
+    // Generate a start address for the buffer read, with at least slice_size bytes of space tp read
     uint16_t start_address = (rand() % ROM_BANK_SIZE) + ROM_BANKN_START_ADDR;
-    if(start_address >= (ROM_BANKN_END_ADDR - 10)){
-        start_address -= 10;
+    if(start_address >= (ROM_BANKN_END_ADDR - slice_size)){
+        start_address -= slice_size;
     }
-    printf("Testing memory 0x%x -> 0x%x\n", start_address, start_address + 10);
+    printf("Testing memory 0x%x -> 0x%x\n", start_address, start_address + slice_size);
     printf("Taking first slice of ROM from bank 1...\n");
     mbc5_set_rom_bank(1);
-    for(uint8_t i = 0; i < 10; i++){
-        initial_slice [i] = readb(start_address + i);
+    for(uint8_t i = 0; i < slice_size; i++){
+        working_mem[i] = readb(start_address + i);
     }
     for(uint16_t bank = 2; bank < cart->rom_banks; bank++){
         mbc5_set_rom_bank(bank);
         printf("===\nTaking next slice from ROM bank %i...\n", bank);
-        for(uint8_t i = 0; i < 10; i++){
-            next_slice [i] = readb(start_address + i);
+        for(uint8_t i = 0; i < slice_size; i++){
+            working_mem[i + slice_size] = readb(start_address + i);
         }
         printf("Bank %i Slice: ", bank - 1);
-        for(uint8_t i = 0; i < 10; i++){
-            printf("0x%02x ", initial_slice[i]);
+        for(uint8_t i = 0; i < slice_size; i++){
+            printf("0x%02x ", working_mem[i]);
         }
         printf("\nBank %i Slice: ", bank);
-        for(uint8_t i = 0; i < 10; i++){
-            printf("0x%02x ", next_slice[i]);
+        for(uint8_t i = 0; i < slice_size; i++){
+            printf("0x%02x ", working_mem[i + slice_size]);
         }
-        if(bufncmp(initial_slice, next_slice, 10)){
+        if(bufncmp(working_mem, working_mem + slice_size, slice_size)){
             printf("\nWARNING: Memory is the same, cart did not *appear* to bank switch ROM\n===\n");
         }
         else{
@@ -183,7 +181,7 @@ uint8_t mbc5_unit_test_rom_bank_switching(struct Cart *cart){
             successes++;
         }
         // Save next slice to the initial slice so we can use it in the next loop
-        bufncpy(initial_slice, next_slice, 10);
+        bufncpy(working_mem, working_mem + slice_size, slice_size);
     }
     if(successes){
         printf("+++ SUCCESS: Cart provably bank switched ROM %i times\n", successes);
@@ -196,6 +194,7 @@ uint8_t mbc5_unit_test_rom_bank_switching(struct Cart *cart){
 }
 
 uint8_t mbc5_unit_test_ram_bank_switching(struct Cart *cart){
+    const uint16_t slice_size = 64;
     mbc5_set_ram_access(1);
     printf("Unit testing SRAM banks in %s...\n", cart->title);
     printf("RAM Banks: %i\n", cart->ram_banks);
@@ -204,35 +203,33 @@ uint8_t mbc5_unit_test_ram_bank_switching(struct Cart *cart){
         printf("WARNING: This cart does not have enough SRAM to test bank switching! Skipping...\n");
         return 0;
     }
-    uint8_t initial_slice[64] = {0};
-    uint8_t next_slice[64] = {0};
 
-    // Generate a start address for the buffer read, with at least 64 bytes of space tp read
+    // Generate a start address for the buffer read, with at least slice_size bytes of space tp read
     uint16_t start_address = (rand() % SRAM_BANK_SIZE) + SRAM_START_ADDR;
-    if(start_address >= (SRAM_END_ADDR - 64)){
-        start_address -= 64;
+    if(start_address >= (SRAM_END_ADDR - slice_size)){
+        start_address -= slice_size;
     }
-    printf("Testing memory 0x%x -> 0x%x\n", start_address, start_address + 64);
+    printf("Testing memory 0x%x -> 0x%x\n", start_address, start_address + slice_size);
     printf("Taking first slice of SRAM from bank 0...\n");
     mbc5_set_ram_bank(0);
-    for(uint8_t i = 0; i < 64; i++){
-        initial_slice [i] = readb(start_address + i);
+    for(uint8_t i = 0; i < slice_size; i++){
+        working_mem[i] = readb(start_address + i);
     }
     for(uint16_t bank = 1; bank < cart->ram_banks; bank++){
         mbc5_set_ram_bank(bank);
         printf("===\nTaking next slice from SRAM bank %i...\n", bank);
-        for(uint8_t i = 0; i < 64; i++){
-            next_slice [i] = readb(start_address + i);
+        for(uint8_t i = 0; i < slice_size; i++){
+            working_mem[i + slice_size] = readb(start_address + i);
         }
         printf("Bank %i Slice: ", bank - 1);
-        for(uint8_t i = 0; i < 64; i++){
-            printf("0x%02x ", initial_slice[i]);
+        for(uint8_t i = 0; i < slice_size; i++){
+            printf("0x%02x ", working_mem[i]);
         }
         printf("\nBank %i Slice: ", bank);
-        for(uint8_t i = 0; i < 64; i++){
-            printf("0x%02x ", next_slice[i]);
+        for(uint8_t i = 0; i < slice_size; i++){
+            printf("0x%02x ", working_mem[i + slice_size]);
         }
-        if(bufncmp(initial_slice, next_slice, 64)){
+        if(bufncmp(working_mem, working_mem + slice_size, slice_size)){
             printf("\nWARNING: Memory is the same, cart did not *appear* to bank switch SRAM\n===\n");
         }
         else{
@@ -240,7 +237,7 @@ uint8_t mbc5_unit_test_ram_bank_switching(struct Cart *cart){
             successes++;
         }
         // Save next slice to the initial slice so we can use it in the next loop
-        bufncpy(initial_slice, next_slice, 64);
+        bufncpy(working_mem, working_mem + slice_size, slice_size);
     }
     mbc5_set_ram_access(0);
     if(successes){

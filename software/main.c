@@ -19,9 +19,7 @@
 #include "gbcam.h"
 #include "utils.h"
 
-#define DO_UNIT_TEST 1
-
-uint8_t gamebuf[0x8000] = {};
+#define DO_UNIT_TEST 0
 
 int main() {
     stdio_init_all();
@@ -33,10 +31,9 @@ int main() {
         // reset_cart();
         sleep_ms(500);
         printf("Performing cart check...\n");
-        uint8_t logo_buf[LOGO_LEN] = {0};
-        uint16_t cart_check_result = cart_check(logo_buf);
+        uint16_t cart_check_result = cart_check(working_mem);
         printf("Contents of logo...\n");
-        hexdump(logo_buf, LOGO_LEN, 0x0);
+        hexdump(working_mem, LOGO_LEN, 0x0);
         if(cart_check_result){
             printf("Cart check failed at address 0x%x! Take it out and blow on it.\n", cart_check_result);
         }
@@ -54,6 +51,12 @@ int main() {
                 if(cart.mapper_type == MAPPER_GBCAM){
                     gbcam_unit_test();
                 }
+            }
+            printf("Dumping out all photos from the camera...");
+            for(uint8_t photo = 0; photo < 30; photo++){
+                gbcam_pull_photo(working_mem, photo);
+                printf("Photo %i\n", photo);
+                hexdump(working_mem, GBCAM_BMP_PHOTO_SIZE, 0x0);
             }
         }
         sleep_ms(1000);

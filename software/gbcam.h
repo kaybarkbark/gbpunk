@@ -13,11 +13,13 @@
 #define GBCAM_NUM_SRAM_BANKS            0x10
 
 #define GBCAM_IMAGE_START_ADDR          0xD0E  // this do be lookin srs d0e
-// NOTE: Check this https://github.com/AntonioND/gbcam-rev-engineer/blob/master/gbcam_arduino_server/gbcam_arduino_server.ino
+#define GBCAM_BMP_PHOTO_SIZE            7286
+uint8_t bmp_header[0x76];
 
 // Public functions
 void gbcam_rom_dump(uint8_t *buf, uint8_t start_bank, uint8_t end_bank);
 void gbcam_ram_dump(uint8_t *buf, uint8_t start_bank, uint8_t end_bank);
+void gbcam_pull_photo(uint8_t *buf, uint8_t num);
 // TODO: CAM register dump
 
 // Unit Tests
