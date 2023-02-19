@@ -2,24 +2,38 @@ cmake_minimum_required(VERSION 3.13)
 
 # initialize the SDK based on PICO_SDK_PATH
 # note: this must happen before project()
-include(pico_sdk_import.cmake)
+include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
+include($ENV{PICO_SDK_PATH}/tools/CMakeLists.txt)
 
-project(gbpunk)
+project(GBPUNK C CXX ASM)
+
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
 
-# rest of your project
-add_executable(main main.c gb.c mbc5.c gbcam.c utils.c)
+add_executable(GBPUNK)
 
-# by default the header is generated into the build dir
-# pico_generate_pio_header(main ${CMAKE_CURRENT_LIST_DIR}/gbbus.pio)
-# however, alternatively you can choose to generate it somewhere else (in this case in the source tree for check in)
-#pico_generate_pio_header(main ${CMAKE_CURRENT_LIST_DIR}/blink.pio OUTPUT_DIR ${CMAKE_CURRENT_LIST_DIR})
+target_sources(GBPUNK PUBLIC
+        ${CMAKE_CURRENT_LIST_DIR}/main.c
+        ${CMAKE_CURRENT_LIST_DIR}/usb_descriptors.c
+        ${CMAKE_CURRENT_LIST_DIR}/msc_disk.c
+        ${CMAKE_CURRENT_LIST_DIR}/gb.c
+        ${CMAKE_CURRENT_LIST_DIR}/utils.c
+        ${CMAKE_CURRENT_LIST_DIR}/mbc5.c
+        ${CMAKE_CURRENT_LIST_DIR}/gbcam.c
+        )
 
-# target_sources(main PRIVATE main.c gb.c mbc5.c)
-# target_include_directories(main PRIVATE "${PROJECT_BINARY_DIR}")
-target_link_libraries(main PRIVATE pico_stdlib hardware_pio)
-pico_enable_stdio_usb(main 1)
-pico_enable_stdio_uart(main 0)
-pico_add_extra_outputs(main)
+# Make sure TinyUSB can find tusb_config.h
+target_include_directories(GBPUNK PUBLIC
+        ${CMAKE_CURRENT_LIST_DIR})
+
+# In addition to pico_stdlib required for common PicoSDK functionality, add dependency on tinyusb_device
+# for TinyUSB device support and tinyusb_board for the additional board support library used by the example
+target_link_libraries(GBPUNK PUBLIC pico_stdlib hardware_pio tinyusb_device tinyusb_board hardware_flash)
+
+pico_add_extra_outputs(GBPUNK)
+
+pico_enable_stdio_usb(GBPUNK 0)
+pico_enable_stdio_uart(GBPUNK 1)

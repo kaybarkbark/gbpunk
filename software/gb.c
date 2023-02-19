@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 #include "pico/stdlib.h"
 #include "gb.h"
 #include "pins.h"
@@ -237,6 +238,7 @@ void reset_pin_states(){
 }
 
 void writeb(uint8_t data, uint16_t addr){
+    // init_bus();  // Put this here cause I was an idiot with tusb
     // TODO: ensure clock always starts low, ends low. First thing should be posedge clock
     // Set the clock high
     gpio_put(CLK, 1);
@@ -301,6 +303,7 @@ void writeb(uint8_t data, uint16_t addr){
     sleep_us(1);
 }
 uint8_t readb(uint16_t addr){
+    // init_bus();  // Put this here cause I was an idiot with tusb
     // TODO: Ensure clock always starts low, ends low
     // Pulse clock, ensure we get a posedge
     //gpio_put(CLK, 0);
@@ -375,4 +378,13 @@ void set_dbus_direction(uint8_t dir){
     gpio_set_dir(D5, dir);
     gpio_set_dir(D6, dir);
     gpio_set_dir(D7, dir);
+}
+
+
+uint16_t fs_get_rom_bank(uint16_t addr){
+    return addr / ROM_BANK_SIZE; 
+}
+
+uint16_t fs_get_ram_bank(uint16_t addr){
+    return addr / SRAM_BANK_SIZE; 
 }

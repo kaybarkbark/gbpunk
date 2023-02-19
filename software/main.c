@@ -13,6 +13,8 @@
 #include <string.h>
 
 #include "pico/stdlib.h"
+#include "bsp/board.h"
+#include "tusb.h"
 #include "pins.h"
 #include "gb.h"
 #include "mbc5.h"
@@ -23,43 +25,48 @@
 
 int main() {
     stdio_init_all();
-    while(1){
-        sleep_ms(1000);
-        printf("Initializing the bus...\n");
-        init_bus();
-        // printf("Resetting the cart...\n");
-        // reset_cart();
-        sleep_ms(500);
-        printf("Performing cart check...\n");
-        uint16_t cart_check_result = cart_check(working_mem);
+    gpio_init(STATUS_LED);
+    gpio_set_dir(STATUS_LED, GPIO_OUT);
+    gpio_put(STATUS_LED, true);
+    printf("Initializing the bus...\n");
+    init_bus();
+    uint16_t cart_check_result = 0xFF;
+    printf("Performing cart check...\n");
+    while(cart_check_result){
+        cart_check_result = cart_check(working_mem);
         printf("Contents of logo...\n");
         hexdump(working_mem, LOGO_LEN, 0x0);
         if(cart_check_result){
             printf("Cart check failed at address 0x%x! Take it out and blow on it.\n", cart_check_result);
         }
-        else{
-            printf("Cart check passed!\n");
-            struct Cart cart;
-            get_cart_info(&cart);
-            dump_cart_info(&cart);
-            sleep_ms(1000);
-            if(DO_UNIT_TEST){
-                printf("Performing cart unit tests...\n");
-                if(cart.mapper_type == MAPPER_MBC5){
-                    mbc5_unit_test(&cart);
-                }
-                if(cart.mapper_type == MAPPER_GBCAM){
-                    gbcam_unit_test();
-                }
-            }
-            printf("Dumping out all photos from the camera...");
-            for(uint8_t photo = 0; photo < 30; photo++){
-                gbcam_pull_photo(working_mem, photo);
-                printf("Photo %i\n", photo);
-                hexdump(working_mem, GBCAM_BMP_PHOTO_SIZE, 0x0);
-            }
-        }
         sleep_ms(1000);
     }
+    gpio_put(STATUS_LED, false);
+    printf("Cart check passed!\n");
+    struct Cart cart;
+    get_cart_info(&cart);
+    dump_cart_info(&cart);
+    // sleep_ms(1000);
+    if(DO_UNIT_TEST){
+        printf("Performing cart unit tests...\n");
+        if(cart.mapper_type == MAPPER_MBC5){
+            mbc5_unit_test(&cart);
+        }
+        if(cart.mapper_type == MAPPER_GBCAM){
+            gbcam_unit_test();
+        }
+    }
 
+    // board_init();
+    tusb_init();
+    // printReserveSectFat();
+    while(1){
+        tud_task();
+    }
 }
+// printf("Dumping out all photos from the camera...");
+// for(uint8_t photo = 0; photo < 30; photo++){
+//     gbcam_pull_photo(working_mem, photo);
+//     printf("Photo %i\n", photo);
+//     hexdump(working_mem, GBCAM_BMP_PHOTO_SIZE, 0x0);
+// }

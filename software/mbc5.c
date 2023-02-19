@@ -72,8 +72,67 @@ void mbc5_set_ram_access(uint8_t on_off){
 
 }
 
+uint16_t mbc5_memcpy_rom(uint8_t* dest, uint16_t rom_addr, uint16_t num){
+    // Determine the current bank
+    uint16_t current_bank = fs_get_rom_bank(rom_addr);
+    uint16_t rom_cursor = 0;
+    // Keep track of where we are in ROM
+    rom_cursor = rom_addr % ROM_BANK_SIZE;
+    // Set up the bank for transfer
+    mbc5_set_rom_bank(current_bank);
+    for(uint16_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
+        // Determine if we need to bankswitch or not
+        if(rom_cursor >= ROM_BANK_SIZE){
+            // Switch banks if we cross a boundary
+            current_bank++;
+            mbc5_set_rom_bank(current_bank);
+            // If we bankswitch, we start over again at the beginning of the the bank
+            rom_cursor = 0;
+        }
+        // Old debug
+        // uint8_t d = readb(rom_cursor + ROM_BANKN_START_ADDR);
+        // if(d != 0){
+        //     printf("0x%x ", d);
+        // }
+        // dest[buf_cursor] = d; 
+        // Read everything out of banked ROM, even bank 0. Easier that way
+        dest[buf_cursor] = readb(rom_cursor + ROM_BANKN_START_ADDR); 
+        rom_cursor++;
+    }
+    printf("\n");
+}
+// Note: This gets memory relative to RAM, not the cart. So 0x0 means start of RAM
+uint16_t mbc5_memcpy_ram(uint8_t* dest, uint16_t ram_addr, uint16_t num){
+    // Keep track of where we are in RAM
+    uint16_t ram_cursor = ram_addr;
+    // Keep track of our current bank
+    uint16_t current_bank = fs_get_ram_bank(ram_cursor);
+    // Set up the bank for transfer
+    mbc5_set_ram_bank(current_bank);
+    for(uint16_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
+        // Determine if we need to bankswitch or not
+        uint16_t new_bank = fs_get_rom_bank(ram_cursor);
+        if(new_bank != current_bank){
+            // Switch banks if we cross a boundary
+            current_bank = new_bank;
+            mbc5_set_ram_bank(current_bank);
+            // If we bankswitch, we start over again at the beginning of the the bank
+            ram_cursor = 0;
+        }
+        // Read everything out of banked ROM, even bank 0. Easier that way
+        dest[buf_cursor] = readb(ram_cursor + SRAM_START_ADDR); 
+        ram_cursor++;
+    }
+}
+
 uint8_t mbc5_unit_test(struct Cart *cart){
     uint8_t ret = 0;
+    printf("memcpy_rom Test\n");
+    printf("---------\n");
+    if(mbc5_unit_test_memcpy(cart)){
+        printf("--- memcpy_rom Test FAILED ---\n");
+        ret = 1;
+    }
     printf("SRAM Test\n");
     printf("---------\n");
     if(mbc5_unit_test_sram(cart)){
@@ -93,6 +152,14 @@ uint8_t mbc5_unit_test(struct Cart *cart){
         ret = 1;
     }
     return ret;
+}
+
+
+uint8_t mbc5_unit_test_memcpy(struct Cart *cart){
+    printf("Copying the nintendo logo out of ROM...");
+    mbc5_memcpy_rom(working_mem, LOGO_START_ADDR, LOGO_LEN);
+    hexdump(working_mem, LOGO_LEN, LOGO_START_ADDR);
+    return 0;
 }
 
 uint8_t mbc5_unit_test_sram(struct Cart *cart){
