@@ -348,6 +348,7 @@ uint8_t readb(uint16_t addr){
     // Sleep ??? ms
     sleep_us(2);
     // Set CS low
+    // TODO: Don't need this for ROM access I think
     gpio_put(CS, 0);
     // Sleep ??? ns
     // Set clock low

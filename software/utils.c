@@ -36,3 +36,10 @@ void bufncpy(uint8_t *dest, uint8_t *src, uint16_t len){
         dest[i] = src[i];
     }
 }
+
+void delay_wait(uint32_t cycles){
+    // Each cycle is roughly 7 ns when running at default speed
+    while(cycles){
+        cycles--;
+    }
+}
