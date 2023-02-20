@@ -5,7 +5,8 @@
 #include "pico.h"
 #include <hardware/flash.h>
 #include "checkUF2.h"
-#include "mbc5.h"
+#include "rom_only.h"
+#include "msc_disk.h"
 
 
 // Links for FAT:
@@ -37,9 +38,10 @@ void software_reset()
 
 enum
 {
-  DISK_BLOCK_NUM  = 0x3ffff, // 8KB is the smallest size that windows allow to mount
+  DISK_BLOCK_NUM  = 0x200000, // Pretend to be a 1GB drive
   DISK_BLOCK_SIZE = 512,
   DISK_CLUSTER_SIZE = 8,
+  // Assuming block and cluster size stay standard (512 and 8 respectfully) this is 4k
   DISK_CLUSTER_BYTES = DISK_BLOCK_SIZE * DISK_CLUSTER_SIZE
 };
 
@@ -50,7 +52,7 @@ enum
   INDEX_FAT_TABLE_2_START = 0x82,
   INDEX_ROOT_DIRECTORY = 0x103,
   INDEX_DATA_STARTS = 0x123,
-  INDEX_DATA_END = (0x12b + DISK_CLUSTER_SIZE - 1)
+  INDEX_DATA_END = DISK_BLOCK_NUM
 };
 
 
@@ -130,24 +132,31 @@ uint8_t DISK_fatTable[DISK_BLOCK_SIZE] =
 {
     0xFF, 0xFF, 
     0xFF, 0xFF, 
-    0xFF, 0xFF, //HTML doc
-    0xFF, 0xFF, //Txt file
+    0x03, 0x00, // at least 32k rom file
+    0x04, 0x00,
+    0x05, 0x00,
+    0x06, 0x00,
+    0x07, 0x00,
+    0x08, 0x00,
+    0x09, 0x00,
+    0xFF, 0xFF,
+    0xFF, 0xFF,
 };
 
 uint8_t DISK_rootDirectory[DISK_BLOCK_SIZE] = 
 {
       // first entry is volume label
-      'G' , 'B' , 'P' , 'U' , 'N' , 'K' , ' ' , ' ' , ' ' , ' ' , ' ' , 0x28, 0x00, 0x00, 0x00, 0x00,
+      ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , 0x28, 0x00, 0x00, 0x00, 0x00,
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0, 0x0, 0x0, 0x0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 
-      'R' , 'O' , 'M' , ' ' , ' ' , ' ' , ' ' , ' ' , 'B' , 'I' , 'N' , 0x21, 0x00, 0xC6, 0x52, 0x6D,
+      ' ' , ' ' , ' ' , ' ' , '_' , 'r' , 'o' , 'm' , 'b' , 'i' , 'n' , 0x21, 0x00, 0xC6, 0x52, 0x6D,
       0x65, 0x43, 0x65, 0x43, 0x00, 0x00, 0x88, 0x6D, 0x65, 0x43, 
       0x02, 0x00, //cluster location (2)
       0x00, 0x4, 0x00, 0x00, // Filesize
 
-      'S' , 'R' , 'A' , 'M' , ' ' , ' ' , ' ' , ' ' , 'B' , 'I' , 'N' , 0x21, 0x00, 0xC6, 0x52, 0x6D,
+      ' ' , ' ' , ' ' , ' ' , '_' , 'r' , 'a' , 'm' , 's' , 'a' , 'v' , 0x21, 0x00, 0xC6, 0x52, 0x6D,
       0x65, 0x43, 0x65, 0x43, 0x00, 0x00, 0x88, 0x6D, 0x65, 0x43, 
-      0x03, 0x00, //cluster location (3)
+      0x0B, 0x00, //cluster location (3)
       0x00, 0x2, 0x00, 0x00 // Filesize (1024 bytes)
 };
 
@@ -244,7 +253,7 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
   {
     // printf("lba %d, bufsize %d, offset %d\n",lba, bufsize, offset);
     // mbc5_memcpy_rom(buffer, 0x104, 0x30);
-    mbc5_memcpy_rom(buffer, (lba - INDEX_DATA_STARTS) * DISK_BLOCK_SIZE, bufsize);
+    rom_only_memcpy_rom(buffer, (lba - INDEX_DATA_STARTS) * DISK_BLOCK_SIZE, bufsize);
     return (int32_t) bufsize;
   }
   if(addr != 0)
@@ -357,4 +366,57 @@ int32_t tud_msc_scsi_cb (uint8_t lun, uint8_t const scsi_cmd[16], void* buffer, 
   }
 
   return (int32_t) resplen;
+}
+
+
+void init_disk(struct Cart* cart){
+  // HANDLE VOLUME INFO
+  // First, initialize the names for everything
+  // Set the volume label to the cart name (first 8 chars)
+  memcpy(DISK_rootDirectory, cart->title, 8);
+
+  // HANDLE ROM INFO
+  // Set the ROM names
+  memcpy(DISK_rootDirectory + 32, cart->title, 4);
+  // Get the number of clusters needed for RAM and ROM
+  // Minimum for ROM is 32k (0x0 - 0x8000), which is 8 clusters
+  uint16_t rom_clusters = cart->rom_size_bytes / DISK_CLUSTER_BYTES;
+  // If there's a remainder, we need another cluster
+  if(cart->rom_size_bytes % DISK_CLUSTER_BYTES){
+    rom_clusters++;
+  }
+  // Set the filesize in bytes for ROM
+  // DISK_rootDirectory[32 + 28] = cart->rom_size_bytes & 0xFF;
+  // DISK_rootDirectory[32 + 29] = (cart->rom_size_bytes & 0xFF00) >> 8;
+  // DISK_rootDirectory[32 + 30] = (cart->rom_size_bytes & 0xFF0000) >> 16;
+  // DISK_rootDirectory[32 + 31] = (cart->rom_size_bytes & 0xFF000000) >> 24;
+  for(uint8_t i = 0; i < 4; i++){
+   DISK_rootDirectory[32 + 28 + i] = (cart->rom_size_bytes & (0xFF << (i * 8))) >> i * 8;
+  }
+  // Populate the FAT table
+  memset(DISK_fatTable, 0xFF, 81); // Initialize
+  // Starting at entry 2 (byte 4), populate the FAT table
+  uint16_t current_cluster = 2;
+  for(uint16_t i = 0; i < rom_clusters; i++){
+    uint16_t next_entry = current_cluster + 1;
+    DISK_fatTable[current_cluster * 2] = next_entry & 0xFF;
+    DISK_fatTable[(current_cluster * 2) + 1] = (next_entry & 0xFF00) >> 8;
+    current_cluster++;
+  }
+  // Last cluster is EOF
+  DISK_fatTable[4 + (rom_clusters * 2)] = 0xFF;
+  DISK_fatTable[4 + (rom_clusters * 2) + 1] = 0xFF;
+  // TODO: 
+  // Handle FAT tables that are not 0x81 in size
+  // Handle FAT tables that are larger than a single block 
+  // Handle FAT tables that are larger than a cluster
+
+  // HANDLE RAM INFO
+  // Set RAM name if RAM exists, otherwise zero it out
+  if(cart->ram_size_bytes){
+    memcpy(DISK_rootDirectory + 64, cart->title, 4);
+  }
+  else{
+    memset(DISK_rootDirectory + 64, 0, 32);
+  }
 }

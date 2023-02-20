@@ -5,10 +5,10 @@
 const uint8_t logo[0x30];
 uint8_t working_mem[0x8000];
 
-#define CART_TYPE_ADDR        0x147
-#define ROM_BANK_SHIFT_ADDR 	0x148
-#define RAM_BANK_COUNT_ADDR 	0x149
-#define CART_TITLE_ADDR     	0x134
+#define CART_TYPE_ADDR        0x147 // bank 0
+#define ROM_BANK_SHIFT_ADDR 	0x148 // bank 0
+#define RAM_BANK_COUNT_ADDR 	0x149 // bank 0
+#define CART_TITLE_ADDR     	0x134 // bank 0
 #define CART_TITLE_LEN      	16
 #define LOGO_START_ADDR     	0x104
 #define LOGO_END_ADDR       	0x133
@@ -41,6 +41,11 @@ struct Cart {
    uint8_t  rom_banks;
    uint8_t  ram_banks;
    uint16_t ram_end_address;
+   uint32_t rom_size_bytes;
+   uint32_t ram_size_bytes;
+   void (*rom_memcpy_func)(uint8_t*, uint16_t, uint16_t); // Pointer to ROM memcpy function
+   void (*ram_memcpy_func)(uint8_t*, uint16_t, uint16_t); // Pointer to RAM memcpy function
+   void (*ram_memset_func)(uint8_t*, uint16_t, uint16_t); // Pointer to RAM memset function
    char title[17];
    char cart_type_str[30];
 }; 
@@ -53,6 +58,7 @@ uint16_t fs_get_rom_bank(uint16_t addr);
 // RAM is its own file, so it starts at 0x0
 // Ex: addr 0x0 = RAM bank 0. addr 0x2882 = RAM bank 1
 uint16_t fs_get_ram_bank(uint16_t addr);
+
 
 uint8_t readb(uint16_t addr);
 void writeb(uint8_t data, uint16_t addr);

@@ -56,7 +56,7 @@ int main() {
             gbcam_unit_test();
         }
     }
-
+    init_disk(&cart);
     // board_init();
     tusb_init();
     // printReserveSectFat();

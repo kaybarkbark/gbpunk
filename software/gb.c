@@ -12,7 +12,7 @@ uint8_t working_mem[0x8000] = {0};
 
 void get_cart_info(struct Cart *cart){
     // Get the cartridge type
-    cart->cart_type = readb(0x147);
+    cart->cart_type = readb(CART_TYPE_ADDR);
     // Get the human readible name for the cart type
     memset(cart->cart_type_str, 0, 30);
     // FIXME for some reason this replaces the first char with 0. No idea why
@@ -47,38 +47,45 @@ void get_cart_info(struct Cart *cart){
     }
     // Calculate ROM banks
     cart->rom_banks = 2 << readb(ROM_BANK_SHIFT_ADDR);
+    cart->rom_size_bytes = ROM_BANK_SIZE * cart->rom_banks; // Even ROM Only will report two banks
     // RAM banks are random-ish, need lookup
     uint8_t ram_size = readb(RAM_BANK_COUNT_ADDR);
     // Handle MBC2 w/ battery backed RAM. Only 512 bytes
     if(cart->cart_type == 6){
         cart->ram_banks = 1;
         cart->ram_end_address = 0xA1FF;
+        cart->ram_size_bytes = SRAM_START_ADDR - 0xA1FF + 1;
     }
     // Handle 2K, don't need the full RAM address space
     else if(ram_size == 2){
         cart->ram_banks = 1;
         cart->ram_end_address = 0xA7FF;
+        cart->ram_size_bytes = SRAM_START_ADDR - 0xA7FF + 1;
     }
     // All others will use the full address space
     else if(ram_size == 3){
         cart->ram_banks = 4;
         cart->ram_end_address = SRAM_END_ADDR;
+        cart->ram_size_bytes = cart->ram_banks * SRAM_BANK_SIZE;
     }
     else if(ram_size == 4){
         cart->ram_banks = 16;
         cart->ram_end_address = SRAM_END_ADDR;
+        cart->ram_size_bytes = cart->ram_banks * SRAM_BANK_SIZE;
     }
     else if(ram_size == 5){
         cart->ram_banks = 8;
         cart->ram_end_address = SRAM_END_ADDR;
+        cart->ram_size_bytes = cart->ram_banks * SRAM_BANK_SIZE;
     }
     // No RAM
     else{
         cart->ram_banks = 0;
         cart->ram_end_address = SRAM_START_ADDR;
+        cart->ram_size_bytes = 0;
     }
     // Read back the title
-    for(uint8_t i = 0; i <= CART_TITLE_ADDR; i++){
+    for(uint8_t i = 0; i < CART_TITLE_LEN; i++){
         char c = readb(CART_TITLE_ADDR + i);
         // If unprintable, we hit the end. Null terminate
         if((c < 0x20) || (c > 0x7e)){
@@ -87,7 +94,7 @@ void get_cart_info(struct Cart *cart){
         }
         cart->title[i] = c;
     }
-    cart->title[17] = 0; // Ensure null terminated
+    cart->title[CART_TITLE_LEN] = 0; // Ensure null terminated
 }
 
 void dump_cart_info(struct Cart *cart){
