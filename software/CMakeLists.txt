@@ -9,7 +9,6 @@ project(GBPUNK C CXX ASM)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
-
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
 
@@ -36,5 +35,5 @@ target_link_libraries(GBPUNK PUBLIC pico_stdlib hardware_pio tinyusb_device tiny
 
 pico_add_extra_outputs(GBPUNK)
 
-pico_enable_stdio_usb(GBPUNK 0)
-pico_enable_stdio_uart(GBPUNK 1)
+pico_enable_stdio_usb(GBPUNK 1)
+# pico_enable_stdio_uart(GBPUNK 1)

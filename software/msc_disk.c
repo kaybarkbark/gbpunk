@@ -160,6 +160,10 @@ uint8_t DISK_rootDirectory[DISK_BLOCK_SIZE] =
       0x00, 0x2, 0x00, 0x00 // Filesize (1024 bytes)
 };
 
+uint16_t status_file_ptr = 0;
+uint8_t DISK_status_file[DISK_BLOCK_SIZE] = {0};
+
+
 // Invoked when received SCSI_CMD_INQUIRY
 // Application fill vendor id, product id and revision with string up to 8, 16, 4 characters respectively
 void tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t product_id[16], uint8_t product_rev[4])

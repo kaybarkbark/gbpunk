@@ -310,24 +310,16 @@ void writeb(uint8_t data, uint16_t addr){
     sleep_us(1);
 }
 uint8_t readb(uint16_t addr){
-    // init_bus();  // Put this here cause I was an idiot with tusb
-    // TODO: Ensure clock always starts low, ends low
-    // Pulse clock, ensure we get a posedge
-    //gpio_put(CLK, 0);
-    //sleep_us(1);
+    // Please note that the timings here are the ideal ones from the datasheet and
+    // my delays do not follow them exactly. It just gets close and works pretty well
+    // Clock high
     gpio_put(CLK, 1);
-    // Set CS high. I know it seems wierd for this to go here, it's high from the previous transaction.
-    gpio_put(CS, 1);
-    // Sleep ??? ns
-    sleep_us(1);
-    // Set read low
+    // Ensure WR high
+    gpio_put(WR, 1);
+    // Set RD low. Might still be low from previous transaction, which is fine
     gpio_put(RD, 0);
-    // Ensure write is high
-    // gpio_put(WR, 1);
-    // Set direction accordingly
-    set_dbus_direction(GPIO_IN);
-    // Sleep ??? ns
-    sleep_us(1);
+    // Sleep 125 ns
+    delay_wait(2);
     // Put address on bus
     gpio_put(A0, addr & (0x1 << 0));
     gpio_put(A1, addr & (0x1 << 1));
@@ -345,17 +337,20 @@ uint8_t readb(uint16_t addr){
     gpio_put(A13, addr & (0x1 << 13));
     gpio_put(A14, addr & (0x1 << 14));
     gpio_put(A15, addr & (0x1 << 15));
-    // Sleep ??? ms
-    sleep_us(2);
-    // Set CS low
-    // TODO: Don't need this for ROM access I think
-    gpio_put(CS, 0);
-    // Sleep ??? ns
-    // Set clock low
+    // Set direction accordingly
+    set_dbus_direction(GPIO_IN);
+    // Sleep 125 ns
+    delay_wait(2);
+    // Set CS low if talking to RAM
+    if(addr >= SRAM_START_ADDR){
+        gpio_put(CS, 0);
+    }    // Sleep 250 ns
+    delay_wait(6);
+    // Clock goes low 
     gpio_put(CLK, 0);
-    /// Sleep ??? ns, wait for data on the bus
-    sleep_us(4);
-    // Read back the data
+    // Sleep 250 ns
+    delay_wait(6);
+    // Sample data on bus
     uint8_t data =
         (gpio_get(D0) << 0) |
         (gpio_get(D1) << 1) |
@@ -365,9 +360,13 @@ uint8_t readb(uint16_t addr){
         (gpio_get(D5) << 5) |
         (gpio_get(D6) << 6) |
         (gpio_get(D7) << 7);
-    // Sleep ??? ms
-    // Maybe put cs = 1 down here, if other things break. 
-    sleep_us(1);
+    // Sleep 250 ns
+    delay_wait(6);
+    // Clock should go high here, but next cycle will do that
+    // Disable CS if we read from SRAM
+    if(addr >= SRAM_START_ADDR){
+        gpio_put(CS, 1);
+    }
     return data;
 }
 
