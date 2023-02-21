@@ -41,20 +41,37 @@ enum
   DISK_BLOCK_NUM  = 0x200000, // Pretend to be a 1GB drive
   DISK_BLOCK_SIZE = 512,
   DISK_CLUSTER_SIZE = 8,
-  // Assuming block and cluster size stay standard (512 and 8 respectfully) this is 4k
-  DISK_CLUSTER_BYTES = DISK_BLOCK_SIZE * DISK_CLUSTER_SIZE
+  DISK_CLUSTER_BYTES = DISK_BLOCK_SIZE * DISK_CLUSTER_SIZE, // Assuming block and cluster size stay standard (512 and 8 respectfully) this is 4k
+  // Hold enough sectors for every file I want
+  // 1 sector for status.txt
+  // 8192 sectors for 32MB ROM
+  // 8192 sectors for 32MB SRAM
+  // 2 sectors (8K) for each photo, 32 photos total
+  // Two bytes per entry (FAT16 = 16 bit entries)
+  FAT_TABLE_SIZE = (1 + 8192 + 8192 + (2 * 32)) * 2, 
+  // Root directory should be large enough to hold every file needed
+  // 1 status file
+  // 1 ROM file
+  // 1 SRAM file
+  // 32 Photo files
+  // 32 bytes per entry
+  ROOT_DIRECTORY_SIZE = (1 + 1 + 1 + 32) * 32, 
+  STATUS_FILE_SIZE = DISK_BLOCK_SIZE, // Small for now, can be up to 1 cluster (4k) with current layout
 };
 
 enum 
 {
-  INDEX_RESERVED = 0,
-  INDEX_FAT_TABLE_1_START = 1, //Fat table size is 0x81
-  INDEX_FAT_TABLE_2_START = 0x82,
-  INDEX_ROOT_DIRECTORY = 0x103,
-  INDEX_DATA_STARTS = 0x123,
+  INDEX_RESERVED          = 0x00000,  // First cluster is for all the FAT magic data
+  INDEX_FAT_TABLE_1_START = 0x00001,  // FAT table starts at 0x1, 0x81 blocks in size
+  INDEX_FAT_TABLE_2_START = 0x00082,  // Redundant FAT table is 0x81 blocks later
+  INDEX_ROOT_DIRECTORY    = 0x00103,  // Root directory starts after second FAT table
+  INDEX_DATA_STARTS       = 0x00123,  // Root directory is 0x20 blocks (32 * 512 = 16384 bytes). Can store 16384 / 32 = 512 files total
+  INDEX_STATUS_FILE       = 0x00123,  // Status file is the first one in the data section, 
+  INDEX_ROM_BIN           = 0x0012B,  // ROM bin starts after status file (status file 1 cluster large, 8 blocks)
+  INDEX_SRAM_BIN          = 0x1012B,  // SRAM bin starts after ROM bin (ROM bin 8192 clusters large, 65536 blocks, 32 MB total filesize)
+  INDEX_PHOTOS_START      = 0x2012B,  // Photos starts after SRAM bin (SRAM bin 8192 clusters large, 65536 blocks, 32 MB total filesize)
   INDEX_DATA_END = DISK_BLOCK_NUM
 };
-
 
 #define MAX_SECTION_COUNT_FOR_FLASH_SECTION (FLASH_SECTOR_SIZE/FLASH_PAGE_SIZE)
 struct flashingLocation {
@@ -71,30 +88,28 @@ struct flashingLocation {
 
 uint8_t DISK_reservedSection[DISK_BLOCK_SIZE] = 
 {
-    0xEB, 0x3C, 0x90, 
-    0x4D, 0x53, 0x57, 0x49, 0x4E, 0x34, 0x2E, 0x31, //MSWIN4.1
-    0x00, 0x02, //sector 512
-    0x08,       //cluster size 8 sectors -unit for file sizes
-    0x01, 0x00, //BPB_RsvdSecCnt
-    0x02,       //Number of fat tables
-    0x00, 0x02, //BPB_RootEntCnt  
-    0x00, 0x00, //16 bit fat sector count - 0 larger then 0x10000
-    0xF8,       //- non-removable disks a 
-    0x81, 0x00, //BPB_FATSz16 - Size of fat table
-    0x01, 0x00, //BPB_SecPerTrk 
-    0x01, 0x00, //BPB_NumHeads
-    0x01, 0x00, 0x00, 0x00, //??? BPB_HiddSec 
-    0xFF, 0xFF, 0x03, 0x00, //BPB_TotSec32
-    0x00,  //BS_DrvNum  - probably be 0x80 but is not? 
-    0x00,  //
-    0x29,
-    0x50, 0x04, 0x0B, 0x00, //Volume Serial Number
-    'G' , 'B' , 'P' , 'U' , 'N' , 'K' , ' ' , ' ' , ' ' , ' ' , ' ' , 
-    'F', 'A', 'T', '1', '6', ' ', ' ', ' ', 
-
-    0x00, 0x00,
-
-    // Zero up to 2 last bytes of FAT magic code
+    0xEB, 0x3C, 0x90,                               // ASM instructions for booting
+    0x4D, 0x53, 0x57, 0x49, 0x4E, 0x34, 0x2E, 0x31, // MSWIN4.1 (TODO: Change this to something cooler? Fuck microsoft)
+    0x00, 0x02,                                     // 512 byte block size (0x200)
+    0x08,                                           // 8 blocks per cluster ( 6 * 512 = 4096 = 4K)
+    0x01, 0x00,                                     // BPB_RsvdSecCnt: 1 reserved block
+    0x02,                                           // Number of fat tables: 2 (for redundancy and compatibility)
+    0x00, 0x02,                                     // BPB_RootEntCnt: Max number of files in root dir (0x200)
+    0x00, 0x00,                                     // Blocks in the FS: Set to 0, since doesn't fit in 2 bytes
+    0xF8,                                           // Disk type: 0xF8 = non removable, 0xF0 = removable (TODO: change to 0xF0)
+    0x81, 0x00,                                     // BPB_FATSz16 - Size of fat table (0x81 blocks, 66048 bytes, can hold 33024 clusters)
+    0x01, 0x00,                                     // BPB_SecPerTrk: 1, this is not spinning platter drive
+    0x01, 0x00,                                     // BPB_NumHeads: 1, this is not a spinning platter drive
+    0x01, 0x00, 0x00, 0x00,                         // BPB_HiddSec: Blocks before start partition (???)
+    0xFF, 0xFF, 0x03, 0x00,                         // BPB_TotSec32: Blocks in filesystem (0x3FFFF = 262143 blocks = 134217216 bytes = 1GB)
+    0x00,                                           // BS_DrvNum: Low level disk service drive number (don't care, not a real drive)
+    0x00,                                           // Reserved
+    0x29,                                           // Use extended boot fields (volume serial number, volume label, file system type)
+    0x50, 0x04, 0x0B, 0x00,                         // Volume Serial Number
+    'G' , 'B' , 'P' , 'U' , 'N' , 'K' ,             // Volume Label
+    ' ' , ' ' , ' ' , ' ' , ' ' ,  
+    'F', 'A', 'T', '1', '6', ' ', ' ', ' ',         // File system type
+    0x00, 0x00,                                     // Zero up to 2 last bytes of boot sector
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -125,44 +140,55 @@ uint8_t DISK_reservedSection[DISK_BLOCK_SIZE] =
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x55, 0xAA
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x55, 0xAA // FAT Signature
 };
 
-uint8_t DISK_fatTable[DISK_BLOCK_SIZE] =
-{
-    0xFF, 0xFF, 
-    0xFF, 0xFF, 
-    0x03, 0x00, // at least 32k rom file
-    0x04, 0x00,
-    0x05, 0x00,
-    0x06, 0x00,
-    0x07, 0x00,
-    0x08, 0x00,
-    0x09, 0x00,
-    0xFF, 0xFF,
-    0xFF, 0xFF,
-};
+uint8_t DISK_fatTable[FAT_TABLE_SIZE] ={0};
 
-uint8_t DISK_rootDirectory[DISK_BLOCK_SIZE] = 
+uint8_t DISK_rootDirectory[ROOT_DIRECTORY_SIZE] = 
 {
       // first entry is volume label
       ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , 0x28, 0x00, 0x00, 0x00, 0x00,
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0, 0x0, 0x0, 0x0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 
-      ' ' , ' ' , ' ' , ' ' , '_' , 'r' , 'o' , 'm' , 'b' , 'i' , 'n' , 0x21, 0x00, 0xC6, 0x52, 0x6D,
+      's' , 't' , 'a' , 't' , 'u' , 's' , ' ' , ' ' , 't' , 'x' , 't' , 0x21, 0x00, 0xC6, 0x52, 0x6D,
       0x65, 0x43, 0x65, 0x43, 0x00, 0x00, 0x88, 0x6D, 0x65, 0x43, 
       0x02, 0x00, //cluster location (2)
-      0x00, 0x4, 0x00, 0x00, // Filesize
+      0x00, 0x02, 0x00, 0x00, // Filesize in bytes (512)
+
+      ' ' , ' ' , ' ' , ' ' , '_' , 'r' , 'o' , 'm' , 'b' , 'i' , 'n' , 0x21, 0x00, 0xC6, 0x52, 0x6D,
+      0x65, 0x43, 0x65, 0x43, 0x00, 0x00, 0x88, 0x6D, 0x65, 0x43, 
+      0x03, 0x00, //cluster location (3)
+      0x00, 0x00, 0x00, 0x00, // Filesize in bytes (unititialized)
 
       ' ' , ' ' , ' ' , ' ' , '_' , 'r' , 'a' , 'm' , 's' , 'a' , 'v' , 0x21, 0x00, 0xC6, 0x52, 0x6D,
       0x65, 0x43, 0x65, 0x43, 0x00, 0x00, 0x88, 0x6D, 0x65, 0x43, 
-      0x0B, 0x00, //cluster location (3)
-      0x00, 0x2, 0x00, 0x00 // Filesize (1024 bytes)
+      0x03, 0x20, //cluster location (8195)
+      0x00, 0x00, 0x00, 0x00 // Filesize area in bytes (unititialized)
 };
 
 uint16_t status_file_ptr = 0;
-uint8_t DISK_status_file[DISK_BLOCK_SIZE] = {0};
+uint8_t DISK_status_file[STATUS_FILE_SIZE] = {0};
+void append_status_file(const uint8_t* buf){
+  uint16_t buf_index = 0;
+  for(;;){
+    if(status_file_ptr > STATUS_FILE_SIZE - 1){
+      return;
+    }
+    if(buf[buf_index] == '\0'){
+      return;
+    }
+    DISK_status_file[status_file_ptr] = buf[buf_index];
+    status_file_ptr++;
+    buf_index++;
+  }
+}
 
+void init_disk_mem(){
+  memset(DISK_status_file, ' ', STATUS_FILE_SIZE);
+  memset(DISK_fatTable, 0xFF, FAT_TABLE_SIZE);
+}
 
 // Invoked when received SCSI_CMD_INQUIRY
 // Application fill vendor id, product id and revision with string up to 8, 16, 4 characters respectively
@@ -253,11 +279,18 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
   {
     addr = DISK_rootDirectory;
   }
-  else if(lba >= INDEX_DATA_STARTS && lba <= INDEX_DATA_END )
+  else if(lba >= INDEX_STATUS_FILE && lba < INDEX_ROM_BIN)
   {
-    // printf("lba %d, bufsize %d, offset %d\n",lba, bufsize, offset);
-    // mbc5_memcpy_rom(buffer, 0x104, 0x30);
-    rom_only_memcpy_rom(buffer, (lba - INDEX_DATA_STARTS) * DISK_BLOCK_SIZE, bufsize);
+    addr = DISK_status_file;
+  }
+  else if(lba >= INDEX_ROM_BIN && lba <  INDEX_SRAM_BIN){
+    mbc5_memcpy_rom(buffer, (lba - INDEX_ROM_BIN) * DISK_BLOCK_SIZE, bufsize);
+    // rom_only_memcpy_rom(buffer, (lba - INDEX_ROM_BIN) * DISK_BLOCK_SIZE, bufsize);
+    return (int32_t) bufsize;
+  }
+  else if(lba >= INDEX_SRAM_BIN && lba <  INDEX_PHOTOS_START){
+    // mbc5_memcpy_ram(buffer, (lba - INDEX_ROM_BIN) * DISK_BLOCK_SIZE, bufsize);
+    memset(buffer, 0, bufsize); // TODO
     return (int32_t) bufsize;
   }
   if(addr != 0)
@@ -265,7 +298,7 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
     memcpy(buffer, addr, bufsize);
   }
   else{
-    memset(buffer,0, bufsize);
+    memset(buffer, 0, bufsize);
   }
   return (int32_t) bufsize;
 }
@@ -381,7 +414,7 @@ void init_disk(struct Cart* cart){
 
   // HANDLE ROM INFO
   // Set the ROM names
-  memcpy(DISK_rootDirectory + 32, cart->title, 4);
+  memcpy(DISK_rootDirectory + 64, cart->title, 4);
   // Get the number of clusters needed for RAM and ROM
   // Minimum for ROM is 32k (0x0 - 0x8000), which is 8 clusters
   uint16_t rom_clusters = cart->rom_size_bytes / DISK_CLUSTER_BYTES;
@@ -390,17 +423,17 @@ void init_disk(struct Cart* cart){
     rom_clusters++;
   }
   // Set the filesize in bytes for ROM
-  // DISK_rootDirectory[32 + 28] = cart->rom_size_bytes & 0xFF;
-  // DISK_rootDirectory[32 + 29] = (cart->rom_size_bytes & 0xFF00) >> 8;
-  // DISK_rootDirectory[32 + 30] = (cart->rom_size_bytes & 0xFF0000) >> 16;
-  // DISK_rootDirectory[32 + 31] = (cart->rom_size_bytes & 0xFF000000) >> 24;
+  // DISK_rootDirectory[64 + 28] = cart->rom_size_bytes & 0xFF;
+  // DISK_rootDirectory[64 + 29] = (cart->rom_size_bytes & 0xFF00) >> 8;
+  // DISK_rootDirectory[64 + 30] = (cart->rom_size_bytes & 0xFF0000) >> 16;
+  // DISK_rootDirectory[64 + 31] = (cart->rom_size_bytes & 0xFF000000) >> 24;
   for(uint8_t i = 0; i < 4; i++){
-   DISK_rootDirectory[32 + 28 + i] = (cart->rom_size_bytes & (0xFF << (i * 8))) >> i * 8;
+   DISK_rootDirectory[64 + 28 + i] = (cart->rom_size_bytes & (0xFF << (i * 8))) >> i * 8;
   }
   // Populate the FAT table
-  memset(DISK_fatTable, 0xFF, 81); // Initialize
-  // Starting at entry 2 (byte 4), populate the FAT table
-  uint16_t current_cluster = 2;
+  // TODO: This is generating invalid cluster chains for pokemon yellow. Not sure why
+  // Starting at entry 3 (byte 6), populate the FAT table with ROM data
+  uint16_t current_cluster = 3;
   for(uint16_t i = 0; i < rom_clusters; i++){
     uint16_t next_entry = current_cluster + 1;
     DISK_fatTable[current_cluster * 2] = next_entry & 0xFF;
@@ -408,19 +441,16 @@ void init_disk(struct Cart* cart){
     current_cluster++;
   }
   // Last cluster is EOF
-  DISK_fatTable[4 + (rom_clusters * 2)] = 0xFF;
-  DISK_fatTable[4 + (rom_clusters * 2) + 1] = 0xFF;
-  // TODO: 
-  // Handle FAT tables that are not 0x81 in size
-  // Handle FAT tables that are larger than a single block 
-  // Handle FAT tables that are larger than a cluster
+  DISK_fatTable[(current_cluster * 2)] = 0xFF;
+  DISK_fatTable[(current_cluster * 2) + 1] = 0xFF;
 
   // HANDLE RAM INFO
   // Set RAM name if RAM exists, otherwise zero it out
-  if(cart->ram_size_bytes){
-    memcpy(DISK_rootDirectory + 64, cart->title, 4);
-  }
-  else{
-    memset(DISK_rootDirectory + 64, 0, 32);
-  }
+  memset(DISK_rootDirectory + 96, 0, 32);
+  // if(cart->ram_size_bytes){
+  //   memcpy(DISK_rootDirectory + 96, cart->title, 4);
+  // }
+  // else{
+  //   memset(DISK_rootDirectory + 96, 0, 32);
+  // }
 }

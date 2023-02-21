@@ -20,35 +20,34 @@
 #include "mbc5.h"
 #include "gbcam.h"
 #include "utils.h"
+#include "msc_disk.h"
 
-#define DO_UNIT_TEST 0
+#define DO_UNIT_TEST 1
 
 int main() {
+    init_disk_mem();
     stdio_init_all();
     gpio_init(STATUS_LED);
     gpio_set_dir(STATUS_LED, GPIO_OUT);
     gpio_put(STATUS_LED, true);
-    printf("Initializing the bus...\n");
     init_bus();
     uint16_t cart_check_result = 0xFF;
-    printf("Performing cart check...\n");
     while(cart_check_result){
         cart_check_result = cart_check(working_mem);
-        printf("Contents of logo...\n");
-        hexdump(working_mem, LOGO_LEN, 0x0);
-        if(cart_check_result){
-            printf("Cart check failed at address 0x%x! Take it out and blow on it.\n", cart_check_result);
-        }
+        // hexdump(working_mem, LOGO_LEN, 0x0);
+        // if(cart_check_result){
+        //     printf("Cart check failed at address 0x%x! Take it out and blow on it.\n", cart_check_result);
+        // }
         sleep_ms(1000);
     }
     gpio_put(STATUS_LED, false);
-    printf("Cart check passed!\n");
+    append_status_file("CART CHK: PASS\n\0");
     struct Cart cart;
     get_cart_info(&cart);
     dump_cart_info(&cart);
     // sleep_ms(1000);
     if(DO_UNIT_TEST){
-        printf("Performing cart unit tests...\n");
+        // printf("Performing cart unit tests...\n");
         if(cart.mapper_type == MAPPER_MBC5){
             mbc5_unit_test(&cart);
         }
@@ -57,9 +56,7 @@ int main() {
         }
     }
     init_disk(&cart);
-    // board_init();
     tusb_init();
-    // printReserveSectFat();
     while(1){
         tud_task();
     }

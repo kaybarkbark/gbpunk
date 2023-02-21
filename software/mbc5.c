@@ -3,6 +3,7 @@
 #include "utils.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include "msc_disk.h"
 
 void mbc5_rom_dump(uint8_t *buf, uint16_t start_bank, uint16_t end_bank){
     // Iterate over the range of banks we want to dump
@@ -127,29 +128,38 @@ uint16_t mbc5_memcpy_ram(uint8_t* dest, uint16_t ram_addr, uint16_t num){
 
 uint8_t mbc5_unit_test(struct Cart *cart){
     uint8_t ret = 0;
-    printf("memcpy_rom Test\n");
-    printf("---------\n");
+    append_status_file("MBC5 TESTS\n\0");
+    append_status_file("memcpy_rom: \0");
     if(mbc5_unit_test_memcpy(cart)){
-        printf("--- memcpy_rom Test FAILED ---\n");
+        append_status_file("FAIL\n\0");
         ret = 1;
     }
-    printf("SRAM Test\n");
-    printf("---------\n");
+    else{
+        append_status_file("PASS\n\0");
+    }
+    append_status_file("SRAM: \0");
     if(mbc5_unit_test_sram(cart)){
-        printf("--- SRAM Test FAILED ---\n");
+        append_status_file("FAIL\n\0");
         ret = 1;
     }
-    printf("ROM Bankswitch Test\n");
-    printf("---------\n");
+    else{
+        append_status_file("PASS\n\0");
+    }
+    append_status_file("ROM BANKSW: \0");
     if(mbc5_unit_test_rom_bank_switching(cart)){
-        printf("--- ROM Bankswitch Test FAILED ---\n");
+        append_status_file("FAIL\n\0");
         ret = 1;
     }
-    printf("SRAM Bankswitch Test\n");
-    printf("---------\n");
+    else{
+        append_status_file("PASS\n\0");
+    }
+    append_status_file("RAM BANKSW: \0");
     if(mbc5_unit_test_ram_bank_switching(cart)){
-        printf("--- SRAM Bankswitch Test FAILED ---\n");
+        append_status_file("FAIL\n\0");
         ret = 1;
+    }
+    else{
+        append_status_file("PASS\n\0");
     }
     return ret;
 }
@@ -215,7 +225,7 @@ uint8_t mbc5_unit_test_rom_bank_switching(struct Cart *cart){
         printf("WARNING: This cart does not have extra ROM banks! Skipping...\n");
         return 0;
     }
-    // Generate a start address for the buffer read, with at least slice_size bytes of space tp read
+    // Generate a start address for the buffer read, with at least slice_size bytes of space to read
     uint16_t start_address = (rand() % ROM_BANK_SIZE) + ROM_BANKN_START_ADDR;
     if(start_address >= (ROM_BANKN_END_ADDR - slice_size)){
         start_address -= slice_size;

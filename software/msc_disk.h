@@ -4,8 +4,8 @@
 #include <stdint.h>
 #include "gb.h"
 
+void init_disk_mem();
 void init_disk(struct Cart* cart);
-void new_file(uint8_t* name, uint32_t size);
-void set_disk_size(uint32_t size);
+void append_status_file(const uint8_t* buf);
 
 #endif
