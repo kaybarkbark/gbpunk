@@ -388,10 +388,10 @@ void set_dbus_direction(uint8_t dir){
 }
 
 
-uint16_t fs_get_rom_bank(uint16_t addr){
+uint16_t fs_get_rom_bank(uint32_t addr){
     return addr / ROM_BANK_SIZE; 
 }
 
-uint16_t fs_get_ram_bank(uint16_t addr){
+uint16_t fs_get_ram_bank(uint32_t addr){
     return addr / SRAM_BANK_SIZE; 
 }

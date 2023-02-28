@@ -73,10 +73,10 @@ void mbc5_set_ram_access(uint8_t on_off){
 
 }
 
-uint16_t mbc5_memcpy_rom(uint8_t* dest, uint16_t rom_addr, uint16_t num){
+uint16_t mbc5_memcpy_rom(uint8_t* dest, uint32_t rom_addr, uint32_t num){
     // Determine the current bank
     uint16_t current_bank = fs_get_rom_bank(rom_addr);
-    uint16_t rom_cursor = 0;
+    uint32_t rom_cursor = 0;
     // Keep track of where we are in ROM
     rom_cursor = rom_addr % ROM_BANK_SIZE;
     // Set up the bank for transfer
@@ -100,12 +100,12 @@ uint16_t mbc5_memcpy_rom(uint8_t* dest, uint16_t rom_addr, uint16_t num){
         dest[buf_cursor] = readb(rom_cursor + ROM_BANKN_START_ADDR); 
         rom_cursor++;
     }
-    printf("\n");
+    // printf("\n");
 }
 // Note: This gets memory relative to RAM, not the cart. So 0x0 means start of RAM
-uint16_t mbc5_memcpy_ram(uint8_t* dest, uint16_t ram_addr, uint16_t num){
+uint16_t mbc5_memcpy_ram(uint8_t* dest, uint32_t ram_addr, uint32_t num){
     // Keep track of where we are in RAM
-    uint16_t ram_cursor = ram_addr;
+    uint32_t ram_cursor = ram_addr;
     // Keep track of our current bank
     uint16_t current_bank = fs_get_ram_bank(ram_cursor);
     // Set up the bank for transfer

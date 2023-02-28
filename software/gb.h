@@ -53,11 +53,11 @@ struct Cart {
 // TODO: inline or #define these
 // Get the ROM bank from the perspective of the FAT16 filesystem
 // Ex: addr 0x0 = ROM bank 0. addr 0x4112 = ROM bank 1. Addr 0x8334 = ROM bank 2
-uint16_t fs_get_rom_bank(uint16_t addr);
+uint16_t fs_get_rom_bank(uint32_t addr);
 // Get the RAM bank from the perspective of the FAT16 filesystem
 // RAM is its own file, so it starts at 0x0
 // Ex: addr 0x0 = RAM bank 0. addr 0x2882 = RAM bank 1
-uint16_t fs_get_ram_bank(uint16_t addr);
+uint16_t fs_get_ram_bank(uint32_t addr);
 
 
 uint8_t readb(uint16_t addr);

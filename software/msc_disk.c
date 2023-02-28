@@ -6,6 +6,7 @@
 #include <hardware/flash.h>
 #include "checkUF2.h"
 #include "rom_only.h"
+#include "mbc5.h"
 #include "msc_disk.h"
 
 
@@ -42,13 +43,17 @@ enum
   DISK_BLOCK_SIZE = 512,
   DISK_CLUSTER_SIZE = 8,
   DISK_CLUSTER_BYTES = DISK_BLOCK_SIZE * DISK_CLUSTER_SIZE, // Assuming block and cluster size stay standard (512 and 8 respectfully) this is 4k
-  // Hold enough sectors for every file I want
-  // 1 sector for status.txt
-  // 8192 sectors for 32MB ROM
-  // 8192 sectors for 32MB SRAM
-  // 2 sectors (8K) for each photo, 32 photos total
+  // Hold enough entry for every file I want
+  // 1 entries for status.txt
+  // 8192 entries for 32MB ROM
+  // 8192 entries for 32MB SRAM
+  // 2 entries (8K) for each photo, 32 photos total
   // Two bytes per entry (FAT16 = 16 bit entries)
-  FAT_TABLE_SIZE = (1 + 8192 + 8192 + (2 * 32)) * 2, 
+  // Add 382 to make it block aligned (divisible by 512)
+  FAT_TABLE_SIZE = ((1 + 8192 + 8192 + (2 * 32)) * 2) + 382, 
+  // I am not actually holding the whole FAT table in RAM, so need to know when 
+  // the PC requests something beyond that so I can just send it a 0
+  FAT_TABLE_BLOCK_SIZE = FAT_TABLE_SIZE / DISK_BLOCK_SIZE,
   // Root directory should be large enough to hold every file needed
   // 1 status file
   // 1 ROM file
@@ -187,7 +192,7 @@ void append_status_file(const uint8_t* buf){
 
 void init_disk_mem(){
   memset(DISK_status_file, ' ', STATUS_FILE_SIZE);
-  memset(DISK_fatTable, 0xFF, FAT_TABLE_SIZE);
+  // memset(DISK_fatTable, 0xFF, FAT_TABLE_SIZE);
 }
 
 // Invoked when received SCSI_CMD_INQUIRY
@@ -271,21 +276,31 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
   {
     addr = DISK_reservedSection;
   }
-  else if(lba == INDEX_FAT_TABLE_1_START || lba == INDEX_FAT_TABLE_2_START)
+
+  //Need to handle both FAT tables seperately (TODO: Just tell the thing there's only one table)
+  else if((lba >= INDEX_FAT_TABLE_1_START) && (lba < (INDEX_FAT_TABLE_1_START + FAT_TABLE_BLOCK_SIZE)))
   {
-    addr = DISK_fatTable;
+    addr = DISK_fatTable + ((lba - INDEX_FAT_TABLE_1_START) * DISK_BLOCK_SIZE);
   }
+  else if((lba >= INDEX_FAT_TABLE_2_START) && (lba < (INDEX_FAT_TABLE_2_START + FAT_TABLE_BLOCK_SIZE)))
+  {
+    addr = DISK_fatTable + ((lba - INDEX_FAT_TABLE_2_START) * DISK_BLOCK_SIZE);
+  }
+  // else if(lba == INDEX_FAT_TABLE_1_START || lba == INDEX_FAT_TABLE_2_START)
+  // {
+  //   addr = DISK_fatTable;
+  // }
   else if(lba == INDEX_ROOT_DIRECTORY)
   {
-    addr = DISK_rootDirectory;
+    addr = DISK_rootDirectory; // TODO: This will fail if/when the status file is bigger than one block
   }
   else if(lba >= INDEX_STATUS_FILE && lba < INDEX_ROM_BIN)
   {
-    addr = DISK_status_file;
+    addr = DISK_status_file; // TODO: This will fail if/when the status file is bigger than one block
   }
   else if(lba >= INDEX_ROM_BIN && lba <  INDEX_SRAM_BIN){
-    mbc5_memcpy_rom(buffer, (lba - INDEX_ROM_BIN) * DISK_BLOCK_SIZE, bufsize);
-    // rom_only_memcpy_rom(buffer, (lba - INDEX_ROM_BIN) * DISK_BLOCK_SIZE, bufsize);
+    mbc5_memcpy_rom(buffer, ((lba - INDEX_ROM_BIN) * DISK_BLOCK_SIZE) + offset, bufsize);
+    // rom_only_memcpy_rom(buffer, ((lba - INDEX_ROM_BIN) * DISK_BLOCK_SIZE) + offset, bufsize);
     return (int32_t) bufsize;
   }
   else if(lba >= INDEX_SRAM_BIN && lba <  INDEX_PHOTOS_START){
@@ -303,20 +318,12 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
   return (int32_t) bufsize;
 }
 
-bool tud_msc_is_writable_cb (uint8_t lun)
-{
-  (void) lun;
-
-
-  return true;
-}
-
 // Callback invoked when received WRITE10 command.
 // Process data in buffer to disk's storage and return number of written bytes
 int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* buffer, uint32_t bufsize)
 {
   (void) lun;
-  printf("write - lba 0x%x, bufsize%d\n", lba,bufsize);
+  // printf("write - lba 0x%x, bufsize%d\n", lba,bufsize);
   
   // out of ramdisk
   if ( lba >= DISK_BLOCK_NUM ) return -1;
@@ -431,7 +438,13 @@ void init_disk(struct Cart* cart){
    DISK_rootDirectory[64 + 28 + i] = (cart->rom_size_bytes & (0xFF << (i * 8))) >> i * 8;
   }
   // Populate the FAT table
-  // TODO: This is generating invalid cluster chains for pokemon yellow. Not sure why
+  // Set first two entries to zero
+  for(uint8_t i = 0; i < 4; i++){
+    DISK_fatTable[i] = 0xFF;
+  }
+  // Set the first real entry to 0xFFFF, for the one cluster status file
+  DISK_fatTable[4] = 0xFF;
+  DISK_fatTable[5] = 0xFF;
   // Starting at entry 3 (byte 6), populate the FAT table with ROM data
   uint16_t current_cluster = 3;
   for(uint16_t i = 0; i < rom_clusters; i++){
