@@ -23,6 +23,8 @@ target_sources(GBPUNK PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/mbc5.c
         ${CMAKE_CURRENT_LIST_DIR}/rom_only.c
         ${CMAKE_CURRENT_LIST_DIR}/gbcam.c
+        ${CMAKE_CURRENT_LIST_DIR}/cart.c
+        ${CMAKE_CURRENT_LIST_DIR}/unit_tests.c
         )
 
 # Make sure TinyUSB can find tusb_config.h

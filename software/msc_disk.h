@@ -3,9 +3,10 @@
 
 #include <stdint.h>
 #include "gb.h"
+#include "cart.h"
 
 void init_disk_mem();
-void init_disk(struct Cart* cart);
+void init_disk();
 void append_status_file(const uint8_t* buf);
 
 #endif

@@ -17,9 +17,11 @@
 #include "tusb.h"
 #include "pins.h"
 #include "gb.h"
+#include "cart.h"
 #include "mbc5.h"
 #include "gbcam.h"
 #include "utils.h"
+#include "unit_tests.h"
 #include "msc_disk.h"
 
 #define DO_UNIT_TEST 1
@@ -42,20 +44,19 @@ int main() {
     }
     gpio_put(STATUS_LED, false);
     append_status_file("CART CHK: PASS\n\0");
-    struct Cart cart;
-    get_cart_info(&cart);
-    dump_cart_info(&cart);
+    populate_cart_info();
+    dump_cart_info();
     // sleep_ms(1000);
     if(DO_UNIT_TEST){
         // printf("Performing cart unit tests...\n");
-        if(cart.mapper_type == MAPPER_MBC5){
-            mbc5_unit_test(&cart);
+        if(the_cart.mapper_type == MAPPER_MBC5){
+            mbc5_unit_test();
         }
-        if(cart.mapper_type == MAPPER_GBCAM){
+        if(the_cart.mapper_type == MAPPER_GBCAM){
             gbcam_unit_test();
         }
     }
-    init_disk(&cart);
+    init_disk();
     tusb_init();
     while(1){
         tud_task();

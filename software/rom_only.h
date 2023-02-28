@@ -5,6 +5,6 @@
 #include "gb.h"
 
 // Public functions
-uint16_t rom_only_memcpy_rom(uint8_t* dest, uint16_t rom_addr, uint16_t num);
+void rom_only_memcpy_rom(uint8_t* dest, uint32_t rom_addr, uint32_t num);
 
 #endif

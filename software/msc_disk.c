@@ -33,7 +33,7 @@ static bool ejected = false;
 
 void software_reset()
 {
-    watchdog_enable(1, 1);
+    // watchdog_enable(1, 1); // comment out so it stops bothering me, don't know where this is
     while(1);
 }
 
@@ -299,12 +299,11 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
     addr = DISK_status_file; // TODO: This will fail if/when the status file is bigger than one block
   }
   else if(lba >= INDEX_ROM_BIN && lba <  INDEX_SRAM_BIN){
-    mbc5_memcpy_rom(buffer, ((lba - INDEX_ROM_BIN) * DISK_BLOCK_SIZE) + offset, bufsize);
-    // rom_only_memcpy_rom(buffer, ((lba - INDEX_ROM_BIN) * DISK_BLOCK_SIZE) + offset, bufsize);
+    (*the_cart.rom_memcpy_func)(buffer, ((lba - INDEX_ROM_BIN) * DISK_BLOCK_SIZE) + offset, bufsize);
     return (int32_t) bufsize;
   }
   else if(lba >= INDEX_SRAM_BIN && lba <  INDEX_PHOTOS_START){
-    // mbc5_memcpy_ram(buffer, (lba - INDEX_ROM_BIN) * DISK_BLOCK_SIZE, bufsize);
+    //(*the_cart.ram_memcpy_func)(buffer, (lba - INDEX_RAM_BIN) * DISK_BLOCK_SIZE, bufsize);
     memset(buffer, 0, bufsize); // TODO
     return (int32_t) bufsize;
   }
@@ -413,29 +412,29 @@ int32_t tud_msc_scsi_cb (uint8_t lun, uint8_t const scsi_cmd[16], void* buffer, 
 }
 
 
-void init_disk(struct Cart* cart){
+void init_disk(){
   // HANDLE VOLUME INFO
   // First, initialize the names for everything
   // Set the volume label to the cart name (first 8 chars)
-  memcpy(DISK_rootDirectory, cart->title, 8);
+  memcpy(DISK_rootDirectory, the_cart.title, 8);
 
   // HANDLE ROM INFO
   // Set the ROM names
-  memcpy(DISK_rootDirectory + 64, cart->title, 4);
+  memcpy(DISK_rootDirectory + 64, the_cart.title, 4);
   // Get the number of clusters needed for RAM and ROM
   // Minimum for ROM is 32k (0x0 - 0x8000), which is 8 clusters
-  uint16_t rom_clusters = cart->rom_size_bytes / DISK_CLUSTER_BYTES;
+  uint16_t rom_clusters = the_cart.rom_size_bytes / DISK_CLUSTER_BYTES;
   // If there's a remainder, we need another cluster
-  if(cart->rom_size_bytes % DISK_CLUSTER_BYTES){
+  if(the_cart.rom_size_bytes % DISK_CLUSTER_BYTES){
     rom_clusters++;
   }
   // Set the filesize in bytes for ROM
-  // DISK_rootDirectory[64 + 28] = cart->rom_size_bytes & 0xFF;
-  // DISK_rootDirectory[64 + 29] = (cart->rom_size_bytes & 0xFF00) >> 8;
-  // DISK_rootDirectory[64 + 30] = (cart->rom_size_bytes & 0xFF0000) >> 16;
-  // DISK_rootDirectory[64 + 31] = (cart->rom_size_bytes & 0xFF000000) >> 24;
+  // DISK_rootDirectory[64 + 28] = the_cart.rom_size_bytes & 0xFF;
+  // DISK_rootDirectory[64 + 29] = (the_cart.rom_size_bytes & 0xFF00) >> 8;
+  // DISK_rootDirectory[64 + 30] = (the_cart.rom_size_bytes & 0xFF0000) >> 16;
+  // DISK_rootDirectory[64 + 31] = (the_cart.rom_size_bytes & 0xFF000000) >> 24;
   for(uint8_t i = 0; i < 4; i++){
-   DISK_rootDirectory[64 + 28 + i] = (cart->rom_size_bytes & (0xFF << (i * 8))) >> i * 8;
+   DISK_rootDirectory[64 + 28 + i] = (the_cart.rom_size_bytes & (0xFF << (i * 8))) >> i * 8;
   }
   // Populate the FAT table
   // Set first two entries to zero
@@ -460,8 +459,8 @@ void init_disk(struct Cart* cart){
   // HANDLE RAM INFO
   // Set RAM name if RAM exists, otherwise zero it out
   memset(DISK_rootDirectory + 96, 0, 32);
-  // if(cart->ram_size_bytes){
-  //   memcpy(DISK_rootDirectory + 96, cart->title, 4);
+  // if(the_cart.ram_size_bytes){
+  //   memcpy(DISK_rootDirectory + 96, the_cart.title, 4);
   // }
   // else{
   //   memset(DISK_rootDirectory + 96, 0, 32);
