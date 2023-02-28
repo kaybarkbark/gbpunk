@@ -4,6 +4,7 @@
 #include "pico/stdlib.h"
 #include "gb.h"
 #include "pins.h"
+#include "utils.h"
 
 uint8_t working_mem[0x8000] = {0};
 

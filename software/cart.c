@@ -44,11 +44,11 @@ void populate_cart_info(){
         case 252: strncpy(the_cart.cart_type_str, "GB CAMERA", 9); the_cart.mapper_type = MAPPER_GBCAM; break;
         default: strncpy(the_cart.cart_type_str, "UNKNOWN MAPPER", 14); the_cart.mapper_type = MAPPER_UNKNOWN; break;
     }
-    if(the_cart.cart_type == MAPPER_ROM_ONLY){
+    if(the_cart.mapper_type == MAPPER_ROM_ONLY){
         the_cart.rom_memcpy_func = &rom_only_memcpy_rom;
         the_cart.ram_memcpy_func = &rom_only_memcpy_rom; // Just to prevent a segfault
     }
-    else if(the_cart.cart_type == MAPPER_MBC5){
+    else if(the_cart.mapper_type == MAPPER_MBC5){
         the_cart.rom_memcpy_func = &mbc5_memcpy_rom;
         the_cart.ram_memcpy_func = &mbc5_memcpy_ram;
     }
