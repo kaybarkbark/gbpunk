@@ -20,6 +20,9 @@ target_sources(GBPUNK PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/msc_disk.c
         ${CMAKE_CURRENT_LIST_DIR}/gb.c
         ${CMAKE_CURRENT_LIST_DIR}/utils.c
+        ${CMAKE_CURRENT_LIST_DIR}/mbc1.c
+        ${CMAKE_CURRENT_LIST_DIR}/mbc2.c
+        ${CMAKE_CURRENT_LIST_DIR}/mbc3.c
         ${CMAKE_CURRENT_LIST_DIR}/mbc5.c
         ${CMAKE_CURRENT_LIST_DIR}/rom_only.c
         ${CMAKE_CURRENT_LIST_DIR}/gbcam.c
