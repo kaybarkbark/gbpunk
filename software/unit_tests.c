@@ -8,12 +8,74 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 uint8_t mbc5_unit_test_memcpy();
 uint8_t mbc5_unit_test_sram();
 uint8_t mbc5_unit_test_rom_bank_switching();
 uint8_t mbc5_unit_test_ram_bank_switching();
 
+// Unit tests should follow the following structure
+// - ROM coherency. Read the same ROM bank over and over, make sure it never changes
+// - SRAM coherency. Read the same SRAM bank over and over, make sure it never changes
+// - ROM bankswitching. Read a whole bank of ROM, then the next, make sure it always switches
+// - SRAM bankswitching. Read a whole bank of SRAM, then the next, make sure it always switches
+// - SRAM writes. Save a byte from SRAM, write a new one, make sure it got written, write back old
+// - Run all these, then if any of them failed, return a fail
+
+uint8_t memory_coherency(
+    void (*memcpy_func)(uint8_t*, uint32_t, uint32_t), 
+    uint32_t start_addr, 
+    uint32_t num){
+    // Continually read the entirety of Bank 0 to make sure we always get the same thing
+    // Establish two pointers to the memory we want to compare
+    uint8_t* written_buf = working_mem;
+    uint8_t* comparison_buf = working_mem + num;
+    // The amount of times to run the test
+    uint8_t count = 255;
+    // Set up the initial buffer
+    (*memcpy_func)(written_buf, start_addr, num);
+    while(count){
+        // Read new memory to test
+        (*memcpy_func)(comparison_buf, start_addr, num);
+        // Compare the two
+        if(!bufncmp(written_buf, comparison_buf, num)){
+            return 0;
+        }
+        count--;
+    }
+    return 1;
+}
+
+uint8_t rom_ram_coherency(
+    void (*rom_memcpy_func)(uint8_t*, uint32_t, uint32_t), 
+    void (*ram_memcpy_func)(uint8_t*, uint32_t, uint32_t),
+    uint32_t sram_size
+){
+    uint8_t ret = 1;
+    // First test ROM
+    if(!memory_coherency(rom_memcpy_func, ROM_BANK0_START_ADDR, ROM_BANK_SIZE)){
+        ret = 0;
+        append_status_file("ROM COHERENCY: FAIL\n");
+    }
+    else{
+        append_status_file("ROM COHERENCY: PASS\n");
+    }
+    if(ram_memcpy_func && sram_size){
+        if(!memory_coherency(ram_memcpy_func, SRAM_START_ADDR, sram_size)){
+            ret = 0;
+            append_status_file("SRAM COHERENCY: FAIL\n");
+        }
+        else{
+            append_status_file("SRAM COHERENCY: PASS\n");
+        }
+    }
+    else{
+        append_status_file("SRAM COHERENCY: SKIPPED\n");
+    }
+}
+
+/* DEPRECATED, OLD UNIT TESTS*/
 
 uint8_t mbc5_unit_test(){
     uint8_t ret = 0;

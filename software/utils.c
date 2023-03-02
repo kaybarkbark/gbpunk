@@ -18,6 +18,7 @@ char byte_to_printable(uint8_t byte_in){
     return (char) byte_in;
 }
 
+// Compare two buffers. If they are the same, return 1
 uint8_t bufncmp(uint8_t *b1, uint8_t *b2, uint16_t len){
     uint16_t samechars = 0;
     for(uint8_t i = 0; i < len; i++){
