@@ -50,7 +50,7 @@ uint8_t memory_coherency(
 uint8_t rom_ram_coherency(
     void (*rom_memcpy_func)(uint8_t*, uint32_t, uint32_t), 
     void (*ram_memcpy_func)(uint8_t*, uint32_t, uint32_t),
-    uint32_t sram_size
+    uint32_t ram_size
 ){
     uint8_t ret = 1;
     // First test ROM
@@ -61,8 +61,8 @@ uint8_t rom_ram_coherency(
     else{
         append_status_file("ROM COHERENCY: PASS\n");
     }
-    if(ram_memcpy_func && sram_size){
-        if(!memory_coherency(ram_memcpy_func, SRAM_START_ADDR, sram_size)){
+    if(ram_memcpy_func && ram_size){
+        if(!memory_coherency(ram_memcpy_func, SRAM_START_ADDR, ram_size)){
             ret = 0;
             append_status_file("SRAM COHERENCY: FAIL\n");
         }
@@ -75,6 +75,100 @@ uint8_t rom_ram_coherency(
     }
 }
 
+uint8_t bankswitch_test(
+    void (*bankswitch_func)(uint16_t),
+    void (*mem_enable_func)(uint8_t), 
+    uint32_t start_addr, 
+    uint32_t num_bytes,
+    uint16_t start_bank,
+    uint16_t end_bank){
+        uint8_t pass = 0;
+        uint16_t current_bank = start_bank;
+        // Enable memory, if applicable
+        // Some memory (RAM) needs to be enabled before it can be used at all
+        if(mem_enable_func){
+            (*mem_enable_func)(1);
+        }
+        // Set up memory so we can hold what we read from the cart
+        uint8_t* written_buf = working_mem;
+        uint8_t* comparison_buf = working_mem + num_bytes;
+        // Read the first chunk of memory from the starting bank
+        (*bankswitch_func)(current_bank);
+        // Do not use the memcpy functions! Those will mess with the banks
+        // We need a raw buf read 
+        readbuf(start_addr, written_buf, num_bytes);
+        // Iterate over all the other banks
+        while(current_bank < end_bank){
+            current_bank++;
+            // Read the new bank into comparison memory
+            (*bankswitch_func)(current_bank);
+            readbuf(start_addr, comparison_buf, num_bytes);
+            // Compare the two banks, see if they differ
+            if(bufncmp(written_buf, comparison_buf, num_bytes)){
+                // Increment each time we can prove a bankswitch occurred
+                pass++;
+            }
+            // Swap the two buffers. Old comparison buf is now the written buf
+            // It is much less likely that two banks in a row will have the exact same memory
+            // compared to the first bank and any other bank in memory
+            // at least I think, I feel like I may be wrong but I suck at math
+            uint8_t* temp = comparison_buf;
+            comparison_buf = written_buf;
+            written_buf = comparison_buf;
+        }
+        // Cleanup, disable memory if applicable
+        if(mem_enable_func){
+            (*mem_enable_func)(0);
+        }
+    return pass;
+}
+
+uint8_t rom_ram_bankswitching(
+    void (*rom_bankswitch_func)(uint16_t), 
+    void (*ram_bankswitch_func)(uint16_t), 
+    void (*ram_enable_func)(uint8_t), 
+    uint16_t rom_start_bank,
+    uint16_t rom_end_bank,
+    uint16_t ram_start_bank,
+    uint16_t ram_end_bank,
+    uint32_t ram_size
+
+){
+    uint8_t ret = 1;
+    // First test ROM
+    // Not all carts have banked ROM
+    if(rom_bankswitch_func){
+        if(!bankswitch_test(rom_bankswitch_func, NULL, ROM_BANKN_START_ADDR, ROM_BANK_SIZE, rom_start_bank, rom_end_bank)){
+            ret = 0;
+            append_status_file("ROM BANKSW: FAIL\n");
+        }
+        else{
+            append_status_file("ROM BANKSW: PASS\n");
+        }
+    }
+    else{
+        append_status_file("ROM BANKSW: SKIPPED\n");
+    }
+    // Next test banked RAM
+    // Not all carts have banked RAM
+    if(ram_bankswitch_func && ram_size){
+        if(!bankswitch_test(ram_bankswitch_func, ram_enable_func, SRAM_START_ADDR, ram_size, ram_start_bank, ram_end_bank)){
+            ret = 0;
+            append_status_file("SRAM BANKSW: FAIL\n");
+        }
+        else{
+            append_status_file("SRAM BANKSW: PASS\n");
+        }
+    }
+    else{
+        append_status_file("SRAM BANKSW: SKIPPED\n");
+    }
+}
+
+uint8_t sram_rd_wr(
+    void (*memcpy_func)(uint8_t*, uint32_t, uint32_t), 
+    void (*memset_func)(uint8_t*, uint32_t, uint32_t)){
+}
 /* DEPRECATED, OLD UNIT TESTS*/
 
 uint8_t mbc5_unit_test(){

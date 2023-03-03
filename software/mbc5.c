@@ -11,7 +11,7 @@ void mbc5_set_rom_bank(uint16_t bank){
     writeb(bank & 0xFF00 >> 8, MBC5_HIGH_ROM_BANK_ADDR);
 }
 
-void mbc5_set_ram_bank(uint8_t bank){
+void mbc5_set_ram_bank(uint16_t bank){
     // Remember to enable RAM access first!
     writeb(bank, MBC5_RAM_BANK_ADDR);
 }
@@ -42,17 +42,10 @@ void mbc5_memcpy_rom(uint8_t* dest, uint32_t rom_addr, uint32_t num){
             // If we bankswitch, we start over again at the beginning of the the bank
             rom_cursor = 0;
         }
-        // Old debug
-        // uint8_t d = readb(rom_cursor + ROM_BANKN_START_ADDR);
-        // if(d != 0){
-        //     printf("0x%x ", d);
-        // }
-        // dest[buf_cursor] = d; 
         // Read everything out of banked ROM, even bank 0. Easier that way
         dest[buf_cursor] = readb(rom_cursor + ROM_BANKN_START_ADDR); 
         rom_cursor++;
     }
-    // printf("\n");
 }
 // Note: This gets memory relative to RAM, not the cart. So 0x0 means start of RAM
 void mbc5_memcpy_ram(uint8_t* dest, uint32_t ram_addr, uint32_t num){

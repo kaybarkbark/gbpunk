@@ -88,7 +88,7 @@ void mbc1_set_rom_bank(uint16_t bank){
     // Set the upper 2 bits of the ROM bank
     writeb((bank & 0x60) >> 5, MBC1_RAM_ROM_SHARED_BANK);
 }
-void mbc1_set_ram_bank(uint8_t bank){
+void mbc1_set_ram_bank(uint16_t bank){
     // Set the ROM/RAM mode select bit for RAM access
     writeb(0x1, MBC1_ROM_RAM_SELECT);
     // Set the two bits for the RAM bank

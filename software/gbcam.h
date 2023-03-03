@@ -30,8 +30,8 @@ uint8_t gbcam_unit_test_sram_bank_switching();
 uint8_t gbcam_unit_test_sram();
 
 // Private
-void gbcam_set_rom_bank(uint8_t bank);
-void gbcam_set_ram_bank(uint8_t bank);
+void gbcam_set_rom_bank(uint16_t bank);
+void gbcam_set_ram_bank(uint16_t bank);
 void gbcam_set_ram_writable(uint8_t on_off);
 
 #endif

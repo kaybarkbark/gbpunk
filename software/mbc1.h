@@ -18,7 +18,7 @@ void mbc1_memcpy_ram(uint8_t* dest, uint32_t ram_addr, uint32_t num);
 
 // Private
 void mbc1_set_rom_bank(uint16_t bank);
-void mbc1_set_ram_bank(uint8_t bank);
+void mbc1_set_ram_bank(uint16_t bank);
 void mbc1_set_ram_access(uint8_t on_off);
 uint8_t mbc1_check_invalid_bank(uint16_t bank);
 

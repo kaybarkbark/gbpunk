@@ -45,10 +45,10 @@ void gbcam_ram_dump(uint8_t *buf, uint8_t start_bank, uint8_t end_bank){
     gbcam_set_ram_writable(0);
 }
 
-void gbcam_set_rom_bank(uint8_t bank){
+void gbcam_set_rom_bank(uint16_t bank){
     writeb(bank & 0x3F, GBCAM_ROM_BANK_ADDR);
 }
-void gbcam_set_ram_bank(uint8_t bank){
+void gbcam_set_ram_bank(uint16_t bank){
     writeb(bank, GBCAM_RAM_BANK_ADDR);
 }
 
