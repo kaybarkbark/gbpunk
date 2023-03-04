@@ -10,13 +10,8 @@
 
 #define MBC2_ROM_BANK_ADDR              0x2100
 
-
-// Public functions
 void mbc2_memcpy_rom(uint8_t* dest, uint32_t rom_addr, uint32_t num);
 void mbc2_memcpy_ram(uint8_t* dest, uint32_t ram_addr, uint32_t num);
-
-
-// Private
 void mbc2_set_rom_bank(uint16_t bank);
 void mbc2_set_ram_access(uint8_t on_off);
 

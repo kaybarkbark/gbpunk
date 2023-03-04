@@ -2,7 +2,6 @@
 #define GB_H_
 // Low level workings of the gameboy and
 #include <stdint.h>
-uint8_t working_mem[0x8000];
 
 #define ROM_BANK0_START_ADDR	0x0
 #define ROM_BANK0_END_ADDR		0x3FFF
@@ -13,6 +12,7 @@ uint8_t working_mem[0x8000];
 #define SRAM_END_ADDR       	0xBFFF
 #define SRAM_BANK_SIZE        (SRAM_END_ADDR - SRAM_START_ADDR + 1)
 #define SRAM_HALF_BANK_SIZE   (SRAM_BANK_SIZE / 2)
+uint8_t working_mem[ROM_BANK_SIZE * 2];
 
 // TODO: inline or #define these. They should go somewhere else
 // Get the ROM bank from the perspective of the FAT16 filesystem

@@ -23,7 +23,7 @@ void mbc2_memcpy_rom(uint8_t* dest, uint32_t rom_addr, uint32_t num){
     else{
         mbc2_set_rom_bank(current_bank);
     }    
-    for(uint16_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
+    for(uint32_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
         // Determine if we need to bankswitch or not
         if(rom_cursor >= ROM_BANK_SIZE){
             // Switch banks if we cross a boundary
@@ -45,7 +45,7 @@ void mbc2_memcpy_ram(uint8_t* dest, uint32_t ram_addr, uint32_t num){
     mbc2_set_ram_access(1);
     // There is only one memory bank in MBC2
     // Keep track of where we are in RAM
-    for(uint16_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
+    for(uint32_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
         dest[buf_cursor] = readb(ram_addr + SRAM_START_ADDR); 
         ram_addr++;
     }

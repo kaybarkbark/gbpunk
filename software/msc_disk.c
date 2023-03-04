@@ -189,6 +189,20 @@ void append_status_file(const uint8_t* buf){
     buf_index++;
   }
 }
+void append_status_file_buf(uint8_t* buf){
+  uint16_t buf_index = 0;
+  for(;;){
+    if(status_file_ptr > STATUS_FILE_SIZE - 1){
+      return;
+    }
+    if(buf[buf_index] == '\0'){
+      return;
+    }
+    DISK_status_file[status_file_ptr] = buf[buf_index];
+    status_file_ptr++;
+    buf_index++;
+  }
+}
 
 void init_disk_mem(){
   memset(DISK_status_file, ' ', STATUS_FILE_SIZE);

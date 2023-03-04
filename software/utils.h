@@ -9,7 +9,7 @@ void hexdump(uint8_t *data, uint16_t len, uint16_t start_address);
 // Convert a byte to an ascii printable char. Replace nonprintables with '.'
 char byte_to_printable(uint8_t byte_in);
 // Return 0 if the bufs of size len are the same, 1 otherwise
-uint8_t bufncmp(uint8_t *b1, uint8_t *b2, uint16_t len);
+uint8_t bufncmp(uint8_t *b1, uint8_t *b2, uint32_t len);
 // Copy one buf to another of size len
 void bufncpy(uint8_t *dest, uint8_t *src, uint16_t len);
 // Just sit and wait

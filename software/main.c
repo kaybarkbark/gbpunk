@@ -13,9 +13,7 @@
 #include <string.h>
 
 #include "pico/stdlib.h"
-#include "bsp/board.h"
 #include "tusb.h"
-#include "pins.h"
 #include "gb.h"
 #include "cart.h"
 #include "mbc5.h"
@@ -23,35 +21,30 @@
 #include "utils.h"
 #include "unit_tests.h"
 #include "msc_disk.h"
+#include "status_led.h"
 
 #define DO_UNIT_TEST 1
 
 int main() {
+    init_led_irq();
     init_disk_mem();
     stdio_init_all();
-    gpio_init(STATUS_LED);
-    gpio_set_dir(STATUS_LED, GPIO_OUT);
-    gpio_put(STATUS_LED, true);
     init_bus();
-    uint16_t cart_check_result = 0xFF;
-    while(cart_check_result){
+    uint16_t cart_check_result = 0;
+    while(!cart_check_result){
         cart_check_result = cart_check(working_mem);
         sleep_ms(1000);
+        set_led_speed(LED_SPEED_ERR);
     }
-    gpio_put(STATUS_LED, false);
-    append_status_file("CART CHK: PASS\n\0");
+    set_led_speed(LED_SPEED_TESTING);
     populate_cart_info();
     dump_cart_info();
     if(DO_UNIT_TEST){
-        if(the_cart.mapper_type == MAPPER_MBC5){
-            mbc5_unit_test();
-        }
-        if(the_cart.mapper_type == MAPPER_GBCAM){
-            gbcam_unit_test();
-        }
+        unit_test_cart();
     }
     init_disk();
     tusb_init();
+    set_led_speed(LED_SPEED_HEALTHY);
     while(1){
         tud_task();
     }

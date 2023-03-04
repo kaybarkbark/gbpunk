@@ -51,23 +51,44 @@ void populate_cart_info(){
     // TODO: Handle unknown mapper so we don't get a segfault
     if(the_cart.mapper_type == MAPPER_ROM_ONLY){
         the_cart.rom_memcpy_func = &rom_only_memcpy_rom;
-        the_cart.ram_memcpy_func = &rom_only_memcpy_rom; // Just to prevent a segfault
+        // No actual mapper so none of these apply
+        the_cart.ram_memcpy_func = NULL;
+        the_cart.ram_memset_func = NULL;
+        the_cart.ram_enable_func = NULL;
+        the_cart.rom_banksw_func = NULL;
+        the_cart.ram_banksw_func = NULL;
     }
     else if(the_cart.mapper_type == MAPPER_MBC1){
         the_cart.rom_memcpy_func = &mbc1_memcpy_rom;
         the_cart.ram_memcpy_func = &mbc1_memcpy_ram;
+        the_cart.ram_memset_func = NULL;
+        the_cart.ram_enable_func = &mbc1_set_ram_access;
+        the_cart.rom_banksw_func = &mbc1_set_rom_bank;
+        the_cart.ram_banksw_func = &mbc1_set_ram_bank;
     }
     else if(the_cart.mapper_type == MAPPER_MBC2){
         the_cart.rom_memcpy_func = &mbc2_memcpy_rom;
         the_cart.ram_memcpy_func = &mbc2_memcpy_ram;
+        the_cart.ram_memset_func = NULL;
+        the_cart.ram_enable_func = &mbc2_set_ram_access;
+        the_cart.rom_banksw_func = &mbc2_set_rom_bank;
+        the_cart.ram_banksw_func = NULL;  // MBC2 has no RAM banks, RAM is in the mapper
     }
     else if(the_cart.mapper_type == MAPPER_MBC3){
         the_cart.rom_memcpy_func = &mbc3_memcpy_rom;
         the_cart.ram_memcpy_func = &mbc3_memcpy_ram;
+        the_cart.ram_memset_func = NULL;
+        the_cart.ram_enable_func = &mbc3_set_ram_access;
+        the_cart.rom_banksw_func = &mbc3_set_rom_bank;
+        the_cart.ram_banksw_func = &mbc3_set_ram_bank;
     }
     else if(the_cart.mapper_type == MAPPER_MBC5){
         the_cart.rom_memcpy_func = &mbc5_memcpy_rom;
         the_cart.ram_memcpy_func = &mbc5_memcpy_ram;
+        the_cart.ram_memset_func = NULL;
+        the_cart.ram_enable_func = &mbc5_set_ram_access;
+        the_cart.rom_banksw_func = &mbc5_set_rom_bank;
+        the_cart.ram_banksw_func = &mbc5_set_ram_bank;
     }
     // Calculate ROM banks
     the_cart.rom_banks = 2 << readb(ROM_BANK_SHIFT_ADDR);
@@ -133,8 +154,8 @@ uint16_t cart_check(uint8_t *logo_buf){
     readbuf(LOGO_START_ADDR, logo_buf, LOGO_LEN);
     for(uint8_t i = 0; i < LOGO_LEN; i++){
         if(logo_buf[i] != logo[i]){
-            return i + LOGO_START_ADDR;
+            return 0;
         }
     }
-    return 0;
+    return 1;
 }

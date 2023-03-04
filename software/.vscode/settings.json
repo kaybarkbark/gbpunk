@@ -1,1 +1,7 @@
-{}
+{
+    "files.associations": {
+        "status_led.h": "c",
+        "stdlib.h": "c",
+        "pins.h": "c"
+    }
+}

@@ -33,7 +33,7 @@ void mbc5_memcpy_rom(uint8_t* dest, uint32_t rom_addr, uint32_t num){
     rom_cursor = rom_addr % ROM_BANK_SIZE;
     // Set up the bank for transfer
     mbc5_set_rom_bank(current_bank);
-    for(uint16_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
+    for(uint32_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
         // Determine if we need to bankswitch or not
         if(rom_cursor >= ROM_BANK_SIZE){
             // Switch banks if we cross a boundary
@@ -55,7 +55,7 @@ void mbc5_memcpy_ram(uint8_t* dest, uint32_t ram_addr, uint32_t num){
     uint16_t current_bank = fs_get_ram_bank(ram_cursor);
     // Set up the bank for transfer
     mbc5_set_ram_bank(current_bank);
-    for(uint16_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
+    for(uint32_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
         // Determine if we need to bankswitch or not
         uint16_t new_bank = fs_get_rom_bank(ram_cursor);
         if(new_bank != current_bank){
@@ -72,7 +72,7 @@ void mbc5_memcpy_ram(uint8_t* dest, uint32_t ram_addr, uint32_t num){
 }
 
 
-/* DEPRECATED, OLD STUF */
+/* DEPRECATED, OLD STUFF */
 void mbc5_rom_dump(uint8_t *buf, uint16_t start_bank, uint16_t end_bank){
     // Iterate over the range of banks we want to dump
     for(uint16_t bank_offset = start_bank; bank_offset <= end_bank; bank_offset++){

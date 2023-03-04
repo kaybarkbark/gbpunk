@@ -36,6 +36,9 @@ struct Cart {
    void (*rom_memcpy_func)(uint8_t*, uint32_t, uint32_t); // Pointer to ROM memcpy function
    void (*ram_memcpy_func)(uint8_t*, uint32_t, uint32_t); // Pointer to RAM memcpy function
    void (*ram_memset_func)(uint8_t*, uint32_t, uint32_t); // Pointer to RAM memset function
+   void (*ram_enable_func)(uint8_t); // Pointer to function to enable RAM
+   void (*rom_banksw_func)(uint16_t); // Pointer to function to switch ROM banks
+   void (*ram_banksw_func)(uint16_t); // Pointer to function to switch RAM banks
    char title[17];
    char cart_type_str[30];
 }; 
