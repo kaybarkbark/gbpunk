@@ -167,7 +167,29 @@ uint8_t rom_ram_bankswitching(
 
 uint8_t sram_rd_wr(
     void (*memcpy_func)(uint8_t*, uint32_t, uint32_t), 
-    void (*memset_func)(uint8_t*, uint32_t, uint32_t)){
+    void (*memset_func)(uint8_t*, uint32_t, uint32_t),
+    uint32_t max_sram_addr){
+        uint32_t iterations = 1024;
+        uint8_t ret = 1;
+        while(iterations){
+            // Generate a random address to test at
+            uint32_t addr = rand() % max_sram_addr;
+            // Save the data at that random address at the first index of working mem
+            (*memcpy_func)(working_mem, addr, 1);
+            // Write some random data to the address to test
+            uint8_t new_data = rand() % 255;
+            (*memset_func)(&new_data, addr, 1);
+            // Read back that random data from the address, save to second index of working mem
+            (*memcpy_func)(working_mem + 1, addr, 1);
+            // If the data we read back does not match what we wrote, fail
+            if(working_mem[1] != new_data){
+                ret = 0;
+            }
+            // Restore the value
+            (*memset_func)(working_mem, addr, 1);
+            iterations--;
+        }
+    return ret;
 }
 /* DEPRECATED, OLD UNIT TESTS*/
 
