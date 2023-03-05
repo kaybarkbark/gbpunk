@@ -42,6 +42,7 @@ int main() {
     if(DO_UNIT_TEST){
         unit_test_cart();
     }
+    uint8_t buf[16] = {0};
     init_disk();
     tusb_init();
     set_led_speed(LED_SPEED_HEALTHY);

@@ -162,12 +162,12 @@ uint8_t DISK_rootDirectory[ROOT_DIRECTORY_SIZE] =
       0x02, 0x00, //cluster location (2)
       0x00, 0x02, 0x00, 0x00, // Filesize in bytes (512)
 
-      ' ' , ' ' , ' ' , ' ' , '_' , 'r' , 'o' , 'm' , 'b' , 'i' , 'n' , 0x21, 0x00, 0xC6, 0x52, 0x6D,
+      ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , 'b' , 'i' , 'n' , 0x21, 0x00, 0xC6, 0x52, 0x6D,
       0x65, 0x43, 0x65, 0x43, 0x00, 0x00, 0x88, 0x6D, 0x65, 0x43, 
       0x03, 0x00, //cluster location (3)
       0x00, 0x00, 0x00, 0x00, // Filesize in bytes (unititialized)
 
-      ' ' , ' ' , ' ' , ' ' , '_' , 'r' , 'a' , 'm' , 's' , 'a' , 'v' , 0x21, 0x00, 0xC6, 0x52, 0x6D,
+      ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , 's' , 'a' , 'v' , 0x21, 0x00, 0xC6, 0x52, 0x6D,
       0x65, 0x43, 0x65, 0x43, 0x00, 0x00, 0x88, 0x6D, 0x65, 0x43, 
       0x03, 0x20, //cluster location (8195)
       0x00, 0x00, 0x00, 0x00 // Filesize area in bytes (unititialized)
@@ -434,7 +434,7 @@ void init_disk(){
 
   // HANDLE ROM INFO
   // Set the ROM names
-  memcpy(DISK_rootDirectory + 64, the_cart.title, 4);
+  memcpy(DISK_rootDirectory + 64, the_cart.title, 8);
   // Get the number of clusters needed for ROM
   // Minimum for ROM is 32k (0x0 - 0x8000), which is 8 clusters
   uint16_t rom_clusters = the_cart.rom_size_bytes / DISK_CLUSTER_BYTES;
@@ -474,7 +474,7 @@ void init_disk(){
   // If RAM exists, deal with it
   if(the_cart.ram_size_bytes){
     // Set the name of the RAM file
-    memcpy(DISK_rootDirectory + 96, the_cart.title, 4);
+    memcpy(DISK_rootDirectory + 96, the_cart.title, 8);
 
     // Calculate the amount of clusters needed for RAM
     uint16_t ram_clusters = the_cart.ram_size_bytes / DISK_CLUSTER_BYTES;

@@ -41,5 +41,5 @@ target_link_libraries(GBPUNK PUBLIC pico_stdlib hardware_pio tinyusb_device tiny
 
 pico_add_extra_outputs(GBPUNK)
 
-pico_enable_stdio_usb(GBPUNK 1)
+# pico_enable_stdio_usb(GBPUNK 1)
 # pico_enable_stdio_uart(GBPUNK 1)

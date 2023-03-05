@@ -120,50 +120,30 @@ uint8_t bankswitch_test(
     return pass;
 }
 
-uint8_t simple_sram_rd_wr(){
-    return 1;
-    uint8_t ret = 1;
-    mbc5_set_ram_access(1);
-    for(uint32_t i = 0; i < 16; i++){
-        uint8_t old_data = readb(SRAM_START_ADDR + i);
-        writeb(i, SRAM_START_ADDR + i);
-        volatile uint8_t changed_data = readb(SRAM_START_ADDR + i);
-        if(changed_data != i){
-            ret = 0;
-        }
-        writeb(old_data, SRAM_START_ADDR + i);
-    }
-    mbc5_set_ram_access(0);
-    return ret;
-}
-
 // Read and write to SRAM, make sure the memory is working properly
 uint8_t sram_rd_wr_test(
     void (*memcpy_func)(uint8_t*, uint32_t, uint32_t), 
     void (*memset_func)(uint8_t*, uint32_t, uint32_t),
     uint32_t ram_size){
-        return 1;
         uint8_t ret = 1;            
-        mbc5_set_ram_access(1);
-        uint8_t addr = 50;
-        uint8_t data = 55;
-        while(addr){
-            uint8_t old_data = readb(SRAM_START_ADDR + addr);
-            // uint8_t old_data = 0;
-            // (*memcpy_func)(&old_data, addr, 1);
-            writeb(data, SRAM_START_ADDR + addr);
-            // (*memset_func)(&data, addr, 1);
-            volatile uint8_t changed_data = readb(SRAM_START_ADDR + addr);
-            // uint8_t changed_data = 0;
-            // (*memcpy_func)(&changed_data, addr, 1);
+        uint8_t num_iterations = 64;
+        while(num_iterations){
+            uint8_t addr = rand() % ram_size;
+            uint8_t data = rand() & 0xFF;
+            // uint8_t old_data = readb(SRAM_START_ADDR + addr);
+            uint8_t old_data = 0;
+            (*memcpy_func)(&old_data, addr, 1);
+            // writeb(data, SRAM_START_ADDR + addr);
+            (*memset_func)(&data, addr, 1);
+            // volatile uint8_t changed_data = readb(SRAM_START_ADDR + addr);
+            uint8_t changed_data = 0;
+            (*memcpy_func)(&changed_data, addr, 1);
             if(changed_data != data){
                 ret = 0;
             }
-            writeb(old_data, SRAM_START_ADDR + addr);
-            addr--;
-            data++;
+            // writeb(old_data, SRAM_START_ADDR + addr);
+            num_iterations--;
         }
-        mbc5_set_ram_access(0);
     return ret;
     }
 
@@ -298,13 +278,6 @@ uint8_t unit_test_cart(){
     the_cart.ram_size_bytes);
     append_status_file_buf(working_mem);
     uint8_t ret = 1;
-    if(simple_sram_rd_wr()){
-        append_status_file("SIMPLE RD/WR: PASS\n\0");
-    }
-    else{
-        append_status_file("SIMPLE RD/WR: FAIL\n\0");
-        ret = 0;
-    }
     // Test ROM/RAM coherency
     if(!unit_test_rom_ram_coherency(
         the_cart.rom_memcpy_func, 

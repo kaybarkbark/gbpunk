@@ -49,6 +49,8 @@ void mbc5_memcpy_rom(uint8_t* dest, uint32_t rom_addr, uint32_t num){
 }
 // Note: This gets memory relative to RAM, not the cart. So 0x0 means start of RAM
 void mbc5_memcpy_ram(uint8_t* dest, uint32_t ram_addr, uint32_t num){
+    // Enable RAM reads
+    mbc5_set_ram_access(1);
     // Determine current bank
     uint16_t current_bank = fs_get_ram_bank(ram_addr);
     uint32_t ram_cursor = 0;
@@ -68,6 +70,8 @@ void mbc5_memcpy_ram(uint8_t* dest, uint32_t ram_addr, uint32_t num){
         dest[buf_cursor] = readb(ram_cursor + SRAM_START_ADDR); 
         ram_cursor++;
     }
+    // Disable RAM reads
+    mbc5_set_ram_access(0);
 }
 
 void mbc5_memset_ram(uint8_t* buf, uint32_t ram_addr, uint32_t num){
@@ -113,6 +117,49 @@ void mbc5_rom_dump(uint8_t *buf, uint16_t start_bank, uint16_t end_bank){
             buf[((bank_offset - start_bank) * ROM_BANK_SIZE) + byte_offset] = readb(byte_offset + ROM_BANKN_START_ADDR);
         }
     }
+}
+
+void simple_memset_ram(uint8_t* the_buf, uint32_t ram_addr, uint32_t num){
+    mbc5_set_ram_access(1);
+    mbc5_set_ram_bank(0);
+    for(uint32_t i = 0; i < 16; i++){
+        writeb(the_buf[i], SRAM_START_ADDR + i);
+    }
+    mbc5_set_ram_access(0); 
+}
+
+void mbc5_ram_test(uint8_t* buf, uint32_t size){
+    uint32_t start_num = 0xa;
+    uint8_t test_buf[16] = {0};
+    mbc5_set_ram_access(1);
+    mbc5_set_ram_bank(0);
+    for(uint8_t i = 0; i < 16; i++){
+        test_buf[i] = i + start_num + i;
+    }
+    simple_memset_ram(test_buf, 0, 16);
+    // for(uint32_t i = 0; i < 16; i++){
+    //     writeb(test_buf[i], SRAM_START_ADDR + i);
+    // }
+    // mbc5_memset_ram(test_buf, 0, 16);
+    // for(uint8_t i = 0; i < 16; i++){
+    //     buf[i] = readb(SRAM_START_ADDR + i);
+    // }
+    mbc5_memcpy_ram(buf, 0, 16);
+    printf("Test");
+    mbc5_set_ram_access(0);
+    // // Enable SRAM access
+    // mbc5_set_ram_access(1);
+    // mbc5_set_ram_bank(0);
+    // uint8_t rand_offset = rand();
+    // // Iterate over the full address space of a RAM bank
+    // for(uint16_t byte_offset = 0; byte_offset < size; byte_offset++){
+    //     // Read back banked RAM sequentially into our buffer
+    //     // |-----------Calculate bank offset------------|-Add byte offset-|      |---Read back from banked ROM-----|
+    //     writeb((byte_offset + rand_offset) & 0xFF, byte_offset + SRAM_START_ADDR);
+    //     buf[byte_offset] = readb(byte_offset + SRAM_START_ADDR);
+    // }
+    // // Disable SRAM access
+    // mbc5_set_ram_access(0);
 }
 
 void mbc5_ram_dump(uint8_t *buf, uint8_t start_bank, uint8_t end_bank){
