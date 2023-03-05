@@ -61,7 +61,7 @@ void populate_cart_info(){
     else if(the_cart.mapper_type == MAPPER_MBC1){
         the_cart.rom_memcpy_func = &mbc1_memcpy_rom;
         the_cart.ram_memcpy_func = &mbc1_memcpy_ram;
-        the_cart.ram_memset_func = NULL;
+        the_cart.ram_memset_func = &mbc1_memset_ram;
         the_cart.ram_enable_func = &mbc1_set_ram_access;
         the_cart.rom_banksw_func = &mbc1_set_rom_bank;
         the_cart.ram_banksw_func = &mbc1_set_ram_bank;
@@ -69,7 +69,7 @@ void populate_cart_info(){
     else if(the_cart.mapper_type == MAPPER_MBC2){
         the_cart.rom_memcpy_func = &mbc2_memcpy_rom;
         the_cart.ram_memcpy_func = &mbc2_memcpy_ram;
-        the_cart.ram_memset_func = NULL;
+        the_cart.ram_memset_func = &mbc2_memset_ram;
         the_cart.ram_enable_func = &mbc2_set_ram_access;
         the_cart.rom_banksw_func = &mbc2_set_rom_bank;
         the_cart.ram_banksw_func = NULL;  // MBC2 has no RAM banks, RAM is in the mapper
@@ -77,7 +77,7 @@ void populate_cart_info(){
     else if(the_cart.mapper_type == MAPPER_MBC3){
         the_cart.rom_memcpy_func = &mbc3_memcpy_rom;
         the_cart.ram_memcpy_func = &mbc3_memcpy_ram;
-        the_cart.ram_memset_func = NULL;
+        the_cart.ram_memset_func = &mbc3_memset_ram;
         the_cart.ram_enable_func = &mbc3_set_ram_access;
         the_cart.rom_banksw_func = &mbc3_set_rom_bank;
         the_cart.ram_banksw_func = &mbc3_set_ram_bank;
@@ -85,7 +85,7 @@ void populate_cart_info(){
     else if(the_cart.mapper_type == MAPPER_MBC5){
         the_cart.rom_memcpy_func = &mbc5_memcpy_rom;
         the_cart.ram_memcpy_func = &mbc5_memcpy_ram;
-        the_cart.ram_memset_func = NULL;
+        the_cart.ram_memset_func = &mbc5_memset_ram;
         the_cart.ram_enable_func = &mbc5_set_ram_access;
         the_cart.rom_banksw_func = &mbc5_set_rom_bank;
         the_cart.ram_banksw_func = &mbc5_set_ram_bank;

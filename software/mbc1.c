@@ -50,7 +50,7 @@ void mbc1_memcpy_ram(uint8_t* dest, uint32_t ram_addr, uint32_t num){
     // Enable RAM access
     mbc1_set_ram_access(1);
     // Keep track of where we are in RAM
-    uint32_t ram_cursor = ram_addr;
+    uint32_t ram_cursor = ram_addr ;
     // Keep track of our current bank
     uint16_t current_bank = fs_get_ram_bank(ram_cursor);
     // Set up the bank for transfer
@@ -73,6 +73,32 @@ void mbc1_memcpy_ram(uint8_t* dest, uint32_t ram_addr, uint32_t num){
     mbc1_set_ram_access(0);
 }
 
+void mbc1_memset_ram(uint8_t* buf, uint32_t ram_addr, uint32_t num){
+    // Enable RAM access
+    mbc1_set_ram_access(1);
+    // Keep track of where we are in RAM
+    uint32_t ram_cursor = ram_addr;
+    // Keep track of our current bank
+    uint16_t current_bank = fs_get_ram_bank(ram_cursor);
+    // Set up the bank for transfer
+    mbc1_set_ram_bank(current_bank);
+    for(uint32_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
+        // Determine if we need to bankswitch or not
+        uint16_t new_bank = fs_get_rom_bank(ram_cursor);
+        if(new_bank != current_bank){
+            // Switch banks if we cross a boundary
+            current_bank = new_bank;
+            mbc1_set_ram_bank(current_bank);
+            // If we bankswitch, we start over again at the beginning of the the bank
+            ram_cursor = 0;
+        }
+        // Write whatever is in memory to the current spot in RAM
+        writeb(buf[buf_cursor], ram_cursor);
+        ram_cursor++;
+    }
+    // Disable RAM access
+    mbc1_set_ram_access(0);
+}
 
 // Private
 void mbc1_set_rom_bank(uint16_t bank){

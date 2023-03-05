@@ -317,8 +317,8 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
     return (int32_t) bufsize;
   }
   else if(lba >= INDEX_SRAM_BIN && lba <  INDEX_PHOTOS_START){
-    //(*the_cart.ram_memcpy_func)(buffer, (lba - INDEX_RAM_BIN) * DISK_BLOCK_SIZE, bufsize);
-    memset(buffer, 0, bufsize); // TODO
+    (*the_cart.ram_memcpy_func)(buffer, ((lba - INDEX_SRAM_BIN) * DISK_BLOCK_SIZE) + offset, bufsize);
+    // memset(buffer, 0, bufsize); // TODO
     return (int32_t) bufsize;
   }
   if(addr != 0)
@@ -435,7 +435,7 @@ void init_disk(){
   // HANDLE ROM INFO
   // Set the ROM names
   memcpy(DISK_rootDirectory + 64, the_cart.title, 4);
-  // Get the number of clusters needed for RAM and ROM
+  // Get the number of clusters needed for ROM
   // Minimum for ROM is 32k (0x0 - 0x8000), which is 8 clusters
   uint16_t rom_clusters = the_cart.rom_size_bytes / DISK_CLUSTER_BYTES;
   // If there's a remainder, we need another cluster
@@ -471,12 +471,38 @@ void init_disk(){
   DISK_fatTable[(current_cluster * 2) + 1] = 0xFF;
 
   // HANDLE RAM INFO
-  // Set RAM name if RAM exists, otherwise zero it out
-  memset(DISK_rootDirectory + 96, 0, 32);
-  // if(the_cart.ram_size_bytes){
-  //   memcpy(DISK_rootDirectory + 96, the_cart.title, 4);
-  // }
-  // else{
-  //   memset(DISK_rootDirectory + 96, 0, 32);
-  // }
+  // If RAM exists, deal with it
+  if(the_cart.ram_size_bytes){
+    // Set the name of the RAM file
+    memcpy(DISK_rootDirectory + 96, the_cart.title, 4);
+
+    // Calculate the amount of clusters needed for RAM
+    uint16_t ram_clusters = the_cart.ram_size_bytes / DISK_CLUSTER_BYTES;
+    // If there's a remainder, we need another cluster
+    if(the_cart.ram_size_bytes % DISK_CLUSTER_BYTES){
+      ram_clusters++;
+    }
+
+    // Set the size for the RAM file in the root directory
+    for(uint8_t i = 0; i < 4; i++){
+      DISK_rootDirectory[96 + 28 + i] = (the_cart.ram_size_bytes & (0xFF << (i * 8))) >> i * 8;
+    }
+
+    // Set up the FAT entries for RAM
+    // Starting at entry 8195 (byte 16390), populate the FAT table with ROM data
+    uint16_t current_cluster = 8195;
+    for(uint16_t i = 0; i < rom_clusters; i++){
+      uint16_t next_entry = current_cluster + 1;
+      DISK_fatTable[current_cluster * 2] = next_entry & 0xFF;
+      DISK_fatTable[(current_cluster * 2) + 1] = (next_entry & 0xFF00) >> 8;
+      current_cluster++;
+    }
+    // Last cluster is EOF
+    DISK_fatTable[(current_cluster * 2)] = 0xFF;
+    DISK_fatTable[(current_cluster * 2) + 1] = 0xFF;
+  }
+  // Otherwise, zero out the root directory for it
+  else{
+    memset(DISK_rootDirectory + 96, 0, 32);
+  }
 }

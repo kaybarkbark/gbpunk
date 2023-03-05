@@ -129,7 +129,6 @@ void reset_pin_states(){
 }
 
 void writeb(uint8_t data, uint16_t addr){
-    // init_bus();  // Put this here cause I was an idiot with tusb
     // TODO: ensure clock always starts low, ends low. First thing should be posedge clock
     // Set the clock high
     gpio_put(CLK, 1);
@@ -159,7 +158,7 @@ void writeb(uint8_t data, uint16_t addr){
     // 240 ns
     sleep_us(2);
     // Set CS low if we are doing a RAM access
-    // Revert back to always set low if everything brakes
+    // Revert back to always set low if everything breaks
     if(addr >= SRAM_START_ADDR){
         gpio_put(CS, 0);
     }
@@ -187,7 +186,9 @@ void writeb(uint8_t data, uint16_t addr){
     sleep_us(1);
     // Set CLK high
     gpio_put(CLK, 1);
-    gpio_put(CS, 1); // added for gbcam, remove if mbc5 no longer works
+    if(addr >= SRAM_START_ADDR){
+        gpio_put(CS, 1);
+    }
     // Stop driving bus
     set_dbus_direction(GPIO_IN);
     // Maybe put cs = 1 down here, if other things break. 

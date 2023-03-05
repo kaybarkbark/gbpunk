@@ -2,7 +2,7 @@
 #define GBPUNK_STATUS_LED_H
 #include <stdint.h>
 
-#define LED_SPEED_ERR       100000
+#define LED_SPEED_ERR       200000
 #define LED_SPEED_TESTING   50000
 #define LED_SPEED_HEALTHY   0
 

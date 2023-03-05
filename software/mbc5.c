@@ -49,26 +49,51 @@ void mbc5_memcpy_rom(uint8_t* dest, uint32_t rom_addr, uint32_t num){
 }
 // Note: This gets memory relative to RAM, not the cart. So 0x0 means start of RAM
 void mbc5_memcpy_ram(uint8_t* dest, uint32_t ram_addr, uint32_t num){
+    // Determine current bank
+    uint16_t current_bank = fs_get_ram_bank(ram_addr);
+    uint32_t ram_cursor = 0;
     // Keep track of where we are in RAM
-    uint32_t ram_cursor = ram_addr;
-    // Keep track of our current bank
-    uint16_t current_bank = fs_get_ram_bank(ram_cursor);
+    ram_cursor = ram_addr % SRAM_BANK_SIZE;
     // Set up the bank for transfer
     mbc5_set_ram_bank(current_bank);
     for(uint32_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
         // Determine if we need to bankswitch or not
-        uint16_t new_bank = fs_get_rom_bank(ram_cursor);
-        if(new_bank != current_bank){
+        if(ram_cursor >= SRAM_BANK_SIZE){
             // Switch banks if we cross a boundary
-            current_bank = new_bank;
+            current_bank++;
             mbc5_set_ram_bank(current_bank);
             // If we bankswitch, we start over again at the beginning of the the bank
             ram_cursor = 0;
         }
-        // Read everything out of banked ROM, even bank 0. Easier that way
         dest[buf_cursor] = readb(ram_cursor + SRAM_START_ADDR); 
         ram_cursor++;
     }
+}
+
+void mbc5_memset_ram(uint8_t* buf, uint32_t ram_addr, uint32_t num){
+    // Determine current bank
+    uint16_t current_bank = fs_get_ram_bank(ram_addr);
+    uint32_t ram_cursor = 0;
+    // Keep track of where we are in RAM
+    ram_cursor = ram_addr % SRAM_BANK_SIZE;
+    // Enable RAM writes
+    mbc5_set_ram_access(1);
+    // Set up the bank for transfer
+    mbc5_set_ram_bank(current_bank);
+    for(uint32_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
+        // Determine if we need to bankswitch or not
+        if(ram_cursor >= SRAM_BANK_SIZE){
+            // Switch banks if we cross a boundary
+            current_bank++;
+            mbc5_set_ram_bank(current_bank);
+            // If we bankswitch, we start over again at the beginning of the the bank
+            ram_cursor = 0;
+        }
+        writeb(buf[buf_cursor], ram_cursor + SRAM_START_ADDR);
+        ram_cursor++;
+    }
+    // Disable RAM writes
+    mbc5_set_ram_access(0);
 }
 
 

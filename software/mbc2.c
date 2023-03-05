@@ -52,6 +52,19 @@ void mbc2_memcpy_ram(uint8_t* dest, uint32_t ram_addr, uint32_t num){
     mbc2_set_ram_access(0);
 }
 
+void mbc2_memset_ram(uint8_t* buf, uint32_t ram_addr, uint32_t num){
+    // Enable RAM access
+    mbc2_set_ram_access(1);
+    // There is only one memory bank in MBC2
+    // Keep track of where we are in RAM
+    for(uint32_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
+        // Write whatever is in memory to the current spot in RAM
+        writeb(buf[buf_cursor], ram_addr);
+        ram_addr++;
+    }
+    mbc2_set_ram_access(0);
+}
+
 
 // Private
 void mbc2_set_rom_bank(uint16_t bank){
