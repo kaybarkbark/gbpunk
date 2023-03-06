@@ -498,10 +498,11 @@ uint32_t fat_build_cluster_chain(uint32_t starting_cluster, uint32_t num_bytes){
     }
   }
   // Last cluster is EOF
+  starting_cluster--;  // TODO: Remove if this breaks things
   DISK_fatTable[(starting_cluster * 2)] = 0xFF;
-  starting_cluster++;
-  DISK_fatTable[(starting_cluster * 2)] = 0xFF;
-  return starting_cluster;
+  DISK_fatTable[(starting_cluster * 2) + 1] = 0xFF;
+  starting_cluster+=2;
+  return starting_cluster; // TODO: Not sure how accurate this is, make sure it works
 }
 
 void append_new_file(uint8_t* name, uint16_t namelen, const char* ext, uint32_t filesize, uint32_t fat_entry){
@@ -536,22 +537,30 @@ void init_disk(){
   // Create the status file
   // Set name (6 chars), extension, filesize, starting cluster 2
   char status_name[] = {"status"};
-  append_new_file(status_name, 6, "txt", status_file_size, 2);
+  append_new_file(status_name, 6, "txt", status_file_size, CLUSTER_STATUS_FILE);
 
   // HANDLE ROM INFO
   // Create the ROM file
   // Set name (8 chars), extension, filesize, starting cluster 3
-  append_new_file(the_cart.title, 8, "bin", the_cart.rom_size_bytes, 3);
+  append_new_file(the_cart.title, 8, "bin", the_cart.rom_size_bytes, CLUSTER_ROM_FILE);
   
   // HANDLE RAM INFO
   // If RAM exists, deal with it
   if(the_cart.ram_size_bytes){
     // Create the RAM file
     // Set name (8 chars), extension, filesize, starting cluster 8195
-    append_new_file(the_cart.title, 8, "sav", the_cart.ram_size_bytes, 8195);
+    append_new_file(the_cart.title, 8, "sav", the_cart.ram_size_bytes, CLUSTER_RAM_FILE);
   }
   // Otherwise, zero out the root directory for it
   else{
     memset(DISK_rootDirectory + 96, 0, 32);
+  }
+  if(the_cart.mapper_type == MAPPER_GBCAM){
+    for(uint8_t i = 0; i < 30; i++){
+      // Note: RD starts at 0x00020620 when debugging these
+      char name[9] = {0};
+      snprintf(name, 9, "GBCAM_%i", i);
+      append_new_file(name, 8, "bmp", 7286, CLUSTER_STARTING_PHOTOS + (i * CLUSTER_SIZE_PHOTOS));
+    }
   }
 }

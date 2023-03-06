@@ -17,21 +17,20 @@
 uint8_t bmp_header[0x76];
 
 // Public functions
+void gbcam_memcpy_rom(uint8_t* dest, uint32_t rom_addr, uint32_t num);
+void gbcam_memcpy_ram(uint8_t* dest, uint32_t ram_addr, uint32_t num);
+void gbcam_memset_ram(uint8_t* buf, uint32_t ram_addr, uint32_t num);
+void gbcam_set_rom_bank(uint16_t bank);
+void gbcam_set_ram_bank(uint16_t bank);
+void gbcam_set_ram_access(uint8_t on_off);
+void gbcam_pull_photo(uint8_t *buf, uint8_t num);
+
+// DEPRECATED
 void gbcam_rom_dump(uint8_t *buf, uint8_t start_bank, uint8_t end_bank);
 void gbcam_ram_dump(uint8_t *buf, uint8_t start_bank, uint8_t end_bank);
-void gbcam_pull_photo(uint8_t *buf, uint8_t num);
-// TODO: CAM register dump
-
-// Unit Tests
-
 uint8_t gbcam_unit_test();
 uint8_t gbcam_unit_test_rom_bank_switching();
 uint8_t gbcam_unit_test_sram_bank_switching();
 uint8_t gbcam_unit_test_sram();
-
-// Private
-void gbcam_set_rom_bank(uint16_t bank);
-void gbcam_set_ram_bank(uint16_t bank);
-void gbcam_set_ram_writable(uint8_t on_off);
 
 #endif

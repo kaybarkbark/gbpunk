@@ -12,6 +12,82 @@ uint8_t bmp_header[0x76] = {
     0xFF, 0xFF, 0xFF, 0x00
 };
 
+void gbcam_memcpy_rom(uint8_t* dest, uint32_t rom_addr, uint32_t num){
+    // Determine the current bank
+    uint16_t current_bank = fs_get_rom_bank(rom_addr);
+    uint32_t rom_cursor = 0;
+    // Keep track of where we are in ROM
+    rom_cursor = rom_addr % ROM_BANK_SIZE;
+    // Set up the bank for transfer
+    gbcam_set_rom_bank(current_bank);
+    for(uint32_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
+        // Determine if we need to bankswitch or not
+        if(rom_cursor >= ROM_BANK_SIZE){
+            // Switch banks if we cross a boundary
+            current_bank++;
+            gbcam_set_rom_bank(current_bank);
+            // If we bankswitch, we start over again at the beginning of the the bank
+            rom_cursor = 0;
+        }
+        // Read everything out of banked ROM, even bank 0. Easier that way
+        dest[buf_cursor] = readb(rom_cursor + ROM_BANKN_START_ADDR); 
+        rom_cursor++;
+    }
+}
+
+void gbcam_memcpy_ram(uint8_t* dest, uint32_t ram_addr, uint32_t num){
+    // Enable RAM reads
+    gbcam_set_ram_access(1);
+    // Determine current bank
+    uint16_t current_bank = fs_get_ram_bank(ram_addr);
+    uint32_t ram_cursor = 0;
+    // Keep track of where we are in RAM
+    ram_cursor = ram_addr % SRAM_BANK_SIZE;
+    // Set up the bank for transfer
+    gbcam_set_ram_bank(current_bank);
+    for(uint32_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
+        // Determine if we need to bankswitch or not
+        if(ram_cursor >= SRAM_BANK_SIZE){
+            // Switch banks if we cross a boundary
+            current_bank++;
+            gbcam_set_ram_bank(current_bank);
+            // If we bankswitch, we start over again at the beginning of the the bank
+            ram_cursor = 0;
+        }
+        dest[buf_cursor] = readb(ram_cursor + SRAM_START_ADDR); 
+        ram_cursor++;
+    }
+    // Disable RAM reads
+    gbcam_set_ram_access(0);
+}
+
+
+void gbcam_memset_ram(uint8_t* buf, uint32_t ram_addr, uint32_t num){
+    // Determine current bank
+    uint16_t current_bank = fs_get_ram_bank(ram_addr);
+    uint32_t ram_cursor = 0;
+    // Keep track of where we are in RAM
+    ram_cursor = ram_addr % SRAM_BANK_SIZE;
+    // Enable RAM writes
+    gbcam_set_ram_access(1);
+    // Set up the bank for transfer
+    gbcam_set_ram_bank(current_bank);
+    for(uint32_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
+        // Determine if we need to bankswitch or not
+        if(ram_cursor >= SRAM_BANK_SIZE){
+            // Switch banks if we cross a boundary
+            current_bank++;
+            gbcam_set_ram_bank(current_bank);
+            // If we bankswitch, we start over again at the beginning of the the bank
+            ram_cursor = 0;
+        }
+        writeb(buf[buf_cursor], ram_cursor + SRAM_START_ADDR);
+        ram_cursor++;
+    }
+    // Disable RAM writes
+    gbcam_set_ram_access(0);
+}
+
 void gbcam_rom_dump(uint8_t *buf, uint8_t start_bank, uint8_t end_bank){
     // Iterate over the range of banks we want to dump
     for(uint16_t bank_offset = start_bank; bank_offset <= end_bank; bank_offset++){
@@ -30,7 +106,7 @@ void gbcam_rom_dump(uint8_t *buf, uint8_t start_bank, uint8_t end_bank){
 }
 
 void gbcam_ram_dump(uint8_t *buf, uint8_t start_bank, uint8_t end_bank){
-    gbcam_set_ram_writable(1);
+    gbcam_set_ram_access(1);
     // Iterate over the range of banks we want to dump
     for(uint16_t bank_offset = start_bank; bank_offset <= end_bank; bank_offset++){
         // Set the active bank in the cart
@@ -42,7 +118,7 @@ void gbcam_ram_dump(uint8_t *buf, uint8_t start_bank, uint8_t end_bank){
             buf[((bank_offset - start_bank) * SRAM_BANK_SIZE) + byte_offset] = readb(byte_offset + SRAM_START_ADDR);
         }
     }
-    gbcam_set_ram_writable(0);
+    gbcam_set_ram_access(0);
 }
 
 void gbcam_set_rom_bank(uint16_t bank){
@@ -52,7 +128,7 @@ void gbcam_set_ram_bank(uint16_t bank){
     writeb(bank, GBCAM_RAM_BANK_ADDR);
 }
 
-void gbcam_set_ram_writable(uint8_t on_off){
+void gbcam_set_ram_access(uint8_t on_off){
     if(on_off){
         writeb(GBCAM_ENABLE_RAM_WRITE_DATA, GBCAM_ENABLE_RAM_WRITE_ADDR);
         return;

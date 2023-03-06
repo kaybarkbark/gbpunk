@@ -5,6 +5,7 @@
 #include "mappers/mbc2.h"
 #include "mappers/mbc3.h"
 #include "mappers/mbc5.h"
+#include "mappers/gbcam.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -89,6 +90,14 @@ void populate_cart_info(){
         the_cart.ram_enable_func = &mbc5_set_ram_access;
         the_cart.rom_banksw_func = &mbc5_set_rom_bank;
         the_cart.ram_banksw_func = &mbc5_set_ram_bank;
+    }
+    else if(the_cart.mapper_type == MAPPER_GBCAM){
+        the_cart.rom_memcpy_func = &gbcam_memcpy_rom;
+        the_cart.ram_memcpy_func = &gbcam_memcpy_ram;
+        the_cart.ram_memset_func = &gbcam_memset_ram;
+        the_cart.ram_enable_func = &gbcam_set_ram_access;
+        the_cart.rom_banksw_func = &gbcam_set_rom_bank;
+        the_cart.ram_banksw_func = &gbcam_set_ram_bank;
     }
     // Calculate ROM banks
     the_cart.rom_banks = 2 << readb(ROM_BANK_SHIFT_ADDR);
