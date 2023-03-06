@@ -1,9 +1,9 @@
 #include "unit_tests.h"
 #include "gb.h"
-#include "mbc5.h"
-#include "rom_only.h"
-#include "gbcam.h"
-#include "msc_disk.h"
+#include "mappers/mbc5.h"
+#include "mappers/rom_only.h"
+#include "mappers/gbcam.h"
+#include "disk/msc_disk.h"
 #include "utils.h"
 
 #include <stdio.h>

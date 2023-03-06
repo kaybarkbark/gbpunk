@@ -16,11 +16,9 @@
 #include "tusb.h"
 #include "gb.h"
 #include "cart.h"
-#include "mbc5.h"
-#include "gbcam.h"
 #include "utils.h"
 #include "unit_tests.h"
-#include "msc_disk.h"
+#include "disk/msc_disk.h"
 #include "status_led.h"
 
 #define DO_UNIT_TEST 1

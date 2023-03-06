@@ -4,9 +4,7 @@
 #include "Fat16Struct.h"
 #include "pico.h"
 #include <hardware/flash.h>
-#include "checkUF2.h"
-#include "rom_only.h"
-#include "mbc5.h"
+#include "cart.h"
 #include "msc_disk.h"
 
 
@@ -27,6 +25,18 @@
 
 // whether host does safe-eject
 static bool ejected = false;
+void rd_set_file_size(uint32_t entry, uint32_t filesize);
+uint8_t blank_rd_entry[] = {      
+  ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , // filename (uninitialized)
+  0x21, 0x00, 0xC6, 0x52, 0x6D, 0x65, 0x43, 0x65, 0x43, 0x00, 0x00, 0x88, 0x6D, 0x65, 0x43, // Bunch of unknown options
+  0x00, 0x00, //cluster location (unititialized)
+  0x00, 0x00, 0x00, 0x00, // Filesize in bytes (unititialized)}
+};
+
+// The most recent root directory entry
+uint32_t latest_rd_entry = 0;
+// The most recent FAT table entry byte
+uint32_t latest_fat_entry = 0;
 
 // Some MCU doesn't have enough 8KB SRAM to store the whole disk
 // We will use Flash as read-only disk with board that has
@@ -64,18 +74,46 @@ enum
   STATUS_FILE_SIZE = DISK_BLOCK_SIZE, // Small for now, can be up to 1 cluster (4k) with current layout
 };
 
-enum 
-{
+// Convert cluster size to blocks size
+#define CLS2BLK(x)  (x*DISK_CLUSTER_SIZE)
+// Convert block size to byte size
+#define BLK2BYTE(x) (x*DISK_BLOCK_SIZE)
+// Convert cluster size to block size
+#define CLS2BYTE(x) BLK2BYTE(CLS2BLK(x))
+
+enum {
+  CLUSTER_SIZE_STATUS_FILE  = 1,
+  CLUSTER_SIZE_ROM_FILE     = 8192,
+  CLUSTER_SIZE_RAM_FILE     = 8192,
+  CLUSTER_SIZE_PHOTOS       = 2
+};
+
+enum {
   INDEX_RESERVED          = 0x00000,  // First cluster is for all the FAT magic data
   INDEX_FAT_TABLE_1_START = 0x00001,  // FAT table starts at 0x1, 0x81 blocks in size
   INDEX_FAT_TABLE_2_START = 0x00082,  // Redundant FAT table is 0x81 blocks later
   INDEX_ROOT_DIRECTORY    = 0x00103,  // Root directory starts after second FAT table
   INDEX_DATA_STARTS       = 0x00123,  // Root directory is 0x20 blocks (32 * 512 = 16384 bytes). Can store 16384 / 32 = 512 files total
-  INDEX_STATUS_FILE       = 0x00123,  // Status file is the first one in the data section, 
-  INDEX_ROM_BIN           = 0x0012B,  // ROM bin starts after status file (status file 1 cluster large, 8 blocks)
-  INDEX_SRAM_BIN          = 0x1012B,  // SRAM bin starts after ROM bin (ROM bin 8192 clusters large, 65536 blocks, 32 MB total filesize)
-  INDEX_PHOTOS_START      = 0x2012B,  // Photos starts after SRAM bin (SRAM bin 8192 clusters large, 65536 blocks, 32 MB total filesize)
+  // Status file is the first one in the data section
+  INDEX_STATUS_FILE       = INDEX_DATA_STARTS,  
+  // ROM bin starts after status file (status file 1 cluster large, 8 blocks)
+  INDEX_ROM_BIN           = INDEX_STATUS_FILE + CLS2BLK(CLUSTER_SIZE_STATUS_FILE),
+  // SRAM bin starts after ROM bin (ROM bin 8192 clusters large, 65536 blocks, 32 MB total filesize)
+  INDEX_SRAM_BIN          = INDEX_ROM_BIN + CLS2BLK(CLUSTER_SIZE_ROM_FILE),
+  // Photos starts after SRAM bin (SRAM bin 8192 clusters large, 65536 blocks, 32 MB total filesize)
+  INDEX_PHOTOS_START      = INDEX_SRAM_BIN + CLS2BLK(CLUSTER_SIZE_RAM_FILE),
+  // Photos end after 32 entries
+  INDEX_PHOTOS_END        = INDEX_PHOTOS_START + (CLS2BLK(CLUSTER_SIZE_PHOTOS) * 32),
+  // End of the drive
   INDEX_DATA_END = DISK_BLOCK_NUM
+};
+
+enum{
+ CLUSTER_START            = 2,
+ CLUSTER_STATUS_FILE      = CLUSTER_START,
+ CLUSTER_ROM_FILE         = CLUSTER_STATUS_FILE + CLUSTER_SIZE_STATUS_FILE,
+ CLUSTER_RAM_FILE         = CLUSTER_ROM_FILE    + CLUSTER_SIZE_ROM_FILE,
+ CLUSTER_STARTING_PHOTOS  = CLUSTER_RAM_FILE    + CLUSTER_SIZE_RAM_FILE
 };
 
 #define MAX_SECTION_COUNT_FOR_FLASH_SECTION (FLASH_SECTOR_SIZE/FLASH_PAGE_SIZE)
@@ -90,6 +128,14 @@ struct flashingLocation {
 // - Generating FAT table. Will need to handle arbitrary amounts of files and file sizes
 // - Generating root directory. Will need to handle arbitrary amounts of files and file sizes
 // - Translation layer for FS to GB. 
+
+#define ROOT_DIR_ENTRY_SIZE   32
+#define ROOT_DIR_ENTRY(X)     X*ROOT_DIR_ENTRY_SIZE
+#define ROOT_DIR_SIZE_OFFS    28
+#define ROOT_DIR_CLST_OFFS    26
+#define ROOT_DIR_LATEST_ENTRY latest_rd_entry
+
+#define ROOT_DIR_STATUS_ENTRY 1
 
 uint8_t DISK_reservedSection[DISK_BLOCK_SIZE] = 
 {
@@ -156,50 +202,36 @@ uint8_t DISK_rootDirectory[ROOT_DIRECTORY_SIZE] =
       // first entry is volume label
       ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , 0x28, 0x00, 0x00, 0x00, 0x00,
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0, 0x0, 0x0, 0x0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-
-      's' , 't' , 'a' , 't' , 'u' , 's' , ' ' , ' ' , 't' , 'x' , 't' , 0x21, 0x00, 0xC6, 0x52, 0x6D,
-      0x65, 0x43, 0x65, 0x43, 0x00, 0x00, 0x88, 0x6D, 0x65, 0x43, 
-      0x02, 0x00, //cluster location (2)
-      0x00, 0x02, 0x00, 0x00, // Filesize in bytes (512)
-
-      ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , 'b' , 'i' , 'n' , 0x21, 0x00, 0xC6, 0x52, 0x6D,
-      0x65, 0x43, 0x65, 0x43, 0x00, 0x00, 0x88, 0x6D, 0x65, 0x43, 
-      0x03, 0x00, //cluster location (3)
-      0x00, 0x00, 0x00, 0x00, // Filesize in bytes (unititialized)
-
-      ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , 's' , 'a' , 'v' , 0x21, 0x00, 0xC6, 0x52, 0x6D,
-      0x65, 0x43, 0x65, 0x43, 0x00, 0x00, 0x88, 0x6D, 0x65, 0x43, 
-      0x03, 0x20, //cluster location (8195)
-      0x00, 0x00, 0x00, 0x00 // Filesize area in bytes (unititialized)
+      // We will fill in all other entries later
 };
 
-uint16_t status_file_ptr = 0;
+uint16_t status_file_size = 0;
 uint8_t DISK_status_file[STATUS_FILE_SIZE] = {0};
 void append_status_file(const uint8_t* buf){
   uint16_t buf_index = 0;
   for(;;){
-    if(status_file_ptr > STATUS_FILE_SIZE - 1){
+    if(status_file_size > STATUS_FILE_SIZE - 1){
       return;
     }
     if(buf[buf_index] == '\0'){
       return;
     }
-    DISK_status_file[status_file_ptr] = buf[buf_index];
-    status_file_ptr++;
+    DISK_status_file[status_file_size] = buf[buf_index];
+    status_file_size++;
     buf_index++;
   }
 }
 void append_status_file_buf(uint8_t* buf){
   uint16_t buf_index = 0;
   for(;;){
-    if(status_file_ptr > STATUS_FILE_SIZE - 1){
+    if(status_file_size > STATUS_FILE_SIZE - 1){
       return;
     }
     if(buf[buf_index] == '\0'){
       return;
     }
-    DISK_status_file[status_file_ptr] = buf[buf_index];
-    status_file_ptr++;
+    DISK_status_file[status_file_size] = buf[buf_index];
+    status_file_size++;
     buf_index++;
   }
 }
@@ -300,13 +332,9 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
   {
     addr = DISK_fatTable + ((lba - INDEX_FAT_TABLE_2_START) * DISK_BLOCK_SIZE);
   }
-  // else if(lba == INDEX_FAT_TABLE_1_START || lba == INDEX_FAT_TABLE_2_START)
-  // {
-  //   addr = DISK_fatTable;
-  // }
   else if(lba == INDEX_ROOT_DIRECTORY)
   {
-    addr = DISK_rootDirectory; // TODO: This will fail if/when the status file is bigger than one block
+    addr = DISK_rootDirectory; // TODO: This will fail if/when the root directory is bigger than one block
   }
   else if(lba >= INDEX_STATUS_FILE && lba < INDEX_ROM_BIN)
   {
@@ -350,7 +378,8 @@ int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* 
       flash_range_erase((flashingLocation.pageCountFlash / 16) * FLASH_SECTOR_SIZE, FLASH_SECTOR_SIZE);
     }
     unsigned int * returnSize;
-    unsigned char *addressUF2 = getUF2Info(buffer,returnSize);
+    // unsigned char *addressUF2 = getUF2Info(buffer,returnSize);
+    unsigned char *addressUF2 = 0;
     if(addressUF2 != 0)
     {
       printf("UF2 FILE %d!!!\n",flashingLocation.pageCountFlash );
@@ -425,81 +454,101 @@ int32_t tud_msc_scsi_cb (uint8_t lun, uint8_t const scsi_cmd[16], void* buffer, 
   return (int32_t) resplen;
 }
 
+// Set the file size of a file in the root directory
+void rd_set_file_size(uint32_t entry, uint32_t filesize){
+  for(uint8_t i = 0; i < 4; i++){
+    DISK_rootDirectory[ROOT_DIR_ENTRY(entry) + ROOT_DIR_SIZE_OFFS + i] = (filesize & (0xFF << (i * 8))) >> i * 8;
+  }
+}
+
+// Set the starting cluster for a given file 
+void rd_set_cluster_start(uint32_t entry, uint16_t start_cluster){
+  for(uint8_t i = 0; i < 2; i++){
+    DISK_rootDirectory[ROOT_DIR_ENTRY(entry) + ROOT_DIR_CLST_OFFS + i] = (start_cluster & (0xFF << (i * 8))) >> i * 8;
+  }
+}
+
+// Set the file name of the file in the root directory
+void rd_set_file_name(uint32_t entry, uint8_t* name, uint16_t namelen, const char* ext){
+  memcpy(DISK_rootDirectory + ROOT_DIR_ENTRY(entry), name, namelen);
+  memcpy(DISK_rootDirectory + ROOT_DIR_ENTRY(entry) + 8, ext, 3);
+}
+
+// Append a new entry to the root directory
+void rd_append_new_entry(){
+  latest_rd_entry++;
+  memcpy(DISK_rootDirectory + latest_rd_entry * ROOT_DIR_ENTRY_SIZE, blank_rd_entry, ROOT_DIR_ENTRY_SIZE);
+}
+
+// Build a cluster chain in the FAT table for a new file. Return the new most recent cluster after building the chain
+uint32_t fat_build_cluster_chain(uint32_t starting_cluster, uint32_t num_bytes){
+  // Calculate the number of clusters needed
+  uint16_t num_clusters = num_bytes / DISK_CLUSTER_BYTES;
+  // If there's a remainder, we need another cluster
+  if(num_bytes % DISK_CLUSTER_BYTES){
+    num_clusters++;
+  }
+  // Need to build up a cluster chain if the file does not fit in one cluster
+  if(num_clusters > 1){
+    for(uint16_t i = 0; i < num_clusters; i++){
+      uint16_t next_entry = starting_cluster + 1;
+      DISK_fatTable[starting_cluster * 2] = next_entry & 0xFF;
+      DISK_fatTable[(starting_cluster * 2) + 1] = (next_entry & 0xFF00) >> 8;
+      starting_cluster++;
+    }
+  }
+  // Last cluster is EOF
+  DISK_fatTable[(starting_cluster * 2)] = 0xFF;
+  starting_cluster++;
+  DISK_fatTable[(starting_cluster * 2)] = 0xFF;
+  return starting_cluster;
+}
+
+void append_new_file(uint8_t* name, uint16_t namelen, const char* ext, uint32_t filesize, uint32_t fat_entry){
+  // Append a new blank entry to the root directory so we can populate it
+  rd_append_new_entry();
+  // Set the file names
+  rd_set_file_name(ROOT_DIR_LATEST_ENTRY, name, namelen, ext);
+  // Set the starting cluster
+  rd_set_cluster_start(ROOT_DIR_LATEST_ENTRY, fat_entry);
+  // Set the filesize
+  rd_set_file_size(ROOT_DIR_LATEST_ENTRY, filesize);
+  // Starting at first cluster, populate the FAT chain
+  fat_build_cluster_chain(fat_entry, filesize);
+}
 
 void init_disk(){
   // HANDLE VOLUME INFO
   // First, initialize the names for everything
-  // Set the volume label to the cart name (first 8 chars)
-  memcpy(DISK_rootDirectory, the_cart.title, 8);
+  // Set the volume label (entry 0) to the cart name (first 8 chars)
+  rd_set_file_name(0, the_cart.title, 8, "   ");
 
-  // HANDLE ROM INFO
-  // Set the ROM names
-  memcpy(DISK_rootDirectory + 64, the_cart.title, 8);
-  // Get the number of clusters needed for ROM
-  // Minimum for ROM is 32k (0x0 - 0x8000), which is 8 clusters
-  uint16_t rom_clusters = the_cart.rom_size_bytes / DISK_CLUSTER_BYTES;
-  // If there's a remainder, we need another cluster
-  if(the_cart.rom_size_bytes % DISK_CLUSTER_BYTES){
-    rom_clusters++;
-  }
-  // Set the filesize in bytes for ROM
-  // DISK_rootDirectory[64 + 28] = the_cart.rom_size_bytes & 0xFF;
-  // DISK_rootDirectory[64 + 29] = (the_cart.rom_size_bytes & 0xFF00) >> 8;
-  // DISK_rootDirectory[64 + 30] = (the_cart.rom_size_bytes & 0xFF0000) >> 16;
-  // DISK_rootDirectory[64 + 31] = (the_cart.rom_size_bytes & 0xFF000000) >> 24;
-  for(uint8_t i = 0; i < 4; i++){
-   DISK_rootDirectory[64 + 28 + i] = (the_cart.rom_size_bytes & (0xFF << (i * 8))) >> i * 8;
-  }
-  // Populate the FAT table
-  // Set first two entries to zero
+  // HANDLE FAT TABLE
+  // Set first two entries to 0xFF, as per standard
   for(uint8_t i = 0; i < 4; i++){
     DISK_fatTable[i] = 0xFF;
+    latest_fat_entry++;
   }
-  // Set the first real entry to 0xFFFF, for the one cluster status file
-  DISK_fatTable[4] = 0xFF;
-  DISK_fatTable[5] = 0xFF;
-  // Starting at entry 3 (byte 6), populate the FAT table with ROM data
-  uint16_t current_cluster = 3;
-  for(uint16_t i = 0; i < rom_clusters; i++){
-    uint16_t next_entry = current_cluster + 1;
-    DISK_fatTable[current_cluster * 2] = next_entry & 0xFF;
-    DISK_fatTable[(current_cluster * 2) + 1] = (next_entry & 0xFF00) >> 8;
-    current_cluster++;
-  }
-  // Last cluster is EOF
-  DISK_fatTable[(current_cluster * 2)] = 0xFF;
-  DISK_fatTable[(current_cluster * 2) + 1] = 0xFF;
 
+  // HANDLE STATUS FILE
+  // Don't move this out of order! We rely on the status file 
+  // being the first entry in the root directory
+  // Create the status file
+  // Set name (6 chars), extension, filesize, starting cluster 2
+  char status_name[] = {"status"};
+  append_new_file(status_name, 6, "txt", status_file_size, 2);
+
+  // HANDLE ROM INFO
+  // Create the ROM file
+  // Set name (8 chars), extension, filesize, starting cluster 3
+  append_new_file(the_cart.title, 8, "bin", the_cart.rom_size_bytes, 3);
+  
   // HANDLE RAM INFO
   // If RAM exists, deal with it
   if(the_cart.ram_size_bytes){
-    // Set the name of the RAM file
-    memcpy(DISK_rootDirectory + 96, the_cart.title, 8);
-
-    // Calculate the amount of clusters needed for RAM
-    uint16_t ram_clusters = the_cart.ram_size_bytes / DISK_CLUSTER_BYTES;
-    // If there's a remainder, we need another cluster
-    if(the_cart.ram_size_bytes % DISK_CLUSTER_BYTES){
-      ram_clusters++;
-    }
-
-    // Set the size for the RAM file in the root directory
-    for(uint8_t i = 0; i < 4; i++){
-      DISK_rootDirectory[96 + 28 + i] = (the_cart.ram_size_bytes & (0xFF << (i * 8))) >> i * 8;
-    }
-
-    // Set up the FAT entries for RAM
-    // Starting at entry 8195 (byte 16390), populate the FAT table with ROM data
-    uint16_t current_cluster = 8195;
-    for(uint16_t i = 0; i < rom_clusters; i++){
-      uint16_t next_entry = current_cluster + 1;
-      DISK_fatTable[current_cluster * 2] = next_entry & 0xFF;
-      DISK_fatTable[(current_cluster * 2) + 1] = (next_entry & 0xFF00) >> 8;
-      current_cluster++;
-    }
-    // Last cluster is EOF
-    DISK_fatTable[(current_cluster * 2)] = 0xFF;
-    DISK_fatTable[(current_cluster * 2) + 1] = 0xFF;
+    // Create the RAM file
+    // Set name (8 chars), extension, filesize, starting cluster 8195
+    append_new_file(the_cart.title, 8, "sav", the_cart.ram_size_bytes, 8195);
   }
   // Otherwise, zero out the root directory for it
   else{

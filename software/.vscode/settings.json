@@ -3,7 +3,14 @@
         "status_led.h": "c",
         "stdlib.h": "c",
         "pins.h": "c",
-        "gb.h": "c"
+        "gb.h": "c",
+        "rom_only.h": "c",
+        "mbc1.h": "c",
+        "mbc2.h": "c",
+        "mbc3.h": "c",
+        "mbc5.h": "c",
+        "string.h": "c",
+        "utils.h": "c"
     },
     "cortex-debug.variableUseNaturalFormat": false
 }

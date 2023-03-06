@@ -3,7 +3,6 @@
 #include "utils.h"
 #include "stdio.h"
 #include "stdlib.h"
-#include "msc_disk.h"
 
 void mbc5_set_rom_bank(uint16_t bank){
     // Set the full 16 bits of the SRAM bank

@@ -1,10 +1,10 @@
 #include "gb.h"
 #include "cart.h"
-#include "rom_only.h"
-#include "mbc1.h"
-#include "mbc2.h"
-#include "mbc3.h"
-#include "mbc5.h"
+#include "mappers/rom_only.h"
+#include "mappers/mbc1.h"
+#include "mappers/mbc2.h"
+#include "mappers/mbc3.h"
+#include "mappers/mbc5.h"
 
 #include <string.h>
 #include <stdio.h>
