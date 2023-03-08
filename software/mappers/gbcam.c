@@ -137,9 +137,9 @@ void gbcam_set_ram_access(uint8_t on_off){
 
 }
 
-void gbcam_pull_photo(uint8_t *buf, uint8_t num){
+void gbcam_pull_photo(uint8_t num){
     // Copy the bitmap header
-    bufncpy(buf, bmp_header, 0x76);
+    bufncpy(working_mem, bmp_header, 0x76);
     uint16_t buf_head = 0x76;
     // Two photos per bank
     gbcam_set_ram_bank(num / 2);
@@ -187,7 +187,7 @@ void gbcam_pull_photo(uint8_t *buf, uint8_t num){
 					}
 				}
                 for(uint8_t i = 0; i < 4; i++){
-                    buf[buf_head] = eight_pixels[i];
+                    working_mem[buf_head] = eight_pixels[i];
                     buf_head++;
                 }
 				//fwrite(eight_pixels, 1, 4, bmpFile);

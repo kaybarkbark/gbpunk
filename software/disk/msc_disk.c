@@ -6,6 +6,8 @@
 #include <hardware/flash.h>
 #include "cart.h"
 #include "msc_disk.h"
+#include "mappers/gbcam.h"
+#include "gb.h"
 
 
 // Links for FAT:
@@ -68,9 +70,11 @@ enum
   // 1 status file
   // 1 ROM file
   // 1 SRAM file
-  // 32 Photo files
+  // 30 Photo files
   // 32 bytes per entry
-  ROOT_DIRECTORY_SIZE = (1 + 1 + 1 + 32) * 32, 
+  // Add 480 bytes to make it block aligned (divisible by 512)
+  ROOT_DIRECTORY_SIZE = ((1 + 1 + 1 + 30) * 32) + 480, 
+  ROOT_DIRECTORY_BLOCK_SIZE = ROOT_DIRECTORY_SIZE / DISK_BLOCK_SIZE,
   STATUS_FILE_SIZE = DISK_BLOCK_SIZE, // Small for now, can be up to 1 cluster (4k) with current layout
 };
 
@@ -102,8 +106,8 @@ enum {
   INDEX_SRAM_BIN          = INDEX_ROM_BIN + CLS2BLK(CLUSTER_SIZE_ROM_FILE),
   // Photos starts after SRAM bin (SRAM bin 8192 clusters large, 65536 blocks, 32 MB total filesize)
   INDEX_PHOTOS_START      = INDEX_SRAM_BIN + CLS2BLK(CLUSTER_SIZE_RAM_FILE),
-  // Photos end after 32 entries
-  INDEX_PHOTOS_END        = INDEX_PHOTOS_START + (CLS2BLK(CLUSTER_SIZE_PHOTOS) * 32),
+  // Photos end after 30 entries
+  INDEX_PHOTOS_END        = INDEX_PHOTOS_START + (CLS2BLK(CLUSTER_SIZE_PHOTOS) * 30),
   // End of the drive
   INDEX_DATA_END = DISK_BLOCK_NUM
 };
@@ -332,9 +336,9 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
   {
     addr = DISK_fatTable + ((lba - INDEX_FAT_TABLE_2_START) * DISK_BLOCK_SIZE);
   }
-  else if(lba == INDEX_ROOT_DIRECTORY)
+  else if((lba >= INDEX_ROOT_DIRECTORY) && (lba < INDEX_ROOT_DIRECTORY + ROOT_DIRECTORY_BLOCK_SIZE))
   {
-    addr = DISK_rootDirectory; // TODO: This will fail if/when the root directory is bigger than one block
+    addr = DISK_rootDirectory + ((lba - INDEX_ROOT_DIRECTORY) * DISK_BLOCK_SIZE);
   }
   else if(lba >= INDEX_STATUS_FILE && lba < INDEX_ROM_BIN)
   {
@@ -347,6 +351,15 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
   else if(lba >= INDEX_SRAM_BIN && lba <  INDEX_PHOTOS_START){
     (*the_cart.ram_memcpy_func)(buffer, ((lba - INDEX_SRAM_BIN) * DISK_BLOCK_SIZE) + offset, bufsize);
     // memset(buffer, 0, bufsize); // TODO
+    return (int32_t) bufsize;
+  }
+  // TODO: Will probably need to deal with offset here
+  else if((lba >= INDEX_PHOTOS_START) && (lba < INDEX_PHOTOS_END)){
+    // Pull the right photo to working memory
+    // Determine the photo being asked for by the lba
+    gbcam_pull_photo(LBA2PHOTO(lba-INDEX_PHOTOS_START));
+    // Copy the correct block of photo from working memory to the buffer
+    memcpy(buffer, working_mem + LBA2PHOTOOFFSET(lba-INDEX_PHOTOS_START) * DISK_BLOCK_SIZE, bufsize);
     return (int32_t) bufsize;
   }
   if(addr != 0)

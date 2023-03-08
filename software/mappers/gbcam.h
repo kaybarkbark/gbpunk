@@ -14,6 +14,10 @@
 
 #define GBCAM_IMAGE_START_ADDR          0xD0E  // this do be lookin srs d0e
 #define GBCAM_BMP_PHOTO_SIZE            7286
+
+#define LBA2PHOTO(x) ((x)/16)
+#define LBA2PHOTOOFFSET(x) ((x)%16)
+
 uint8_t bmp_header[0x76];
 
 // Public functions
@@ -23,7 +27,7 @@ void gbcam_memset_ram(uint8_t* buf, uint32_t ram_addr, uint32_t num);
 void gbcam_set_rom_bank(uint16_t bank);
 void gbcam_set_ram_bank(uint16_t bank);
 void gbcam_set_ram_access(uint8_t on_off);
-void gbcam_pull_photo(uint8_t *buf, uint8_t num);
+void gbcam_pull_photo(uint8_t num);
 
 // DEPRECATED
 void gbcam_rom_dump(uint8_t *buf, uint8_t start_bank, uint8_t end_bank);
