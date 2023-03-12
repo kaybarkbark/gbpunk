@@ -141,8 +141,8 @@ void gbcam_pull_photo(uint8_t num){
     // Copy the bitmap header
     bufncpy(working_mem, bmp_header, 0x76);
     uint16_t buf_head = 0x76;
-    // Two photos per bank
-    gbcam_set_ram_bank(num / 2);
+    // Two photos per bank, starting at bank 1
+    gbcam_set_ram_bank((num / 2) + 1);
     // First photo at 0xAD0E in bank, second at 0xBD0E
     uint16_t sram_offset = ((num % 2) * 0x1000) + GBCAM_IMAGE_START_ADDR + SRAM_START_ADDR;
     // printf("Pulling photo %i from bank %i at starting address 0x%x\n", num, num/2, sram_offset);

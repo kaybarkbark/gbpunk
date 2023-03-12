@@ -1,6 +1,6 @@
 #include "gb.h"
 #include "cart.h"
-#include "mappers/rom_only.h"
+#include "mappers/no_mapper.h"
 #include "mappers/mbc1.h"
 #include "mappers/mbc2.h"
 #include "mappers/mbc3.h"
@@ -47,14 +47,23 @@ void populate_cart_info(){
         case 29: strncpy(the_cart.cart_type_str, "MBC5+RUMBLE+RAM", 15); the_cart.mapper_type = MAPPER_MBC5; break;
         case 30: strncpy(the_cart.cart_type_str, "MBC5+RUMBLE+RAM+BATTERY", 23); the_cart.mapper_type = MAPPER_MBC5; break;
         case 252: strncpy(the_cart.cart_type_str, "GB CAMERA", 9); the_cart.mapper_type = MAPPER_GBCAM; break;
-        default: strncpy(the_cart.cart_type_str, "UNKNOWN MAPPER", 14); the_cart.mapper_type = MAPPER_UNKNOWN; break;
+        default: the_cart.mapper_type = MAPPER_UNKNOWN; break;
     }
     // TODO: Handle unknown mapper so we don't get a segfault
     if(the_cart.mapper_type == MAPPER_ROM_ONLY){
-        the_cart.rom_memcpy_func = &rom_only_memcpy_rom;
+        the_cart.rom_memcpy_func = &no_mapper_memcpy_rom;
         // No actual mapper so none of these apply
         the_cart.ram_memcpy_func = NULL;
         the_cart.ram_memset_func = NULL;
+        the_cart.ram_enable_func = NULL;
+        the_cart.rom_banksw_func = NULL;
+        the_cart.ram_banksw_func = NULL;
+    }
+    if(the_cart.mapper_type == MAPPER_ROM_RAM){
+        the_cart.rom_memcpy_func = &no_mapper_memcpy_rom;
+        the_cart.ram_memcpy_func = &no_mapper_memcpy_ram;
+        the_cart.ram_memset_func = &no_mapper_memset_ram;
+        // No banks to worry about
         the_cart.ram_enable_func = NULL;
         the_cart.rom_banksw_func = NULL;
         the_cart.ram_banksw_func = NULL;
@@ -98,6 +107,15 @@ void populate_cart_info(){
         the_cart.ram_enable_func = &gbcam_set_ram_access;
         the_cart.rom_banksw_func = &gbcam_set_rom_bank;
         the_cart.ram_banksw_func = &gbcam_set_ram_bank;
+    }
+    else if(the_cart.mapper_type == MAPPER_UNKNOWN){
+        the_cart.rom_memcpy_func = NULL;
+        the_cart.ram_memcpy_func = NULL;
+        the_cart.ram_memset_func = NULL;
+        the_cart.ram_enable_func = NULL;
+        the_cart.rom_banksw_func = NULL;
+        the_cart.ram_banksw_func = NULL;
+        snprintf(the_cart.cart_type_str, 19, "UNKNOWN MAPPER 0x%2x", the_cart.cart_type); 
     }
     // Calculate ROM banks
     the_cart.rom_banks = 2 << readb(ROM_BANK_SHIFT_ADDR);
@@ -149,6 +167,17 @@ void populate_cart_info(){
         the_cart.title[i] = c;
     }
     the_cart.title[CART_TITLE_LEN] = 0; // Ensure null terminated
+
+    // Special case Pokemon Crystal JP because I am pedantic
+    // Pokemon Crystal JP's mapper MBC30 is functionally the same but can
+    // access more SRAM. It's a different mapper and I want to make sure 
+    // that shows up right in status.txt
+
+    // Detect JP Crystal by looking for the game name and checking the amount of SRAM
+    if(strncmp(the_cart.title, "PM_CRYSTAL", 10) && (the_cart.ram_banks == 8)){
+        strncpy(the_cart.cart_type_str, "MBC30+TIMER+RAM+BATTERY", 23);
+    }
+
 }
 
 void dump_cart_info(){

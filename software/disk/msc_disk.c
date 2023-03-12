@@ -108,8 +108,8 @@ enum {
   INDEX_PHOTOS_START      = INDEX_SRAM_BIN + CLS2BLK(CLUSTER_SIZE_RAM_FILE),
   // Photos end after 30 entries
   INDEX_PHOTOS_END        = INDEX_PHOTOS_START + (CLS2BLK(CLUSTER_SIZE_PHOTOS) * 30),
-  // End of the drive
-  INDEX_DATA_END = DISK_BLOCK_NUM
+  // End of the files on the drive
+  INDEX_DATA_END = INDEX_PHOTOS_END
 };
 
 enum{
@@ -385,36 +385,12 @@ int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* 
   if(lba >= INDEX_DATA_END){
     //memcpy(&flashingLocation.buff[flashingLocation.sectionCount * 512], buffer, bufsize);
     //uint32_t ints = save_and_disable_interrupts();
-    if(flashingLocation.pageCountFlash % MAX_SECTION_COUNT_FOR_FLASH_SECTION == 0)
-    {
-      printf("doing flash at offset 0x%x\n",flashingLocation.pageCountFlash * FLASH_PAGE_SIZE);
-      flash_range_erase((flashingLocation.pageCountFlash / 16) * FLASH_SECTOR_SIZE, FLASH_SECTOR_SIZE);
-    }
-    unsigned int * returnSize;
-    // unsigned char *addressUF2 = getUF2Info(buffer,returnSize);
-    unsigned char *addressUF2 = 0;
-    if(addressUF2 != 0)
-    {
-      printf("UF2 FILE %d!!!\n",flashingLocation.pageCountFlash );
-      flash_range_program(flashingLocation.pageCountFlash * FLASH_PAGE_SIZE,
-                          &buffer[32], 
-                          256);
-      flashingLocation.pageCountFlash += 1; //(*returnSize/ FLASH_PAGE_SIZE);
-    }
-    else{
-      flash_range_program(flashingLocation.pageCountFlash * FLASH_PAGE_SIZE,
-                          buffer, 
-                          bufsize);
-      flashingLocation.pageCountFlash += (bufsize/ FLASH_PAGE_SIZE);
-    }
+    printf("0x%x\n", lba);
   }
 
   if(lba == INDEX_ROOT_DIRECTORY)
   {
-    printf("\n\n\nRestarting the raspberry pi pico!!!! \n\n\n");
-    sleep_ms(100);//just to make sure all uart get out
-
-    software_reset();
+    printf("0x%x\n", lba);
   }
 
 //#ifndef CFG_EXAMPLE_MSC_READONLY

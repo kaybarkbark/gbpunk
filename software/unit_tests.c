@@ -1,7 +1,7 @@
 #include "unit_tests.h"
 #include "gb.h"
 #include "mappers/mbc5.h"
-#include "mappers/rom_only.h"
+#include "mappers/no_mapper.h"
 #include "mappers/gbcam.h"
 #include "disk/msc_disk.h"
 #include "utils.h"
@@ -233,12 +233,17 @@ uint8_t unit_test_rom_ram_coherency(
 ){
     uint8_t ret = 1;
     // First test ROM
-    if(!memory_coherency_test(rom_memcpy_func, ROM_BANK_SIZE)){
-        ret = 0;
-        append_status_file("ROM COHERENCY: FAIL\n\0");
+    if(rom_memcpy_func){
+        if(!memory_coherency_test(rom_memcpy_func, ROM_BANK_SIZE)){
+            ret = 0;
+            append_status_file("ROM COHERENCY: FAIL\n\0");
+        }
+        else{
+            append_status_file("ROM COHERENCY: PASS\n\0");
+        }
     }
     else{
-        append_status_file("ROM COHERENCY: PASS\n\0");
+        append_status_file("ROM COHERENCY: SKIPPED\n\0");
     }
     if(ram_memcpy_func && ram_bank_size){
         if(!memory_coherency_test(ram_memcpy_func, ram_bank_size)){
@@ -278,6 +283,14 @@ uint8_t unit_test_cart(){
     the_cart.ram_size_bytes);
     append_status_file_buf(working_mem);
     uint8_t ret = 1;
+    if(the_cart.mapper_type == MAPPER_UNKNOWN){
+        append_status_file("Cannot unit test an unknown mapper. Aborting...\n\0");
+        append_status_file("The mapper for this cart could not be detected. Take the cart "
+        "out and blow on it, that may fix it. If this persists, please contact us so we can "
+        "add support for this cart!\n\0");
+        return 0;
+    }
+
     // Test ROM/RAM coherency
     if(!unit_test_rom_ram_coherency(
         the_cart.rom_memcpy_func, 
@@ -309,6 +322,11 @@ uint8_t unit_test_cart(){
     time(&end);
     sprintf(working_mem, "UNIT TESTS COMPLETED IN %.2f SECONDS\n\0", difftime(end,start));
     append_status_file_buf(working_mem);
+    if(!ret){
+        append_status_file("Unit tests failed! You probably just need to take our your "
+        "cartridge and blow on it a couple times. If these tests keep failing, contact us "
+        "and send us the contents of this file. We want to add support for all carts!\n\0");
+    }
     return ret;
 }
 // }
