@@ -485,9 +485,10 @@ uint32_t fat_build_cluster_chain(uint32_t starting_cluster, uint32_t num_bytes){
       DISK_fatTable[(starting_cluster * 2) + 1] = (next_entry & 0xFF00) >> 8;
       starting_cluster++;
     }
+    starting_cluster--;
   }
   // Last cluster is EOF
-  starting_cluster--;  // TODO: Remove if this breaks things
+    // TODO: Remove if this breaks things
   DISK_fatTable[(starting_cluster * 2)] = 0xFF;
   DISK_fatTable[(starting_cluster * 2) + 1] = 0xFF;
   starting_cluster+=2;
