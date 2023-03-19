@@ -60,13 +60,6 @@ enum
 };
 
 enum {
-  CLUSTER_SIZE_STATUS_FILE  = 1,
-  CLUSTER_SIZE_ROM_FILE     = 8192,
-  CLUSTER_SIZE_RAM_FILE     = 8192,
-  CLUSTER_SIZE_PHOTOS       = 2
-};
-
-enum {
   INDEX_CLUSTER_SIZE_STATUS_FILE  = 0,
   INDEX_CLUSTER_SIZE_ROM_FILE     = 1,
   INDEX_CLUSTER_SIZE_RAM_FILE     = 2,
@@ -93,14 +86,12 @@ enum {
   FILE_INDEX_DATA_END          = 10  
 };
 
-
-// TODO: Replace this with something configurable
-enum{
- CLUSTER_START            = 2,
- CLUSTER_STATUS_FILE      = CLUSTER_START,
- CLUSTER_ROM_FILE         = CLUSTER_STATUS_FILE + CLUSTER_SIZE_STATUS_FILE,
- CLUSTER_RAM_FILE         = CLUSTER_ROM_FILE    + CLUSTER_SIZE_ROM_FILE,
- CLUSTER_STARTING_PHOTOS  = CLUSTER_RAM_FILE    + CLUSTER_SIZE_RAM_FILE
+enum {
+  INDEX_CLUSTER_START_FS = 0,
+  INDEX_CLUSTER_START_STATUS_FILE = 1,
+  INDEX_CLUSTER_START_ROM_FILE = 2,
+  INDEX_CLUSTER_START_RAM_FILE = 3,
+  INDEX_CLUSTER_START_PHOTOS = 4
 };
 
 /*  - Private #defines -  */
@@ -121,9 +112,12 @@ uint32_t latest_rd_entry = 0;
 // The most recent FAT table entry byte
 uint32_t latest_fat_entry = 0;
 // The file entries of all the file indexes
-uint32_t file_indexes[30] = {0};
+uint32_t file_lba_indexes[30] = {0};
 // The cluster sizes of all the files
-uint32_t file_sizes[4] = {0};
+uint32_t file_cluster_sizes[4] = {0};
+// The starting clusters of all the files
+// TODO: This should eventually just be removed and replaced with file_lba_indexes
+uint32_t file_starting_clusters[5] = {0};
 // The size of the status file
 uint16_t status_file_size = 0;
 // A blank root directory entry to use
@@ -212,25 +206,33 @@ void software_reset()
     while(1);
 }
 
-void set_file_sizes(){
-  file_sizes[INDEX_CLUSTER_SIZE_STATUS_FILE] = 1;
-  file_sizes[INDEX_CLUSTER_SIZE_ROM_FILE] = 8192;
-  file_sizes[INDEX_CLUSTER_SIZE_RAM_FILE] = 8192;
-  file_sizes[INDEX_CLUSTER_SIZE_PHOTOS] = 2;
+void set_file_cluster_sizes(){
+  file_cluster_sizes[INDEX_CLUSTER_SIZE_STATUS_FILE] = 1;
+  file_cluster_sizes[INDEX_CLUSTER_SIZE_ROM_FILE] = 8192;
+  file_cluster_sizes[INDEX_CLUSTER_SIZE_RAM_FILE] = 8192;
+  file_cluster_sizes[INDEX_CLUSTER_SIZE_PHOTOS] = 2;
 }
 
-void set_file_indexes(){
-  file_indexes[FILE_INDEX_RESERVED]               = 0x00000;
-  file_indexes[FILE_INDEX_FAT_TABLE_1_START]      = 0x00001;
-  file_indexes[FILE_INDEX_FAT_TABLE_2_START]      = 0x00082;
-  file_indexes[FILE_INDEX_ROOT_DIRECTORY]         = 0x00103;
-  file_indexes[FILE_INDEX_DATA_STARTS]            = 0x00123;
-  file_indexes[FILE_INDEX_STATUS_FILE]            = file_indexes[FILE_INDEX_DATA_STARTS];
-  file_indexes[FILE_INDEX_ROM_BIN]                = file_indexes[FILE_INDEX_STATUS_FILE] + CLS2BLK(CLUSTER_SIZE_STATUS_FILE);
-  file_indexes[FILE_INDEX_SRAM_BIN]               = file_indexes[FILE_INDEX_ROM_BIN] + CLS2BLK(CLUSTER_SIZE_ROM_FILE);
-  file_indexes[FILE_INDEX_PHOTOS_START]           = file_indexes[FILE_INDEX_SRAM_BIN] + CLS2BLK(CLUSTER_SIZE_RAM_FILE);
-  file_indexes[FILE_INDEX_PHOTOS_END]             = file_indexes[FILE_INDEX_PHOTOS_START] + (CLS2BLK(CLUSTER_SIZE_PHOTOS) * 30);
-  file_indexes[FILE_INDEX_DATA_END]               = file_indexes[FILE_INDEX_PHOTOS_END];
+void set_file_lba_indexes(){
+  file_lba_indexes[FILE_INDEX_RESERVED]               = 0x00000;
+  file_lba_indexes[FILE_INDEX_FAT_TABLE_1_START]      = 0x00001;
+  file_lba_indexes[FILE_INDEX_FAT_TABLE_2_START]      = 0x00082;
+  file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY]         = 0x00103;
+  file_lba_indexes[FILE_INDEX_DATA_STARTS]            = 0x00123;
+  file_lba_indexes[FILE_INDEX_STATUS_FILE]            = file_lba_indexes[FILE_INDEX_DATA_STARTS];
+  file_lba_indexes[FILE_INDEX_ROM_BIN]                = file_lba_indexes[FILE_INDEX_STATUS_FILE] + CLS2BLK(file_cluster_sizes[INDEX_CLUSTER_SIZE_STATUS_FILE]);
+  file_lba_indexes[FILE_INDEX_SRAM_BIN]               = file_lba_indexes[FILE_INDEX_ROM_BIN] + CLS2BLK(file_cluster_sizes[INDEX_CLUSTER_SIZE_ROM_FILE]);
+  file_lba_indexes[FILE_INDEX_PHOTOS_START]           = file_lba_indexes[FILE_INDEX_SRAM_BIN] + CLS2BLK(file_cluster_sizes[INDEX_CLUSTER_SIZE_RAM_FILE]);
+  file_lba_indexes[FILE_INDEX_PHOTOS_END]             = file_lba_indexes[FILE_INDEX_PHOTOS_START] + (CLS2BLK(file_cluster_sizes[INDEX_CLUSTER_SIZE_PHOTOS]) * 30);
+  file_lba_indexes[FILE_INDEX_DATA_END]               = file_lba_indexes[FILE_INDEX_PHOTOS_END];
+}
+
+void set_starting_clusters(){
+  file_starting_clusters[INDEX_CLUSTER_START_FS] = 2;
+  file_starting_clusters[INDEX_CLUSTER_START_STATUS_FILE] = file_starting_clusters[INDEX_CLUSTER_START_FS];
+  file_starting_clusters[INDEX_CLUSTER_START_ROM_FILE] = file_starting_clusters[INDEX_CLUSTER_START_STATUS_FILE] + file_cluster_sizes[INDEX_CLUSTER_SIZE_STATUS_FILE];
+  file_starting_clusters[INDEX_CLUSTER_START_RAM_FILE] = file_starting_clusters[INDEX_CLUSTER_START_ROM_FILE] + file_cluster_sizes[INDEX_CLUSTER_SIZE_ROM_FILE];
+  file_starting_clusters[INDEX_CLUSTER_START_PHOTOS] = file_starting_clusters[INDEX_CLUSTER_START_RAM_FILE] + file_cluster_sizes[INDEX_CLUSTER_SIZE_RAM_FILE];
 }
 
 
@@ -362,44 +364,44 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
   // memcpy(buffer, addr, bufsize);
 
   // uint8_t * addr = 0;
-  if(lba == file_indexes[FILE_INDEX_RESERVED])
+  if(lba == file_lba_indexes[FILE_INDEX_RESERVED])
   {
     addr = DISK_reservedSection;
   }
 
   //Need to handle both FAT tables seperately (TODO: Just tell the thing there's only one table)
-  else if((lba >= file_indexes[FILE_INDEX_RESERVED]) && (lba < (file_indexes[FILE_INDEX_FAT_TABLE_1_START] + FAT_TABLE_BLOCK_SIZE)))
+  else if((lba >= file_lba_indexes[FILE_INDEX_RESERVED]) && (lba < (file_lba_indexes[FILE_INDEX_FAT_TABLE_1_START] + FAT_TABLE_BLOCK_SIZE)))
   {
-    addr = DISK_fatTable + ((lba - file_indexes[FILE_INDEX_FAT_TABLE_1_START]) * BLOCK_SIZE);
+    addr = DISK_fatTable + ((lba - file_lba_indexes[FILE_INDEX_FAT_TABLE_1_START]) * BLOCK_SIZE);
   }
-  else if((lba >= file_indexes[FILE_INDEX_FAT_TABLE_2_START]) && (lba < (file_indexes[FILE_INDEX_FAT_TABLE_2_START] + FAT_TABLE_BLOCK_SIZE)))
+  else if((lba >= file_lba_indexes[FILE_INDEX_FAT_TABLE_2_START]) && (lba < (file_lba_indexes[FILE_INDEX_FAT_TABLE_2_START] + FAT_TABLE_BLOCK_SIZE)))
   {
-    addr = DISK_fatTable + ((lba - file_indexes[FILE_INDEX_FAT_TABLE_2_START]) * BLOCK_SIZE);
+    addr = DISK_fatTable + ((lba - file_lba_indexes[FILE_INDEX_FAT_TABLE_2_START]) * BLOCK_SIZE);
   }
-  else if((lba >= file_indexes[FILE_INDEX_ROOT_DIRECTORY]) && (lba < file_indexes[FILE_INDEX_ROOT_DIRECTORY] + BLOCK_SIZE_ROOT_DIRECTORY))
+  else if((lba >= file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY]) && (lba < file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY] + BLOCK_SIZE_ROOT_DIRECTORY))
   {
-    addr = DISK_rootDirectory + ((lba - file_indexes[FILE_INDEX_ROOT_DIRECTORY]) * BLOCK_SIZE);
+    addr = DISK_rootDirectory + ((lba - file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY]) * BLOCK_SIZE);
   }
-  else if(lba >= file_indexes[FILE_INDEX_STATUS_FILE] && lba < file_indexes[FILE_INDEX_ROM_BIN])
+  else if(lba >= file_lba_indexes[FILE_INDEX_STATUS_FILE] && lba < file_lba_indexes[FILE_INDEX_ROM_BIN])
   {
     addr = DISK_status_file; // TODO: This will fail if/when the status file is bigger than one block
   }
-  else if(lba >= file_indexes[FILE_INDEX_ROM_BIN] && lba <  file_indexes[FILE_INDEX_ROM_BIN]){
-    (*the_cart.rom_memcpy_func)(buffer, ((lba - file_indexes[FILE_INDEX_ROM_BIN]) * BLOCK_SIZE) + offset, bufsize);
+  else if(lba >= file_lba_indexes[FILE_INDEX_ROM_BIN] && lba <  file_lba_indexes[FILE_INDEX_ROM_BIN]){
+    (*the_cart.rom_memcpy_func)(buffer, ((lba - file_lba_indexes[FILE_INDEX_ROM_BIN]) * BLOCK_SIZE) + offset, bufsize);
     return (int32_t) bufsize;
   }
-  else if(lba >= file_indexes[FILE_INDEX_SRAM_BIN] && lba <  file_indexes[FILE_INDEX_PHOTOS_START] ){
-    (*the_cart.ram_memcpy_func)(buffer, ((lba - file_indexes[FILE_INDEX_SRAM_BIN]) * BLOCK_SIZE) + offset, bufsize);
+  else if(lba >= file_lba_indexes[FILE_INDEX_SRAM_BIN] && lba <  file_lba_indexes[FILE_INDEX_PHOTOS_START] ){
+    (*the_cart.ram_memcpy_func)(buffer, ((lba - file_lba_indexes[FILE_INDEX_SRAM_BIN]) * BLOCK_SIZE) + offset, bufsize);
     // memset(buffer, 0, bufsize); // TODO
     return (int32_t) bufsize;
   }
   // TODO: Will probably need to deal with offset here
-  else if((lba >= file_indexes[FILE_INDEX_PHOTOS_START] ) && (lba < file_indexes[FILE_INDEX_PHOTOS_END])){
+  else if((lba >= file_lba_indexes[FILE_INDEX_PHOTOS_START] ) && (lba < file_lba_indexes[FILE_INDEX_PHOTOS_END])){
     // Pull the right photo to working memory
     // Determine the photo being asked for by the lba
-    gbcam_pull_photo(LBA2PHOTO(lba-file_indexes[FILE_INDEX_PHOTOS_START] ));
+    gbcam_pull_photo(LBA2PHOTO(lba-file_lba_indexes[FILE_INDEX_PHOTOS_START] ));
     // Copy the correct block of photo from working memory to the buffer
-    memcpy(buffer, working_mem + LBA2PHOTOOFFSET(lba-file_indexes[FILE_INDEX_PHOTOS_START] ) * BLOCK_SIZE, bufsize);
+    memcpy(buffer, working_mem + LBA2PHOTOOFFSET(lba-file_lba_indexes[FILE_INDEX_PHOTOS_START] ) * BLOCK_SIZE, bufsize);
     return (int32_t) bufsize;
   }
   if(addr != 0)
@@ -422,13 +424,13 @@ int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* 
   // out of ramdisk
   if ( lba >= DISK_BLOCK_COUNT ) return -1;
   //page to sector
-  if(lba >= file_indexes[FILE_INDEX_DATA_END]){
+  if(lba >= file_lba_indexes[FILE_INDEX_DATA_END]){
     //memcpy(&flashingLocation.buff[flashingLocation.sectionCount * 512], buffer, bufsize);
     //uint32_t ints = save_and_disable_interrupts();
     printf("0x%x\n", lba);
   }
 
-  if(lba == file_indexes[FILE_INDEX_ROOT_DIRECTORY])
+  if(lba == file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY])
   {
     printf("0x%x\n", lba);
   }
@@ -549,8 +551,12 @@ void append_new_file(uint8_t* name, uint16_t namelen, const char* ext, uint32_t 
 }
 
 void init_disk(){
+  // Set the cluster sizes of all the files
+  set_file_cluster_sizes();
   // Set the file indexes
-  set_file_indexes();
+  set_file_lba_indexes();
+  // Set the starting clusters of all the files
+  set_starting_clusters();
 
   // HANDLE VOLUME INFO
   // First, initialize the names for everything
@@ -570,19 +576,19 @@ void init_disk(){
   // Create the status file
   // Set name (6 chars), extension, filesize, starting cluster 2
   char status_name[] = {"status"};
-  append_new_file(status_name, 6, "txt", status_file_size, CLUSTER_STATUS_FILE);
+  append_new_file(status_name, 6, "txt", status_file_size, file_starting_clusters[INDEX_CLUSTER_START_STATUS_FILE]);
 
   // HANDLE ROM INFO
   // Create the ROM file
   // Set name (8 chars), extension, filesize, starting cluster 3
-  append_new_file(the_cart.title, 8, "bin", the_cart.rom_size_bytes, CLUSTER_ROM_FILE);
+  append_new_file(the_cart.title, 8, "bin", the_cart.rom_size_bytes, file_starting_clusters[INDEX_CLUSTER_START_ROM_FILE]);
   
   // HANDLE RAM INFO
   // If RAM exists, deal with it
   if(the_cart.ram_size_bytes){
     // Create the RAM file
     // Set name (8 chars), extension, filesize, starting cluster 8195
-    append_new_file(the_cart.title, 8, "sav", the_cart.ram_size_bytes, CLUSTER_RAM_FILE);
+    append_new_file(the_cart.title, 8, "sav", the_cart.ram_size_bytes, file_starting_clusters[INDEX_CLUSTER_START_RAM_FILE]);
   }
   // Otherwise, zero out the root directory for it
   else{
@@ -593,7 +599,7 @@ void init_disk(){
       // Note: RD starts at 0x00020620 when debugging these
       char name[9] = {0};
       snprintf(name, 9, "GBCAM_%i", i);
-      append_new_file(name, 8, "bmp", 7286, CLUSTER_STARTING_PHOTOS + (i * CLUSTER_SIZE_PHOTOS));
+      append_new_file(name, 8, "bmp", 7286, file_starting_clusters[INDEX_CLUSTER_START_PHOTOS] + (i * file_cluster_sizes[INDEX_CLUSTER_SIZE_PHOTOS]));
     }
   }
 }
