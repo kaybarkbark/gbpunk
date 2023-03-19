@@ -25,36 +25,17 @@
 // SCSI
 // https://aidanmocke.com/blog/2020/12/30/USB-MSD-1/
 
-// whether host does safe-eject
-static bool ejected = false;
-void rd_set_file_size(uint32_t entry, uint32_t filesize);
-uint8_t blank_rd_entry[] = {      
-  ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , // filename (uninitialized)
-  0x21, 0x00, 0xC6, 0x52, 0x6D, 0x65, 0x43, 0x65, 0x43, 0x00, 0x00, 0x88, 0x6D, 0x65, 0x43, // Bunch of unknown options
-  0x00, 0x00, //cluster location (unititialized)
-  0x00, 0x00, 0x00, 0x00, // Filesize in bytes (unititialized)}
-};
-
-// The most recent root directory entry
-uint32_t latest_rd_entry = 0;
-// The most recent FAT table entry byte
-uint32_t latest_fat_entry = 0;
-
-// Some MCU doesn't have enough 8KB SRAM to store the whole disk
-// We will use Flash as read-only disk with board that has
-
-void software_reset()
-{
-    // watchdog_enable(1, 1); // comment out so it stops bothering me, don't know where this is
-    while(1);
-}
-
+/*  - Enums -  */
 enum
 {
-  DISK_BLOCK_NUM  = 0x200000, // Pretend to be a 1GB drive
-  DISK_BLOCK_SIZE = 512,
-  DISK_CLUSTER_SIZE = 8,
-  DISK_CLUSTER_BYTES = DISK_BLOCK_SIZE * DISK_CLUSTER_SIZE, // Assuming block and cluster size stay standard (512 and 8 respectfully) this is 4k
+  ROOT_DIR_ENTRY_SIZE = 32,
+  ROOT_DIR_SIZE_OFFS = 28,
+  ROOT_DIR_CLST_OFFS  = 26,
+  ROOT_DIR_STATUS_ENTRY = 1,
+  DISK_BLOCK_COUNT  = 0x200000, // Pretend to be a 1GB drive
+  BLOCK_SIZE = 512,
+  CLUSTER_BLOCK_SIZE = 8,
+  CLUSTER_BYTE_SIZE = BLOCK_SIZE * CLUSTER_BLOCK_SIZE, // Assuming block and cluster size stay standard (512 and 8 respectfully) this is 4k
   // Hold enough entry for every file I want
   // 1 entries for status.txt
   // 8192 entries for 32MB ROM
@@ -62,10 +43,10 @@ enum
   // 2 entries (8K) for each photo, 32 photos total
   // Two bytes per entry (FAT16 = 16 bit entries)
   // Add 382 to make it block aligned (divisible by 512)
-  FAT_TABLE_SIZE = ((1 + 8192 + 8192 + (2 * 32)) * 2) + 382, 
+  FAT_TABLE_BYTE_SIZE = ((1 + 8192 + 8192 + (2 * 32)) * 2) + 382, 
   // I am not actually holding the whole FAT table in RAM, so need to know when 
   // the PC requests something beyond that so I can just send it a 0
-  FAT_TABLE_BLOCK_SIZE = FAT_TABLE_SIZE / DISK_BLOCK_SIZE,
+  FAT_TABLE_BLOCK_SIZE = FAT_TABLE_BYTE_SIZE / BLOCK_SIZE,
   // Root directory should be large enough to hold every file needed
   // 1 status file
   // 1 ROM file
@@ -73,23 +54,23 @@ enum
   // 30 Photo files
   // 32 bytes per entry
   // Add 480 bytes to make it block aligned (divisible by 512)
-  ROOT_DIRECTORY_SIZE = ((1 + 1 + 1 + 30) * 32) + 480, 
-  ROOT_DIRECTORY_BLOCK_SIZE = ROOT_DIRECTORY_SIZE / DISK_BLOCK_SIZE,
-  STATUS_FILE_SIZE = DISK_BLOCK_SIZE, // Small for now, can be up to 1 cluster (4k) with current layout
+  BYTE_SIZE_ROOT_DIRECTORY = ((1 + 1 + 1 + 30) * 32) + 480, 
+  BLOCK_SIZE_ROOT_DIRECTORY = BYTE_SIZE_ROOT_DIRECTORY / BLOCK_SIZE,
+  STATUS_FILE_SIZE = BLOCK_SIZE, // Small for now, can be up to 1 cluster (4k) with current layout
 };
-
-// Convert cluster size to blocks size
-#define CLS2BLK(x)  (x*DISK_CLUSTER_SIZE)
-// Convert block size to byte size
-#define BLK2BYTE(x) (x*DISK_BLOCK_SIZE)
-// Convert cluster size to block size
-#define CLS2BYTE(x) BLK2BYTE(CLS2BLK(x))
 
 enum {
   CLUSTER_SIZE_STATUS_FILE  = 1,
   CLUSTER_SIZE_ROM_FILE     = 8192,
   CLUSTER_SIZE_RAM_FILE     = 8192,
   CLUSTER_SIZE_PHOTOS       = 2
+};
+
+enum {
+  INDEX_CLUSTER_SIZE_STATUS_FILE  = 0,
+  INDEX_CLUSTER_SIZE_ROM_FILE     = 1,
+  INDEX_CLUSTER_SIZE_RAM_FILE     = 2,
+  INDEX_CLUSTER_SIZE_PHOTOS       = 3
 };
 
 enum {
@@ -112,40 +93,8 @@ enum {
   FILE_INDEX_DATA_END          = 10  
 };
 
-uint32_t file_indexes[30] = {0};
-void set_file_indexes(){
-  file_indexes[FILE_INDEX_RESERVED]           = 0x00000;
-  file_indexes[FILE_INDEX_FAT_TABLE_1_START]  = 0x00001;
-  file_indexes[FILE_INDEX_FAT_TABLE_2_START]  = 0x00082;
-  file_indexes[FILE_INDEX_ROOT_DIRECTORY]     = 0x00103;
-  file_indexes[FILE_INDEX_DATA_STARTS]        = 0x00123;
-  file_indexes[FILE_INDEX_STATUS_FILE]        = file_indexes[FILE_INDEX_DATA_STARTS];
-  file_indexes[FILE_INDEX_ROM_BIN]            = file_indexes[FILE_INDEX_STATUS_FILE] + CLS2BLK(CLUSTER_SIZE_STATUS_FILE);
-  file_indexes[FILE_INDEX_SRAM_BIN]                = file_indexes[FILE_INDEX_ROM_BIN] + CLS2BLK(CLUSTER_SIZE_ROM_FILE);
-  file_indexes[FILE_INDEX_PHOTOS_START]            = file_indexes[FILE_INDEX_SRAM_BIN] + CLS2BLK(CLUSTER_SIZE_RAM_FILE);
-  file_indexes[FILE_INDEX_PHOTOS_END]              = file_indexes[FILE_INDEX_PHOTOS_START] + (CLS2BLK(CLUSTER_SIZE_PHOTOS) * 30);
-  file_indexes[FILE_INDEX_DATA_END]                = file_indexes[FILE_INDEX_PHOTOS_END];
-}
-// enum {
-//   INDEX_RESERVED          = 0x00000,  // First cluster is for all the FAT magic data
-//   INDEX_FAT_TABLE_1_START = 0x00001,  // FAT table starts at 0x1, 0x81 blocks in size
-//   INDEX_FAT_TABLE_2_START = 0x00082,  // Redundant FAT table is 0x81 blocks later
-//   INDEX_ROOT_DIRECTORY    = 0x00103,  // Root directory starts after second FAT table
-//   INDEX_DATA_STARTS       = 0x00123,  // Root directory is 0x20 blocks (32 * 512 = 16384 bytes). Can store 16384 / 32 = 512 files total
-//   // Status file is the first one in the data section
-//   INDEX_STATUS_FILE       = INDEX_DATA_STARTS,  
-//   // ROM bin starts after status file (status file 1 cluster large, 8 blocks)
-//   INDEX_ROM_BIN           = INDEX_STATUS_FILE + CLS2BLK(CLUSTER_SIZE_STATUS_FILE),
-//   // SRAM bin starts after ROM bin (ROM bin 8192 clusters large, 65536 blocks, 32 MB total filesize)
-//   INDEX_SRAM_BIN          = INDEX_ROM_BIN + CLS2BLK(CLUSTER_SIZE_ROM_FILE),
-//   // Photos starts after SRAM bin (SRAM bin 8192 clusters large, 65536 blocks, 32 MB total filesize)
-//   INDEX_PHOTOS_START      = INDEX_SRAM_BIN + CLS2BLK(CLUSTER_SIZE_RAM_FILE),
-//   // Photos end after 30 entries
-//   INDEX_PHOTOS_END        = INDEX_PHOTOS_START + (CLS2BLK(CLUSTER_SIZE_PHOTOS) * 30),
-//   // End of the files on the drive
-//   INDEX_DATA_END = INDEX_PHOTOS_END
-// };
 
+// TODO: Replace this with something configurable
 enum{
  CLUSTER_START            = 2,
  CLUSTER_STATUS_FILE      = CLUSTER_START,
@@ -154,28 +103,38 @@ enum{
  CLUSTER_STARTING_PHOTOS  = CLUSTER_RAM_FILE    + CLUSTER_SIZE_RAM_FILE
 };
 
-#define MAX_SECTION_COUNT_FOR_FLASH_SECTION (FLASH_SECTOR_SIZE/FLASH_PAGE_SIZE)
-struct flashingLocation {
-  unsigned int pageCountFlash;
-}flashingLocation = {.pageCountFlash = 0};
-
-// TODO:
-// Generate a FAT filesystem on the fly
-// will need to handle:
-// - Generating reserved section. Change name of drive to name of game
-// - Generating FAT table. Will need to handle arbitrary amounts of files and file sizes
-// - Generating root directory. Will need to handle arbitrary amounts of files and file sizes
-// - Translation layer for FS to GB. 
-
-#define ROOT_DIR_ENTRY_SIZE   32
+/*  - Private #defines -  */
 #define ROOT_DIR_ENTRY(X)     X*ROOT_DIR_ENTRY_SIZE
-#define ROOT_DIR_SIZE_OFFS    28
-#define ROOT_DIR_CLST_OFFS    26
-#define ROOT_DIR_LATEST_ENTRY latest_rd_entry
+// Convert cluster size to blocks size
+#define CLS2BLK(x)  (x*CLUSTER_BLOCK_SIZE)
+// Convert block size to byte size
+#define BLK2BYTE(x) (x*BLOCK_SIZE)
+// Convert cluster size to block size
+#define CLS2BYTE(x) BLK2BYTE(CLS2BLK(x))
 
-#define ROOT_DIR_STATUS_ENTRY 1
 
-uint8_t DISK_reservedSection[DISK_BLOCK_SIZE] = 
+/*  - Private Variables -  */
+// whether host does safe-eject
+static bool ejected = false;
+// The most recent root directory entry
+uint32_t latest_rd_entry = 0;
+// The most recent FAT table entry byte
+uint32_t latest_fat_entry = 0;
+// The file entries of all the file indexes
+uint32_t file_indexes[30] = {0};
+// The cluster sizes of all the files
+uint32_t file_sizes[4] = {0};
+// The size of the status file
+uint16_t status_file_size = 0;
+// A blank root directory entry to use
+uint8_t blank_rd_entry[] = {      
+  ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , // filename (uninitialized)
+  0x21, 0x00, 0xC6, 0x52, 0x6D, 0x65, 0x43, 0x65, 0x43, 0x00, 0x00, 0x88, 0x6D, 0x65, 0x43, // Bunch of unknown options
+  0x00, 0x00, //cluster location (unititialized)
+  0x00, 0x00, 0x00, 0x00, // Filesize in bytes (unititialized)}
+};
+// Full reserved section of the disk, containing all the FAT magic
+uint8_t DISK_reservedSection[BLOCK_SIZE] = 
 {
     0xEB, 0x3C, 0x90,                               // ASM instructions for booting
     0x4D, 0x53, 0x57, 0x49, 0x4E, 0x34, 0x2E, 0x31, // MSWIN4.1 (TODO: Change this to something cooler? Fuck microsoft)
@@ -232,10 +191,10 @@ uint8_t DISK_reservedSection[DISK_BLOCK_SIZE] =
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
     0x55, 0xAA // FAT Signature
 };
-
-uint8_t DISK_fatTable[FAT_TABLE_SIZE] ={0};
-
-uint8_t DISK_rootDirectory[ROOT_DIRECTORY_SIZE] = 
+// The actual FAT table
+uint8_t DISK_fatTable[FAT_TABLE_BYTE_SIZE] ={0};
+// The FAT root directory for all files
+uint8_t DISK_rootDirectory[BYTE_SIZE_ROOT_DIRECTORY] = 
 {
       // first entry is volume label
       ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , 0x28, 0x00, 0x00, 0x00, 0x00,
@@ -243,7 +202,54 @@ uint8_t DISK_rootDirectory[ROOT_DIRECTORY_SIZE] =
       // We will fill in all other entries later
 };
 
-uint16_t status_file_size = 0;
+// Some MCU doesn't have enough 8KB SRAM to store the whole disk
+// We will use Flash as read-only disk with board that has
+void rd_set_file_size(uint32_t entry, uint32_t filesize);
+
+void software_reset()
+{
+    // watchdog_enable(1, 1); // comment out so it stops bothering me, don't know where this is
+    while(1);
+}
+
+void set_file_sizes(){
+  file_sizes[INDEX_CLUSTER_SIZE_STATUS_FILE] = 1;
+  file_sizes[INDEX_CLUSTER_SIZE_ROM_FILE] = 8192;
+  file_sizes[INDEX_CLUSTER_SIZE_RAM_FILE] = 8192;
+  file_sizes[INDEX_CLUSTER_SIZE_PHOTOS] = 2;
+}
+
+void set_file_indexes(){
+  file_indexes[FILE_INDEX_RESERVED]               = 0x00000;
+  file_indexes[FILE_INDEX_FAT_TABLE_1_START]      = 0x00001;
+  file_indexes[FILE_INDEX_FAT_TABLE_2_START]      = 0x00082;
+  file_indexes[FILE_INDEX_ROOT_DIRECTORY]         = 0x00103;
+  file_indexes[FILE_INDEX_DATA_STARTS]            = 0x00123;
+  file_indexes[FILE_INDEX_STATUS_FILE]            = file_indexes[FILE_INDEX_DATA_STARTS];
+  file_indexes[FILE_INDEX_ROM_BIN]                = file_indexes[FILE_INDEX_STATUS_FILE] + CLS2BLK(CLUSTER_SIZE_STATUS_FILE);
+  file_indexes[FILE_INDEX_SRAM_BIN]               = file_indexes[FILE_INDEX_ROM_BIN] + CLS2BLK(CLUSTER_SIZE_ROM_FILE);
+  file_indexes[FILE_INDEX_PHOTOS_START]           = file_indexes[FILE_INDEX_SRAM_BIN] + CLS2BLK(CLUSTER_SIZE_RAM_FILE);
+  file_indexes[FILE_INDEX_PHOTOS_END]             = file_indexes[FILE_INDEX_PHOTOS_START] + (CLS2BLK(CLUSTER_SIZE_PHOTOS) * 30);
+  file_indexes[FILE_INDEX_DATA_END]               = file_indexes[FILE_INDEX_PHOTOS_END];
+}
+
+
+// struct flashingLocation {
+//   unsigned int pageCountFlash;
+// }flashingLocation = {.pageCountFlash = 0};
+
+// TODO:
+// Generate a FAT filesystem on the fly
+// will need to handle:
+// - Generating reserved section. Change name of drive to name of game
+// - Generating FAT table. Will need to handle arbitrary amounts of files and file sizes
+// - Generating root directory. Will need to handle arbitrary amounts of files and file sizes
+// - Translation layer for FS to GB. 
+
+
+
+
+
 uint8_t DISK_status_file[STATUS_FILE_SIZE] = {0};
 void append_status_file(const uint8_t* buf){
   uint16_t buf_index = 0;
@@ -316,8 +322,8 @@ void tud_msc_capacity_cb(uint8_t lun, uint32_t* block_count, uint16_t* block_siz
 {
   (void) lun;
 
-  *block_count = DISK_BLOCK_NUM;
-  *block_size  = DISK_BLOCK_SIZE;
+  *block_count = DISK_BLOCK_COUNT;
+  *block_size  = BLOCK_SIZE;
 }
 
 // Invoked when received Start Stop Unit command
@@ -350,7 +356,7 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
   (void) lun;
 
   // out of ramdisk
-  if ( lba >= DISK_BLOCK_NUM ) return -1;
+  if ( lba >= DISK_BLOCK_COUNT ) return -1;
   // printf("lba 0x%x, bufsize %d, offset %d\n",lba, bufsize, offset);
   uint8_t const* addr = 0;
   // memcpy(buffer, addr, bufsize);
@@ -364,26 +370,26 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
   //Need to handle both FAT tables seperately (TODO: Just tell the thing there's only one table)
   else if((lba >= file_indexes[FILE_INDEX_RESERVED]) && (lba < (file_indexes[FILE_INDEX_FAT_TABLE_1_START] + FAT_TABLE_BLOCK_SIZE)))
   {
-    addr = DISK_fatTable + ((lba - file_indexes[FILE_INDEX_FAT_TABLE_1_START]) * DISK_BLOCK_SIZE);
+    addr = DISK_fatTable + ((lba - file_indexes[FILE_INDEX_FAT_TABLE_1_START]) * BLOCK_SIZE);
   }
   else if((lba >= file_indexes[FILE_INDEX_FAT_TABLE_2_START]) && (lba < (file_indexes[FILE_INDEX_FAT_TABLE_2_START] + FAT_TABLE_BLOCK_SIZE)))
   {
-    addr = DISK_fatTable + ((lba - file_indexes[FILE_INDEX_FAT_TABLE_2_START]) * DISK_BLOCK_SIZE);
+    addr = DISK_fatTable + ((lba - file_indexes[FILE_INDEX_FAT_TABLE_2_START]) * BLOCK_SIZE);
   }
-  else if((lba >= file_indexes[FILE_INDEX_ROOT_DIRECTORY]) && (lba < file_indexes[FILE_INDEX_ROOT_DIRECTORY] + ROOT_DIRECTORY_BLOCK_SIZE))
+  else if((lba >= file_indexes[FILE_INDEX_ROOT_DIRECTORY]) && (lba < file_indexes[FILE_INDEX_ROOT_DIRECTORY] + BLOCK_SIZE_ROOT_DIRECTORY))
   {
-    addr = DISK_rootDirectory + ((lba - file_indexes[FILE_INDEX_ROOT_DIRECTORY]) * DISK_BLOCK_SIZE);
+    addr = DISK_rootDirectory + ((lba - file_indexes[FILE_INDEX_ROOT_DIRECTORY]) * BLOCK_SIZE);
   }
   else if(lba >= file_indexes[FILE_INDEX_STATUS_FILE] && lba < file_indexes[FILE_INDEX_ROM_BIN])
   {
     addr = DISK_status_file; // TODO: This will fail if/when the status file is bigger than one block
   }
   else if(lba >= file_indexes[FILE_INDEX_ROM_BIN] && lba <  file_indexes[FILE_INDEX_ROM_BIN]){
-    (*the_cart.rom_memcpy_func)(buffer, ((lba - file_indexes[FILE_INDEX_ROM_BIN]) * DISK_BLOCK_SIZE) + offset, bufsize);
+    (*the_cart.rom_memcpy_func)(buffer, ((lba - file_indexes[FILE_INDEX_ROM_BIN]) * BLOCK_SIZE) + offset, bufsize);
     return (int32_t) bufsize;
   }
   else if(lba >= file_indexes[FILE_INDEX_SRAM_BIN] && lba <  file_indexes[FILE_INDEX_PHOTOS_START] ){
-    (*the_cart.ram_memcpy_func)(buffer, ((lba - file_indexes[FILE_INDEX_SRAM_BIN]) * DISK_BLOCK_SIZE) + offset, bufsize);
+    (*the_cart.ram_memcpy_func)(buffer, ((lba - file_indexes[FILE_INDEX_SRAM_BIN]) * BLOCK_SIZE) + offset, bufsize);
     // memset(buffer, 0, bufsize); // TODO
     return (int32_t) bufsize;
   }
@@ -393,7 +399,7 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
     // Determine the photo being asked for by the lba
     gbcam_pull_photo(LBA2PHOTO(lba-file_indexes[FILE_INDEX_PHOTOS_START] ));
     // Copy the correct block of photo from working memory to the buffer
-    memcpy(buffer, working_mem + LBA2PHOTOOFFSET(lba-file_indexes[FILE_INDEX_PHOTOS_START] ) * DISK_BLOCK_SIZE, bufsize);
+    memcpy(buffer, working_mem + LBA2PHOTOOFFSET(lba-file_indexes[FILE_INDEX_PHOTOS_START] ) * BLOCK_SIZE, bufsize);
     return (int32_t) bufsize;
   }
   if(addr != 0)
@@ -414,7 +420,7 @@ int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* 
   // printf("write - lba 0x%x, bufsize%d\n", lba,bufsize);
   
   // out of ramdisk
-  if ( lba >= DISK_BLOCK_NUM ) return -1;
+  if ( lba >= DISK_BLOCK_COUNT ) return -1;
   //page to sector
   if(lba >= file_indexes[FILE_INDEX_DATA_END]){
     //memcpy(&flashingLocation.buff[flashingLocation.sectionCount * 512], buffer, bufsize);
@@ -506,9 +512,9 @@ void rd_append_new_entry(){
 // Build a cluster chain in the FAT table for a new file. Return the new most recent cluster after building the chain
 uint32_t fat_build_cluster_chain(uint32_t starting_cluster, uint32_t num_bytes){
   // Calculate the number of clusters needed
-  uint16_t num_clusters = num_bytes / DISK_CLUSTER_BYTES;
+  uint16_t num_clusters = num_bytes / CLUSTER_BYTE_SIZE;
   // If there's a remainder, we need another cluster
-  if(num_bytes % DISK_CLUSTER_BYTES){
+  if(num_bytes % CLUSTER_BYTE_SIZE){
     num_clusters++;
   }
   // Need to build up a cluster chain if the file does not fit in one cluster
@@ -533,11 +539,11 @@ void append_new_file(uint8_t* name, uint16_t namelen, const char* ext, uint32_t 
   // Append a new blank entry to the root directory so we can populate it
   rd_append_new_entry();
   // Set the file names
-  rd_set_file_name(ROOT_DIR_LATEST_ENTRY, name, namelen, ext);
+  rd_set_file_name(latest_rd_entry, name, namelen, ext);
   // Set the starting cluster
-  rd_set_cluster_start(ROOT_DIR_LATEST_ENTRY, fat_entry);
+  rd_set_cluster_start(latest_rd_entry, fat_entry);
   // Set the filesize
-  rd_set_file_size(ROOT_DIR_LATEST_ENTRY, filesize);
+  rd_set_file_size(latest_rd_entry, filesize);
   // Starting at first cluster, populate the FAT chain
   fat_build_cluster_chain(fat_entry, filesize);
 }
