@@ -25,7 +25,7 @@
 // SCSI
 // https://aidanmocke.com/blog/2020/12/30/USB-MSD-1/
 
-/*  - Enums -  */
+/*  - Private Enums -  */
 enum
 {
   ROOT_DIR_ENTRY_SIZE = 32,
@@ -123,7 +123,7 @@ uint16_t status_file_size = 0;
 // A blank root directory entry to use
 uint8_t blank_rd_entry[] = {      
   ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , // filename (uninitialized)
-  0x21, 0x00, 0xC6, 0x52, 0x6D, 0x65, 0x43, 0x65, 0x43, 0x00, 0x00, 0x88, 0x6D, 0x65, 0x43, // Bunch of unknown options
+  0x20, 0x00, 0xC6, 0x52, 0x6D, 0x65, 0x43, 0x65, 0x43, 0x00, 0x00, 0x88, 0x6D, 0x65, 0x43, // Bunch of unknown options
   0x00, 0x00, //cluster location (unititialized)
   0x00, 0x00, 0x00, 0x00, // Filesize in bytes (unititialized)}
 };
@@ -198,6 +198,45 @@ uint8_t DISK_rootDirectory[BYTE_SIZE_ROOT_DIRECTORY] =
 
 uint8_t DISK_status_file[STATUS_FILE_SIZE] = {0};
 
+/*  - Private Function Declarations -  */
+
+// Convert byte size to blocks required to hold those bytes
+uint32_t byte2blk(uint32_t numbytes); 
+// Convert byte size to number of clusters required to hold those bytes
+uint32_t byte2cls(uint32_t numbytes);
+// Set the filesize of a file in the root directory
+void rd_set_file_size(uint32_t entry, uint32_t filesize);
+// Reset the MCU
+void software_reset();
+// Set up all amount of clusters needed for each file
+void set_file_cluster_sizes();
+// Set up the starting logical block addresses for each file
+void set_file_lba_indexes();
+// Set up the starting clusters for each file
+void set_starting_clusters();
+// Append some data to the status file, const str
+void append_status_file(const uint8_t* buf);
+// Append data to the status file, arbitrary buf
+void append_status_file_buf(uint8_t* buf);
+// Set up the memory needed for the fake disk
+void init_disk_mem();
+// Set the file size of a file in the root directory
+void rd_set_file_size(uint32_t entry, uint32_t filesize);
+// Set the starting cluster for a given file 
+void rd_set_cluster_start(uint32_t entry, uint16_t start_cluster);
+// Set the file name of the file in the root directory
+void rd_set_file_name(uint32_t entry, uint8_t* name, uint16_t namelen, const char* ext);
+// Append a new entry to the root directory
+void rd_append_new_entry();
+// Build a cluster chain in the FAT table for a new file. Return the new most recent cluster after building the chain
+uint32_t fat_build_cluster_chain(uint32_t starting_cluster, uint32_t num_bytes);
+// Add a new file to the fake disk
+void append_new_file(uint8_t* name, uint16_t namelen, const char* ext, uint32_t filesize, uint32_t fat_entry);
+// Initialize the disk
+void init_disk();
+
+/*  - Private Function Definitions -  */
+
 // Some MCU doesn't have enough 8KB SRAM to store the whole disk
 // We will use Flash as read-only disk with board that has
 // Convert byte size to blocks required
@@ -227,8 +266,6 @@ uint32_t byte2cls(uint32_t numbytes){
   return clus;
 }
 
-void rd_set_file_size(uint32_t entry, uint32_t filesize);
-
 void software_reset()
 {
     // watchdog_enable(1, 1); // comment out so it stops bothering me, don't know where this is
@@ -245,16 +282,25 @@ void set_file_cluster_sizes(){
 }
 
 void set_file_lba_indexes(){
+  // First cluster is for all the FAT magic data
   file_lba_indexes[FILE_INDEX_RESERVED]               = 0x00000;
+  // FAT table starts at 0x1, 0x81 blocks in size
   file_lba_indexes[FILE_INDEX_FAT_TABLE_1_START]      = 0x00001;
+  // Redundant FAT table is 0x81 blocks later
   file_lba_indexes[FILE_INDEX_FAT_TABLE_2_START]      = 0x00082;
+  // Root directory starts after second FAT table
   file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY]         = 0x00103;
+  // Root directory is 0x20 blocks (32 * 512 = 16384 bytes). Can store 16384 / 32 = 512 files total
   file_lba_indexes[FILE_INDEX_DATA_STARTS]            = 0x00123;
   file_lba_indexes[FILE_INDEX_STATUS_FILE]            = file_lba_indexes[FILE_INDEX_DATA_STARTS];
   file_lba_indexes[FILE_INDEX_ROM_BIN]                = file_lba_indexes[FILE_INDEX_STATUS_FILE] + CLS2BLK(file_cluster_sizes[INDEX_CLUSTER_SIZE_STATUS_FILE]);
   file_lba_indexes[FILE_INDEX_SRAM_BIN]               = file_lba_indexes[FILE_INDEX_ROM_BIN] + CLS2BLK(file_cluster_sizes[INDEX_CLUSTER_SIZE_ROM_FILE]);
+  uint32_t photo_cluster_size = 0;
+  if(the_cart.mapper_type == MAPPER_GBCAM){
+    photo_cluster_size = file_cluster_sizes[INDEX_CLUSTER_SIZE_PHOTOS];
+  }
   file_lba_indexes[FILE_INDEX_PHOTOS_START]           = file_lba_indexes[FILE_INDEX_SRAM_BIN] + CLS2BLK(file_cluster_sizes[INDEX_CLUSTER_SIZE_RAM_FILE]);
-  file_lba_indexes[FILE_INDEX_PHOTOS_END]             = file_lba_indexes[FILE_INDEX_PHOTOS_START] + (CLS2BLK(file_cluster_sizes[INDEX_CLUSTER_SIZE_PHOTOS]) * 30);
+  file_lba_indexes[FILE_INDEX_PHOTOS_END]             = file_lba_indexes[FILE_INDEX_PHOTOS_START] + (CLS2BLK(photo_cluster_size) * 30);
   file_lba_indexes[FILE_INDEX_DATA_END]               = file_lba_indexes[FILE_INDEX_PHOTOS_END];
 }
 
@@ -313,204 +359,6 @@ void append_status_file_buf(uint8_t* buf){
 void init_disk_mem(){
   memset(DISK_status_file, ' ', STATUS_FILE_SIZE);
   // memset(DISK_fatTable, 0xFF, FAT_TABLE_SIZE);
-}
-
-// Invoked when received SCSI_CMD_INQUIRY
-// Application fill vendor id, product id and revision with string up to 8, 16, 4 characters respectively
-void tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t product_id[16], uint8_t product_rev[4])
-{
-  (void) lun;
-
-  const char vid[] = "kidoutai";
-  const char pid[] = "GBPunk";
-  const char rev[] = "1.0";
-
-  memcpy(vendor_id  , vid, strlen(vid));
-  memcpy(product_id , pid, strlen(pid));
-  memcpy(product_rev, rev, strlen(rev));
-}
-
-// Invoked when received Test Unit Ready command.
-// return true allowing host to read/write this LUN e.g SD card inserted
-bool tud_msc_test_unit_ready_cb(uint8_t lun)
-{
-  (void) lun;
-
-  // RAM disk is ready until ejected
-  if (ejected) {
-    // Additional Sense 3A-00 is NOT_FOUND
-    tud_msc_set_sense(lun, SCSI_SENSE_NOT_READY, 0x3a, 0x00);
-    return false;
-  }
-
-  return true;
-}
-
-// Invoked when received SCSI_CMD_READ_CAPACITY_10 and SCSI_CMD_READ_FORMAT_CAPACITY to determine the disk size
-// Application update block count and block size
-void tud_msc_capacity_cb(uint8_t lun, uint32_t* block_count, uint16_t* block_size)
-{
-  (void) lun;
-
-  *block_count = DISK_BLOCK_COUNT;
-  *block_size  = BLOCK_SIZE;
-}
-
-// Invoked when received Start Stop Unit command
-// - Start = 0 : stopped power mode, if load_eject = 1 : unload disk storage
-// - Start = 1 : active mode, if load_eject = 1 : load disk storage
-bool tud_msc_start_stop_cb(uint8_t lun, uint8_t power_condition, bool start, bool load_eject)
-{
-  (void) lun;
-  (void) power_condition;
-
-  if ( load_eject )
-  {
-    if (start)
-    {
-      // load disk storage
-    }else
-    {
-      // unload disk storage
-      ejected = true;
-    }
-  }
-
-  return true;
-}
-
-// Callback invoked when received READ10 command.
-// Copy disk's data to buffer (up to bufsize) and return number of copied bytes.
-int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buffer, uint32_t bufsize)
-{
-  (void) lun;
-
-  // out of ramdisk
-  if ( lba >= DISK_BLOCK_COUNT ) return -1;
-  // printf("lba 0x%x, bufsize %d, offset %d\n",lba, bufsize, offset);
-  uint8_t const* addr = 0;
-  // memcpy(buffer, addr, bufsize);
-
-  // uint8_t * addr = 0;
-  if(lba == file_lba_indexes[FILE_INDEX_RESERVED])
-  {
-    addr = DISK_reservedSection;
-  }
-
-  //Need to handle both FAT tables seperately (TODO: Just tell the thing there's only one table)
-  else if((lba >= file_lba_indexes[FILE_INDEX_RESERVED]) && (lba < (file_lba_indexes[FILE_INDEX_FAT_TABLE_1_START] + FAT_TABLE_BLOCK_SIZE)))
-  {
-    addr = DISK_fatTable + ((lba - file_lba_indexes[FILE_INDEX_FAT_TABLE_1_START]) * BLOCK_SIZE);
-  }
-  else if((lba >= file_lba_indexes[FILE_INDEX_FAT_TABLE_2_START]) && (lba < (file_lba_indexes[FILE_INDEX_FAT_TABLE_2_START] + FAT_TABLE_BLOCK_SIZE)))
-  {
-    addr = DISK_fatTable + ((lba - file_lba_indexes[FILE_INDEX_FAT_TABLE_2_START]) * BLOCK_SIZE);
-  }
-  else if((lba >= file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY]) && (lba < file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY] + BLOCK_SIZE_ROOT_DIRECTORY))
-  {
-    addr = DISK_rootDirectory + ((lba - file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY]) * BLOCK_SIZE);
-  }
-  else if(lba >= file_lba_indexes[FILE_INDEX_STATUS_FILE] && lba < file_lba_indexes[FILE_INDEX_ROM_BIN])
-  {
-    addr = DISK_status_file; // TODO: This will fail if/when the status file is bigger than one block
-  }
-  else if(lba >= file_lba_indexes[FILE_INDEX_ROM_BIN] && lba <  file_lba_indexes[FILE_INDEX_ROM_BIN]){
-    (*the_cart.rom_memcpy_func)(buffer, ((lba - file_lba_indexes[FILE_INDEX_ROM_BIN]) * BLOCK_SIZE) + offset, bufsize);
-    return (int32_t) bufsize;
-  }
-  else if(lba >= file_lba_indexes[FILE_INDEX_SRAM_BIN] && lba <  file_lba_indexes[FILE_INDEX_PHOTOS_START] ){
-    (*the_cart.ram_memcpy_func)(buffer, ((lba - file_lba_indexes[FILE_INDEX_SRAM_BIN]) * BLOCK_SIZE) + offset, bufsize);
-    // memset(buffer, 0, bufsize); // TODO
-    return (int32_t) bufsize;
-  }
-  // TODO: Will probably need to deal with offset here
-  else if((lba >= file_lba_indexes[FILE_INDEX_PHOTOS_START] ) && (lba < file_lba_indexes[FILE_INDEX_PHOTOS_END])){
-    // Pull the right photo to working memory
-    // Determine the photo being asked for by the lba
-    gbcam_pull_photo(LBA2PHOTO(lba-file_lba_indexes[FILE_INDEX_PHOTOS_START] ));
-    // Copy the correct block of photo from working memory to the buffer
-    memcpy(buffer, working_mem + LBA2PHOTOOFFSET(lba-file_lba_indexes[FILE_INDEX_PHOTOS_START] ) * BLOCK_SIZE, bufsize);
-    return (int32_t) bufsize;
-  }
-  if(addr != 0)
-  {
-    memcpy(buffer, addr, bufsize);
-  }
-  else{
-    memset(buffer, 0, bufsize);
-  }
-  return (int32_t) bufsize;
-}
-
-// Callback invoked when received WRITE10 command.
-// Process data in buffer to disk's storage and return number of written bytes
-int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* buffer, uint32_t bufsize)
-{
-  (void) lun;
-  // printf("write - lba 0x%x, bufsize%d\n", lba,bufsize);
-  
-  // out of ramdisk
-  if ( lba >= DISK_BLOCK_COUNT ) return -1;
-  //page to sector
-  if(lba >= file_lba_indexes[FILE_INDEX_DATA_END]){
-    //memcpy(&flashingLocation.buff[flashingLocation.sectionCount * 512], buffer, bufsize);
-    //uint32_t ints = save_and_disable_interrupts();
-    printf("0x%x\n", lba);
-  }
-
-  if(lba == file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY])
-  {
-    printf("0x%x\n", lba);
-  }
-
-//#ifndef CFG_EXAMPLE_MSC_READONLY
-//  uint8_t* addr = msc_disk[lba] + offset;
-//  memcpy(addr, buffer, bufsize);
-//#else
-  
-
-  return (int32_t) bufsize;
-}
-
-// Callback invoked when received an SCSI command not in built-in list below
-// - READ_CAPACITY10, READ_FORMAT_CAPACITY, INQUIRY, MODE_SENSE6, REQUEST_SENSE
-// - READ10 and WRITE10 has their own callbacks
-int32_t tud_msc_scsi_cb (uint8_t lun, uint8_t const scsi_cmd[16], void* buffer, uint16_t bufsize)
-{
-  // read10 & write10 has their own callback and MUST not be handled here
-
-  void const* response = NULL;
-  int32_t resplen = 0;
-
-  // most scsi handled is input
-  bool in_xfer = true;
-
-  switch (scsi_cmd[0])
-  {
-    default:
-      // Set Sense = Invalid Command Operation
-      tud_msc_set_sense(lun, SCSI_SENSE_ILLEGAL_REQUEST, 0x20, 0x00);
-
-      // negative means error -> tinyusb could stall and/or response with failed status
-      resplen = -1;
-    break;
-  }
-
-  // return resplen must not larger than bufsize
-  if ( resplen > bufsize ) resplen = bufsize;
-
-  if ( response && (resplen > 0) )
-  {
-    if(in_xfer)
-    {
-      memcpy(buffer, response, (size_t) resplen);
-    }else
-    {
-      // SCSI output
-    }
-  }
-
-  return (int32_t) resplen;
 }
 
 // Set the file size of a file in the root directory
@@ -630,4 +478,204 @@ void init_disk(){
       append_new_file(name, 8, "bmp", 7286, file_starting_clusters[INDEX_CLUSTER_START_PHOTOS] + (i * file_cluster_sizes[INDEX_CLUSTER_SIZE_PHOTOS]));
     }
   }
+}
+
+/*  - TinyUSB Function Callbacks -  */
+
+// Invoked when received SCSI_CMD_INQUIRY
+// Application fill vendor id, product id and revision with string up to 8, 16, 4 characters respectively
+void tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t product_id[16], uint8_t product_rev[4])
+{
+  (void) lun;
+
+  const char vid[] = "kidoutai";
+  const char pid[] = "GBPunk";
+  const char rev[] = "1.0";
+
+  memcpy(vendor_id  , vid, strlen(vid));
+  memcpy(product_id , pid, strlen(pid));
+  memcpy(product_rev, rev, strlen(rev));
+}
+
+// Invoked when received Test Unit Ready command.
+// return true allowing host to read/write this LUN e.g SD card inserted
+bool tud_msc_test_unit_ready_cb(uint8_t lun)
+{
+  (void) lun;
+
+  // RAM disk is ready until ejected
+  if (ejected) {
+    // Additional Sense 3A-00 is NOT_FOUND
+    tud_msc_set_sense(lun, SCSI_SENSE_NOT_READY, 0x3a, 0x00);
+    return false;
+  }
+
+  return true;
+}
+
+// Invoked when received SCSI_CMD_READ_CAPACITY_10 and SCSI_CMD_READ_FORMAT_CAPACITY to determine the disk size
+// Application update block count and block size
+void tud_msc_capacity_cb(uint8_t lun, uint32_t* block_count, uint16_t* block_size)
+{
+  (void) lun;
+
+  *block_count = DISK_BLOCK_COUNT;
+  *block_size  = BLOCK_SIZE;
+}
+
+// Invoked when received Start Stop Unit command
+// - Start = 0 : stopped power mode, if load_eject = 1 : unload disk storage
+// - Start = 1 : active mode, if load_eject = 1 : load disk storage
+bool tud_msc_start_stop_cb(uint8_t lun, uint8_t power_condition, bool start, bool load_eject)
+{
+  (void) lun;
+  (void) power_condition;
+
+  if ( load_eject )
+  {
+    if (start)
+    {
+      // load disk storage
+    }else
+    {
+      // unload disk storage
+      ejected = true;
+    }
+  }
+
+  return true;
+}
+
+// Callback invoked when received READ10 command.
+// Copy disk's data to buffer (up to bufsize) and return number of copied bytes.
+int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buffer, uint32_t bufsize)
+{
+  (void) lun;
+
+  // out of ramdisk
+  if ( lba >= DISK_BLOCK_COUNT ) return -1;
+  // printf("lba 0x%x, bufsize %d, offset %d\n",lba, bufsize, offset);
+  uint8_t const* addr = 0;
+  // memcpy(buffer, addr, bufsize);
+
+  // uint8_t * addr = 0;
+  if(lba == file_lba_indexes[FILE_INDEX_RESERVED])
+  {
+    addr = DISK_reservedSection;
+  }
+
+  //Need to handle both FAT tables seperately (TODO: Just tell the thing there's only one table)
+  else if((lba >= file_lba_indexes[FILE_INDEX_RESERVED]) && (lba < (file_lba_indexes[FILE_INDEX_FAT_TABLE_1_START] + FAT_TABLE_BLOCK_SIZE)))
+  {
+    addr = DISK_fatTable + ((lba - file_lba_indexes[FILE_INDEX_FAT_TABLE_1_START]) * BLOCK_SIZE);
+  }
+  else if((lba >= file_lba_indexes[FILE_INDEX_FAT_TABLE_2_START]) && (lba < (file_lba_indexes[FILE_INDEX_FAT_TABLE_2_START] + FAT_TABLE_BLOCK_SIZE)))
+  {
+    addr = DISK_fatTable + ((lba - file_lba_indexes[FILE_INDEX_FAT_TABLE_2_START]) * BLOCK_SIZE);
+  }
+  else if((lba >= file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY]) && (lba < file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY] + BLOCK_SIZE_ROOT_DIRECTORY))
+  {
+    addr = DISK_rootDirectory + ((lba - file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY]) * BLOCK_SIZE);
+  }
+  else if(lba >= file_lba_indexes[FILE_INDEX_STATUS_FILE] && lba < file_lba_indexes[FILE_INDEX_ROM_BIN])
+  {
+    addr = DISK_status_file; // TODO: This will fail if/when the status file is bigger than one block
+  }
+  else if(lba >= file_lba_indexes[FILE_INDEX_ROM_BIN] && lba <  file_lba_indexes[FILE_INDEX_SRAM_BIN]){
+    (*the_cart.rom_memcpy_func)(buffer, ((lba - file_lba_indexes[FILE_INDEX_ROM_BIN]) * BLOCK_SIZE) + offset, bufsize);
+    return (int32_t) bufsize;
+  }
+  else if(lba >= file_lba_indexes[FILE_INDEX_SRAM_BIN] && lba < file_lba_indexes[FILE_INDEX_PHOTOS_START] ){
+    (*the_cart.ram_memcpy_func)(buffer, ((lba - file_lba_indexes[FILE_INDEX_SRAM_BIN]) * BLOCK_SIZE) + offset, bufsize);
+    // memset(buffer, 0, bufsize); // TODO
+    return (int32_t) bufsize;
+  }
+  // TODO: Not entering here when opening a photo
+  else if((lba >= file_lba_indexes[FILE_INDEX_PHOTOS_START] ) && (lba < file_lba_indexes[FILE_INDEX_PHOTOS_END])){
+    // Pull the right photo to working memory
+    // Determine the photo being asked for by the lba
+    gbcam_pull_photo(LBA2PHOTO(lba - file_lba_indexes[FILE_INDEX_PHOTOS_START]));
+    // Copy the correct block of photo from working memory to the buffer
+    memcpy(buffer, working_mem + LBA2PHOTOOFFSET(lba - file_lba_indexes[FILE_INDEX_PHOTOS_START] ) * BLOCK_SIZE, bufsize);
+    return (int32_t) bufsize;
+  }
+  if(addr != 0)
+  {
+    memcpy(buffer, addr, bufsize);
+  }
+  else{
+    memset(buffer, 0, bufsize);
+  }
+  return (int32_t) bufsize;
+}
+
+// Callback invoked when received WRITE10 command.
+// Process data in buffer to disk's storage and return number of written bytes
+int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* buffer, uint32_t bufsize)
+{
+  (void) lun;
+  // printf("write - lba 0x%x, bufsize%d\n", lba,bufsize);
+  
+  // out of ramdisk
+  if ( lba >= DISK_BLOCK_COUNT ) return -1;
+  //page to sector
+  if(lba >= file_lba_indexes[FILE_INDEX_DATA_END]){
+    //memcpy(&flashingLocation.buff[flashingLocation.sectionCount * 512], buffer, bufsize);
+    //uint32_t ints = save_and_disable_interrupts();
+    printf("0x%x\n", lba);
+  }
+
+  if(lba == file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY])
+  {
+    printf("0x%x\n", lba);
+  }
+
+//#ifndef CFG_EXAMPLE_MSC_READONLY
+//  uint8_t* addr = msc_disk[lba] + offset;
+//  memcpy(addr, buffer, bufsize);
+//#else
+  
+
+  return (int32_t) bufsize;
+}
+
+// Callback invoked when received an SCSI command not in built-in list below
+// - READ_CAPACITY10, READ_FORMAT_CAPACITY, INQUIRY, MODE_SENSE6, REQUEST_SENSE
+// - READ10 and WRITE10 has their own callbacks
+int32_t tud_msc_scsi_cb (uint8_t lun, uint8_t const scsi_cmd[16], void* buffer, uint16_t bufsize)
+{
+  // read10 & write10 has their own callback and MUST not be handled here
+
+  void const* response = NULL;
+  int32_t resplen = 0;
+
+  // most scsi handled is input
+  bool in_xfer = true;
+
+  switch (scsi_cmd[0])
+  {
+    default:
+      // Set Sense = Invalid Command Operation
+      tud_msc_set_sense(lun, SCSI_SENSE_ILLEGAL_REQUEST, 0x20, 0x00);
+
+      // negative means error -> tinyusb could stall and/or response with failed status
+      resplen = -1;
+    break;
+  }
+
+  // return resplen must not larger than bufsize
+  if ( resplen > bufsize ) resplen = bufsize;
+
+  if ( response && (resplen > 0) )
+  {
+    if(in_xfer)
+    {
+      memcpy(buffer, response, (size_t) resplen);
+    }else
+    {
+      // SCSI output
+    }
+  }
+
+  return (int32_t) resplen;
 }

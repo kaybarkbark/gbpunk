@@ -49,7 +49,6 @@ void populate_cart_info(){
         case 252: strncpy(the_cart.cart_type_str, "GB CAMERA", 9); the_cart.mapper_type = MAPPER_GBCAM; break;
         default: the_cart.mapper_type = MAPPER_UNKNOWN; break;
     }
-    // TODO: Handle unknown mapper so we don't get a segfault
     if(the_cart.mapper_type == MAPPER_ROM_ONLY){
         the_cart.rom_memcpy_func = &no_mapper_memcpy_rom;
         // No actual mapper so none of these apply
