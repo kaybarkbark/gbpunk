@@ -10,7 +10,8 @@
         "mbc3.h": "c",
         "mbc5.h": "c",
         "string.h": "c",
-        "utils.h": "c"
+        "utils.h": "c",
+        "tusb.h": "c"
     },
     "cortex-debug.variableUseNaturalFormat": false
 }

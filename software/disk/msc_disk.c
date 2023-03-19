@@ -196,8 +196,37 @@ uint8_t DISK_rootDirectory[BYTE_SIZE_ROOT_DIRECTORY] =
       // We will fill in all other entries later
 };
 
+uint8_t DISK_status_file[STATUS_FILE_SIZE] = {0};
+
 // Some MCU doesn't have enough 8KB SRAM to store the whole disk
 // We will use Flash as read-only disk with board that has
+// Convert byte size to blocks required
+
+uint32_t byte2blk(uint32_t numbytes){
+  uint32_t blks = 0;
+  if(numbytes >= BLOCK_SIZE){
+    blks = numbytes / BLOCK_SIZE;
+  }
+  // If there is remainder, we need an extra block
+  if(numbytes % BLOCK_SIZE){
+    blks++;
+  }
+  return blks;
+}
+
+// Convert byte size to number of clusters required
+uint32_t byte2cls(uint32_t numbytes){
+  uint32_t clus = 0;
+  if(numbytes >= CLUSTER_BYTE_SIZE){
+    clus = numbytes / CLUSTER_BYTE_SIZE;
+  }
+  // If there is remainder, we need an extra block
+  if(numbytes % CLUSTER_BYTE_SIZE){
+    clus++;
+  }
+  return clus;
+}
+
 void rd_set_file_size(uint32_t entry, uint32_t filesize);
 
 void software_reset()
@@ -207,9 +236,11 @@ void software_reset()
 }
 
 void set_file_cluster_sizes(){
+  // Hardcoded, just one cluster large for now
   file_cluster_sizes[INDEX_CLUSTER_SIZE_STATUS_FILE] = 1;
-  file_cluster_sizes[INDEX_CLUSTER_SIZE_ROM_FILE] = 8192;
-  file_cluster_sizes[INDEX_CLUSTER_SIZE_RAM_FILE] = 8192;
+  file_cluster_sizes[INDEX_CLUSTER_SIZE_ROM_FILE] = byte2cls(the_cart.rom_size_bytes);
+  file_cluster_sizes[INDEX_CLUSTER_SIZE_RAM_FILE] = byte2cls(the_cart.ram_size_bytes);
+  // Determined emprically
   file_cluster_sizes[INDEX_CLUSTER_SIZE_PHOTOS] = 2;
 }
 
@@ -250,9 +281,6 @@ void set_starting_clusters(){
 
 
 
-
-
-uint8_t DISK_status_file[STATUS_FILE_SIZE] = {0};
 void append_status_file(const uint8_t* buf){
   uint16_t buf_index = 0;
   for(;;){
