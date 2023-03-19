@@ -93,24 +93,58 @@ enum {
 };
 
 enum {
-  INDEX_RESERVED          = 0x00000,  // First cluster is for all the FAT magic data
-  INDEX_FAT_TABLE_1_START = 0x00001,  // FAT table starts at 0x1, 0x81 blocks in size
-  INDEX_FAT_TABLE_2_START = 0x00082,  // Redundant FAT table is 0x81 blocks later
-  INDEX_ROOT_DIRECTORY    = 0x00103,  // Root directory starts after second FAT table
-  INDEX_DATA_STARTS       = 0x00123,  // Root directory is 0x20 blocks (32 * 512 = 16384 bytes). Can store 16384 / 32 = 512 files total
+  FILE_INDEX_RESERVED          = 0,  // First cluster is for all the FAT magic data
+  FILE_INDEX_FAT_TABLE_1_START = 1,  // FAT table starts at 0x1, 0x81 blocks in size
+  FILE_INDEX_FAT_TABLE_2_START = 2,  // Redundant FAT table is 0x81 blocks later
+  FILE_INDEX_ROOT_DIRECTORY    = 3,  // Root directory starts after second FAT table
+  FILE_INDEX_DATA_STARTS       = 4,  // Root directory is 0x20 blocks (32 * 512 = 16384 bytes). Can store 16384 / 32 = 512 files total
   // Status file is the first one in the data section
-  INDEX_STATUS_FILE       = INDEX_DATA_STARTS,  
+  FILE_INDEX_STATUS_FILE       = 5,  
   // ROM bin starts after status file (status file 1 cluster large, 8 blocks)
-  INDEX_ROM_BIN           = INDEX_STATUS_FILE + CLS2BLK(CLUSTER_SIZE_STATUS_FILE),
+  FILE_INDEX_ROM_BIN           = 6,
   // SRAM bin starts after ROM bin (ROM bin 8192 clusters large, 65536 blocks, 32 MB total filesize)
-  INDEX_SRAM_BIN          = INDEX_ROM_BIN + CLS2BLK(CLUSTER_SIZE_ROM_FILE),
+  FILE_INDEX_SRAM_BIN          = 7,
   // Photos starts after SRAM bin (SRAM bin 8192 clusters large, 65536 blocks, 32 MB total filesize)
-  INDEX_PHOTOS_START      = INDEX_SRAM_BIN + CLS2BLK(CLUSTER_SIZE_RAM_FILE),
+  FILE_INDEX_PHOTOS_START      = 8,
   // Photos end after 30 entries
-  INDEX_PHOTOS_END        = INDEX_PHOTOS_START + (CLS2BLK(CLUSTER_SIZE_PHOTOS) * 30),
+  FILE_INDEX_PHOTOS_END        = 9,
   // End of the files on the drive
-  INDEX_DATA_END = INDEX_PHOTOS_END
+  FILE_INDEX_DATA_END          = 10  
 };
+
+uint32_t file_indexes[30] = {0};
+void set_file_indexes(){
+  file_indexes[FILE_INDEX_RESERVED]           = 0x00000;
+  file_indexes[FILE_INDEX_FAT_TABLE_1_START]  = 0x00001;
+  file_indexes[FILE_INDEX_FAT_TABLE_2_START]  = 0x00082;
+  file_indexes[FILE_INDEX_ROOT_DIRECTORY]     = 0x00103;
+  file_indexes[FILE_INDEX_DATA_STARTS]        = 0x00123;
+  file_indexes[FILE_INDEX_STATUS_FILE]        = file_indexes[FILE_INDEX_DATA_STARTS];
+  file_indexes[FILE_INDEX_ROM_BIN]            = file_indexes[FILE_INDEX_STATUS_FILE] + CLS2BLK(CLUSTER_SIZE_STATUS_FILE);
+  file_indexes[FILE_INDEX_SRAM_BIN]                = file_indexes[FILE_INDEX_ROM_BIN] + CLS2BLK(CLUSTER_SIZE_ROM_FILE);
+  file_indexes[FILE_INDEX_PHOTOS_START]            = file_indexes[FILE_INDEX_SRAM_BIN] + CLS2BLK(CLUSTER_SIZE_RAM_FILE);
+  file_indexes[FILE_INDEX_PHOTOS_END]              = file_indexes[FILE_INDEX_PHOTOS_START] + (CLS2BLK(CLUSTER_SIZE_PHOTOS) * 30);
+  file_indexes[FILE_INDEX_DATA_END]                = file_indexes[FILE_INDEX_PHOTOS_END];
+}
+// enum {
+//   INDEX_RESERVED          = 0x00000,  // First cluster is for all the FAT magic data
+//   INDEX_FAT_TABLE_1_START = 0x00001,  // FAT table starts at 0x1, 0x81 blocks in size
+//   INDEX_FAT_TABLE_2_START = 0x00082,  // Redundant FAT table is 0x81 blocks later
+//   INDEX_ROOT_DIRECTORY    = 0x00103,  // Root directory starts after second FAT table
+//   INDEX_DATA_STARTS       = 0x00123,  // Root directory is 0x20 blocks (32 * 512 = 16384 bytes). Can store 16384 / 32 = 512 files total
+//   // Status file is the first one in the data section
+//   INDEX_STATUS_FILE       = INDEX_DATA_STARTS,  
+//   // ROM bin starts after status file (status file 1 cluster large, 8 blocks)
+//   INDEX_ROM_BIN           = INDEX_STATUS_FILE + CLS2BLK(CLUSTER_SIZE_STATUS_FILE),
+//   // SRAM bin starts after ROM bin (ROM bin 8192 clusters large, 65536 blocks, 32 MB total filesize)
+//   INDEX_SRAM_BIN          = INDEX_ROM_BIN + CLS2BLK(CLUSTER_SIZE_ROM_FILE),
+//   // Photos starts after SRAM bin (SRAM bin 8192 clusters large, 65536 blocks, 32 MB total filesize)
+//   INDEX_PHOTOS_START      = INDEX_SRAM_BIN + CLS2BLK(CLUSTER_SIZE_RAM_FILE),
+//   // Photos end after 30 entries
+//   INDEX_PHOTOS_END        = INDEX_PHOTOS_START + (CLS2BLK(CLUSTER_SIZE_PHOTOS) * 30),
+//   // End of the files on the drive
+//   INDEX_DATA_END = INDEX_PHOTOS_END
+// };
 
 enum{
  CLUSTER_START            = 2,
@@ -322,44 +356,44 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
   // memcpy(buffer, addr, bufsize);
 
   // uint8_t * addr = 0;
-  if(lba == INDEX_RESERVED)
+  if(lba == file_indexes[FILE_INDEX_RESERVED])
   {
     addr = DISK_reservedSection;
   }
 
   //Need to handle both FAT tables seperately (TODO: Just tell the thing there's only one table)
-  else if((lba >= INDEX_FAT_TABLE_1_START) && (lba < (INDEX_FAT_TABLE_1_START + FAT_TABLE_BLOCK_SIZE)))
+  else if((lba >= file_indexes[FILE_INDEX_RESERVED]) && (lba < (file_indexes[FILE_INDEX_FAT_TABLE_1_START] + FAT_TABLE_BLOCK_SIZE)))
   {
-    addr = DISK_fatTable + ((lba - INDEX_FAT_TABLE_1_START) * DISK_BLOCK_SIZE);
+    addr = DISK_fatTable + ((lba - file_indexes[FILE_INDEX_FAT_TABLE_1_START]) * DISK_BLOCK_SIZE);
   }
-  else if((lba >= INDEX_FAT_TABLE_2_START) && (lba < (INDEX_FAT_TABLE_2_START + FAT_TABLE_BLOCK_SIZE)))
+  else if((lba >= file_indexes[FILE_INDEX_FAT_TABLE_2_START]) && (lba < (file_indexes[FILE_INDEX_FAT_TABLE_2_START] + FAT_TABLE_BLOCK_SIZE)))
   {
-    addr = DISK_fatTable + ((lba - INDEX_FAT_TABLE_2_START) * DISK_BLOCK_SIZE);
+    addr = DISK_fatTable + ((lba - file_indexes[FILE_INDEX_FAT_TABLE_2_START]) * DISK_BLOCK_SIZE);
   }
-  else if((lba >= INDEX_ROOT_DIRECTORY) && (lba < INDEX_ROOT_DIRECTORY + ROOT_DIRECTORY_BLOCK_SIZE))
+  else if((lba >= file_indexes[FILE_INDEX_ROOT_DIRECTORY]) && (lba < file_indexes[FILE_INDEX_ROOT_DIRECTORY] + ROOT_DIRECTORY_BLOCK_SIZE))
   {
-    addr = DISK_rootDirectory + ((lba - INDEX_ROOT_DIRECTORY) * DISK_BLOCK_SIZE);
+    addr = DISK_rootDirectory + ((lba - file_indexes[FILE_INDEX_ROOT_DIRECTORY]) * DISK_BLOCK_SIZE);
   }
-  else if(lba >= INDEX_STATUS_FILE && lba < INDEX_ROM_BIN)
+  else if(lba >= file_indexes[FILE_INDEX_STATUS_FILE] && lba < file_indexes[FILE_INDEX_ROM_BIN])
   {
     addr = DISK_status_file; // TODO: This will fail if/when the status file is bigger than one block
   }
-  else if(lba >= INDEX_ROM_BIN && lba <  INDEX_SRAM_BIN){
-    (*the_cart.rom_memcpy_func)(buffer, ((lba - INDEX_ROM_BIN) * DISK_BLOCK_SIZE) + offset, bufsize);
+  else if(lba >= file_indexes[FILE_INDEX_ROM_BIN] && lba <  file_indexes[FILE_INDEX_ROM_BIN]){
+    (*the_cart.rom_memcpy_func)(buffer, ((lba - file_indexes[FILE_INDEX_ROM_BIN]) * DISK_BLOCK_SIZE) + offset, bufsize);
     return (int32_t) bufsize;
   }
-  else if(lba >= INDEX_SRAM_BIN && lba <  INDEX_PHOTOS_START){
-    (*the_cart.ram_memcpy_func)(buffer, ((lba - INDEX_SRAM_BIN) * DISK_BLOCK_SIZE) + offset, bufsize);
+  else if(lba >= file_indexes[FILE_INDEX_SRAM_BIN] && lba <  file_indexes[FILE_INDEX_PHOTOS_START] ){
+    (*the_cart.ram_memcpy_func)(buffer, ((lba - file_indexes[FILE_INDEX_SRAM_BIN]) * DISK_BLOCK_SIZE) + offset, bufsize);
     // memset(buffer, 0, bufsize); // TODO
     return (int32_t) bufsize;
   }
   // TODO: Will probably need to deal with offset here
-  else if((lba >= INDEX_PHOTOS_START) && (lba < INDEX_PHOTOS_END)){
+  else if((lba >= file_indexes[FILE_INDEX_PHOTOS_START] ) && (lba < file_indexes[FILE_INDEX_PHOTOS_END])){
     // Pull the right photo to working memory
     // Determine the photo being asked for by the lba
-    gbcam_pull_photo(LBA2PHOTO(lba-INDEX_PHOTOS_START));
+    gbcam_pull_photo(LBA2PHOTO(lba-file_indexes[FILE_INDEX_PHOTOS_START] ));
     // Copy the correct block of photo from working memory to the buffer
-    memcpy(buffer, working_mem + LBA2PHOTOOFFSET(lba-INDEX_PHOTOS_START) * DISK_BLOCK_SIZE, bufsize);
+    memcpy(buffer, working_mem + LBA2PHOTOOFFSET(lba-file_indexes[FILE_INDEX_PHOTOS_START] ) * DISK_BLOCK_SIZE, bufsize);
     return (int32_t) bufsize;
   }
   if(addr != 0)
@@ -382,13 +416,13 @@ int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* 
   // out of ramdisk
   if ( lba >= DISK_BLOCK_NUM ) return -1;
   //page to sector
-  if(lba >= INDEX_DATA_END){
+  if(lba >= file_indexes[FILE_INDEX_DATA_END]){
     //memcpy(&flashingLocation.buff[flashingLocation.sectionCount * 512], buffer, bufsize);
     //uint32_t ints = save_and_disable_interrupts();
     printf("0x%x\n", lba);
   }
 
-  if(lba == INDEX_ROOT_DIRECTORY)
+  if(lba == file_indexes[FILE_INDEX_ROOT_DIRECTORY])
   {
     printf("0x%x\n", lba);
   }
@@ -509,6 +543,9 @@ void append_new_file(uint8_t* name, uint16_t namelen, const char* ext, uint32_t 
 }
 
 void init_disk(){
+  // Set the file indexes
+  set_file_indexes();
+
   // HANDLE VOLUME INFO
   // First, initialize the names for everything
   // Set the volume label (entry 0) to the cart name (first 8 chars)
