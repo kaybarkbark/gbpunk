@@ -18,6 +18,7 @@ target_sources(GBPUNK PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/main.c
         ${CMAKE_CURRENT_LIST_DIR}/disk/usb_descriptors.c
         ${CMAKE_CURRENT_LIST_DIR}/disk/msc_disk.c
+        ${CMAKE_CURRENT_LIST_DIR}/disk/gb_disk.c
         ${CMAKE_CURRENT_LIST_DIR}/gb.c
         ${CMAKE_CURRENT_LIST_DIR}/utils.c
         ${CMAKE_CURRENT_LIST_DIR}/mappers/mbc1.c

@@ -19,6 +19,7 @@
 #include "utils.h"
 #include "unit_tests.h"
 #include "disk/msc_disk.h"
+#include "disk/gb_disk.h"
 #include "status_led.h"
 
 #define DO_UNIT_TEST 1
