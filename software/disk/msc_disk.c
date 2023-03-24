@@ -106,15 +106,15 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
   //Need to handle both FAT tables seperately (TODO: Just tell the thing there's only one table)
   else if((lba >= file_lba_indexes[FILE_INDEX_RESERVED]) && (lba < (file_lba_indexes[FILE_INDEX_FAT_TABLE_1_START] + FAT_TABLE_BLOCK_SIZE)))
   {
-    addr = DISK_fatTable + ((lba - file_lba_indexes[FILE_INDEX_FAT_TABLE_1_START]) * BLOCK_SIZE);
+    addr = DISK_fatTable + ((lba - file_lba_indexes[FILE_INDEX_FAT_TABLE_1_START]) * BLOCK_SIZE) + offset;
   }
   else if((lba >= file_lba_indexes[FILE_INDEX_FAT_TABLE_2_START]) && (lba < (file_lba_indexes[FILE_INDEX_FAT_TABLE_2_START] + FAT_TABLE_BLOCK_SIZE)))
   {
-    addr = DISK_fatTable + ((lba - file_lba_indexes[FILE_INDEX_FAT_TABLE_2_START]) * BLOCK_SIZE);
+    addr = DISK_fatTable + ((lba - file_lba_indexes[FILE_INDEX_FAT_TABLE_2_START]) * BLOCK_SIZE) + offset;
   }
   else if((lba >= file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY]) && (lba < file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY] + BLOCK_SIZE_ROOT_DIRECTORY))
   {
-    addr = DISK_rootDirectory + ((lba - file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY]) * BLOCK_SIZE);
+    addr = DISK_rootDirectory + ((lba - file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY]) * BLOCK_SIZE) + offset;
   }
   else if(lba >= file_lba_indexes[FILE_INDEX_STATUS_FILE] && lba < file_lba_indexes[FILE_INDEX_ROM_BIN])
   {
@@ -135,7 +135,7 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
     // Determine the photo being asked for by the lba
     gbcam_pull_photo(LBA2PHOTO(lba - file_lba_indexes[FILE_INDEX_PHOTOS_START]));
     // Copy the correct block of photo from working memory to the buffer
-    memcpy(buffer, working_mem + LBA2PHOTOOFFSET(lba - file_lba_indexes[FILE_INDEX_PHOTOS_START] ) * BLOCK_SIZE, bufsize);
+    memcpy(buffer, (working_mem + LBA2PHOTOOFFSET(lba - file_lba_indexes[FILE_INDEX_PHOTOS_START] ) * BLOCK_SIZE)  + offset, bufsize);
     return (int32_t) bufsize;
   }
   if(addr != 0)
@@ -159,9 +159,9 @@ int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* 
   if ( lba >= DISK_BLOCK_COUNT ) return -1;
   //page to sector
   if(lba >= file_lba_indexes[FILE_INDEX_DATA_END]){
-    //memcpy(&flashingLocation.buff[flashingLocation.sectionCount * 512], buffer, bufsize);
+    //memcpy(&flashingLocation.buff[flashingLocatio.sectionCount * 512], buffer, bufsize);
     //uint32_t ints = save_and_disable_interrupts();
-    printf("0x%x\n", lba);
+    (*the_cart.ram_memset_func)(buffer, ((lba - file_lba_indexes[FILE_INDEX_DATA_END]) * BLOCK_SIZE) + offset, bufsize);
   }
 
   if(lba == file_lba_indexes[FILE_INDEX_ROOT_DIRECTORY])

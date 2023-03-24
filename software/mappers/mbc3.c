@@ -1,5 +1,6 @@
 #include "mbc3.h"
 #include "gb.h"
+#include <stdio.h>
 
 void mbc3_set_rom_bank(uint16_t bank){
     writeb(bank, MBC3_ROM_BANK_ADDR);
@@ -81,29 +82,60 @@ void mbc3_memcpy_ram(uint8_t* dest, uint32_t ram_addr, uint32_t num){
     mbc3_set_ram_access(0);
 }
 
+// void mbc3_memset_ram(uint8_t* buf, uint32_t ram_addr, uint32_t num){
+//     // Enable RAM access
+//     mbc3_set_ram_access(1);
+//     // Keep track of where we are in RAM
+//     uint32_t ram_cursor = ram_addr;
+//     // Keep track of our current bank
+//     uint16_t current_bank = fs_get_ram_bank(ram_cursor);
+//     // Set up the bank for transfer
+//     mbc3_set_ram_bank(current_bank);
+//     for(uint32_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
+//         // Determine if we need to bankswitch or not
+//         uint16_t new_bank = fs_get_rom_bank(ram_cursor);
+//         if(new_bank != current_bank){
+//             // Switch banks if we cross a boundary
+//             current_bank = new_bank;
+//             mbc3_set_ram_bank(current_bank);
+//             // If we bankswitch, we start over again at the beginning of the the bank
+//             ram_cursor = 0;
+//         }
+//         // Write whatever is in memory to the current spot in RAM
+//         writeb(buf[buf_cursor], ram_cursor + SRAM_START_ADDR);
+//         // volatile uint8_t writeto = buf[buf_cursor];
+//         // volatile uint8_t readback = readb(ram_cursor + SRAM_START_ADDR);
+//         // if(readback != writeto){
+//         //     printf("heck 0x%x 0x%x\n", readback, writeto);
+//         // }
+//         ram_cursor++;
+//     }
+//     // Disable RAM access
+//     mbc3_set_ram_access(0);
+// }
+
 void mbc3_memset_ram(uint8_t* buf, uint32_t ram_addr, uint32_t num){
-    // Enable RAM access
-    mbc3_set_ram_access(1);
+    // Determine current bank
+    uint16_t current_bank = fs_get_ram_bank(ram_addr);
+    uint32_t ram_cursor = 0;
     // Keep track of where we are in RAM
-    uint32_t ram_cursor = ram_addr;
-    // Keep track of our current bank
-    uint16_t current_bank = fs_get_ram_bank(ram_cursor);
+    ram_cursor = ram_addr % SRAM_BANK_SIZE;
+    // Enable RAM writes
+    mbc3_set_ram_access(1);
     // Set up the bank for transfer
     mbc3_set_ram_bank(current_bank);
     for(uint32_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
         // Determine if we need to bankswitch or not
-        uint16_t new_bank = fs_get_rom_bank(ram_cursor);
-        if(new_bank != current_bank){
+        if(ram_cursor >= SRAM_BANK_SIZE){
             // Switch banks if we cross a boundary
-            current_bank = new_bank;
+            current_bank++;
             mbc3_set_ram_bank(current_bank);
             // If we bankswitch, we start over again at the beginning of the the bank
             ram_cursor = 0;
         }
-        // Write whatever is in memory to the current spot in RAM
-        writeb(buf[buf_cursor], ram_cursor);
+        writeb(buf[buf_cursor], ram_cursor + SRAM_START_ADDR);
         ram_cursor++;
     }
-    // Disable RAM access
+    // Disable RAM writes
     mbc3_set_ram_access(0);
 }

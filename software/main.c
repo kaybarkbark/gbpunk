@@ -21,6 +21,7 @@
 #include "disk/msc_disk.h"
 #include "disk/gb_disk.h"
 #include "status_led.h"
+#include "scratch.h"
 
 #define DO_UNIT_TEST 1
 
@@ -38,6 +39,7 @@ int main() {
     set_led_speed(LED_SPEED_TESTING);
     populate_cart_info();
     dump_cart_info();
+    // scratch_workspace();
     if(DO_UNIT_TEST){
         unit_test_cart();
     }

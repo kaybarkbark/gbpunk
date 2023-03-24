@@ -59,7 +59,7 @@ void mbc2_memset_ram(uint8_t* buf, uint32_t ram_addr, uint32_t num){
     // Keep track of where we are in RAM
     for(uint32_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
         // Write whatever is in memory to the current spot in RAM
-        writeb(buf[buf_cursor], ram_addr);
+        writeb(buf[buf_cursor], ram_addr + SRAM_START_ADDR);
         ram_addr++;
     }
     mbc2_set_ram_access(0);

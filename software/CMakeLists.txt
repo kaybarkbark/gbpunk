@@ -30,6 +30,7 @@ target_sources(GBPUNK PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/cart.c
         ${CMAKE_CURRENT_LIST_DIR}/unit_tests.c
         ${CMAKE_CURRENT_LIST_DIR}/status_led.c
+        ${CMAKE_CURRENT_LIST_DIR}/scratch.c
         )
 
 # Make sure TinyUSB can find tusb_config.h
