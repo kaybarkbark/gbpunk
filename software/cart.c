@@ -122,16 +122,17 @@ void populate_cart_info(){
     // RAM banks are random-ish, need lookup
     uint8_t ram_size = readb(RAM_BANK_COUNT_ADDR);
     // Handle MBC2 w/ battery backed RAM. Only 512 bytes
-    if(the_cart.cart_type == 6){
+    // The RAM is in the mapper, so this should always exist
+    if(the_cart.mapper_type == MAPPER_MBC2){
         the_cart.ram_banks = 1;
         the_cart.ram_end_address = 0xA1FF;
-        the_cart.ram_size_bytes = SRAM_START_ADDR - 0xA1FF + 1;
+        the_cart.ram_size_bytes =  (1 + 0xA1FF) - (SRAM_START_ADDR);
     }
     // Handle 2K, don't need the full RAM address space
     else if(ram_size == 2){
         the_cart.ram_banks = 1;
         the_cart.ram_end_address = 0xA7FF;
-        the_cart.ram_size_bytes = SRAM_START_ADDR - 0xA7FF + 1;
+        the_cart.ram_size_bytes =  (1 + 0xA7FF) - (SRAM_START_ADDR + 1);
     }
     // All others will use the full address space
     else if(ram_size == 3){
