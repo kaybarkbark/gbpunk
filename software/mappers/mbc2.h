@@ -5,8 +5,9 @@
 #include "gb.h"
 
 #define MBC2_ENABLE_RAM_ACCESS_ADDR     0x0000
-#define MBC2_ENABLE_RAM_ACCESS_DATA     0x0
-#define MBC2_DISABLE_RAM_ACCESS_DATA    0x00FF
+#define MBC2_ENABLE_RAM_ACCESS_DATA     0x0A
+#define MBC2_DISABLE_RAM_ACCESS_DATA    0x00
+#define MBC2_MAX_RAM_SIZE               256
 
 #define MBC2_ROM_BANK_ADDR              0x2100
 

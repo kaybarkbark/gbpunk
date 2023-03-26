@@ -130,18 +130,20 @@ uint8_t sram_rd_wr_test(
         while(num_iterations){
             uint8_t addr = rand() % ram_size;
             uint8_t data = rand() & 0xFF;
-            // uint8_t old_data = readb(SRAM_START_ADDR + addr);
             uint8_t old_data = 0;
+            // Copy old data to restore it lated
             (*memcpy_func)(&old_data, addr, 1);
-            // writeb(data, SRAM_START_ADDR + addr);
+            // Set some random value
             (*memset_func)(&data, addr, 1);
-            // volatile uint8_t changed_data = readb(SRAM_START_ADDR + addr);
             uint8_t changed_data = 0;
+            // Read back the random value
             (*memcpy_func)(&changed_data, addr, 1);
+            // Fail if random data did not write
             if(changed_data != data){
                 ret = 0;
             }
-            // writeb(old_data, SRAM_START_ADDR + addr);
+            // Attempt to write back the old data
+            (*memset_func)(&old_data, addr, 1);
             num_iterations--;
         }
     return ret;

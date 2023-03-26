@@ -46,7 +46,10 @@ void mbc2_memcpy_ram(uint8_t* dest, uint32_t ram_addr, uint32_t num){
     // There is only one memory bank in MBC2
     // Keep track of where we are in RAM
     for(uint32_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
-        dest[buf_cursor] = readb(ram_addr + SRAM_START_ADDR); 
+        // MBC2 is 4 bit memory, so to get a byte we need to pull two locations and OR them together
+        uint8_t lower_nyb = readb((ram_addr * 2) + SRAM_START_ADDR) & 0xF; 
+        uint8_t upper_nyb = readb((ram_addr * 2) + SRAM_START_ADDR + 1) & 0xF; 
+        dest[buf_cursor] = lower_nyb | (upper_nyb << 4);
         ram_addr++;
     }
     mbc2_set_ram_access(0);
@@ -59,8 +62,18 @@ void mbc2_memset_ram(uint8_t* buf, uint32_t ram_addr, uint32_t num){
     // Keep track of where we are in RAM
     for(uint32_t buf_cursor = 0; buf_cursor < num; buf_cursor++){
         // Write whatever is in memory to the current spot in RAM
-        writeb(buf[buf_cursor], ram_addr + SRAM_START_ADDR);
+        // MBC2 is only 4 bit memory, so spread one byte across both 4 bit memory locations
+        uint8_t lower_nyb = buf[buf_cursor] & 0xF;
+        uint8_t upper_nyb = (buf[buf_cursor] & 0xF0) >> 4;
+        writeb(lower_nyb, (ram_addr * 2) + SRAM_START_ADDR);
+        writeb(upper_nyb, (ram_addr * 2) + SRAM_START_ADDR + 1);
         ram_addr++;
+
+        // MBC2 SRAM is smaller than one block of filesystem data, so the host computer
+        // may try and write into memory that does not exist. Prevent that from happening.
+        if(ram_addr >= MBC2_MAX_RAM_SIZE){
+            return;
+        }
     }
     mbc2_set_ram_access(0);
 }

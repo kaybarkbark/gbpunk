@@ -121,12 +121,12 @@ void populate_cart_info(){
     the_cart.rom_size_bytes = ROM_BANK_SIZE * the_cart.rom_banks; // Even ROM Only will report two banks
     // RAM banks are random-ish, need lookup
     uint8_t ram_size = readb(RAM_BANK_COUNT_ADDR);
-    // Handle MBC2 w/ battery backed RAM. Only 512 bytes
+    // Handle MBC2 w/ battery backed RAM. Only 256 bytes, split among 512 4 bit memory locations
     // The RAM is in the mapper, so this should always exist
     if(the_cart.mapper_type == MAPPER_MBC2){
         the_cart.ram_banks = 1;
-        the_cart.ram_end_address = 0xA1FF;
-        the_cart.ram_size_bytes =  (1 + 0xA1FF) - (SRAM_START_ADDR);
+        the_cart.ram_end_address = 0xA0FF;
+        the_cart.ram_size_bytes =  (1 + 0xA0FF) - (SRAM_START_ADDR);
     }
     // Handle 2K, don't need the full RAM address space
     else if(ram_size == 2){

@@ -23,7 +23,8 @@
 #include "status_led.h"
 #include "scratch.h"
 
-#define DO_UNIT_TEST 1
+#define DO_UNIT_TEST
+// #define DO_SCRATCH_CODE
 
 int main() {
     init_led_irq();
@@ -39,10 +40,12 @@ int main() {
     set_led_speed(LED_SPEED_TESTING);
     populate_cart_info();
     dump_cart_info();
-    // scratch_workspace();
-    if(DO_UNIT_TEST){
-        unit_test_cart();
-    }
+    #ifdef DO_SCRATCH_CODE
+    scratch_workspace();
+    #endif
+    #ifdef DO_UNIT_TEST
+    unit_test_cart();
+    #endif
     uint8_t buf[16] = {0};
     init_disk();
     tusb_init();
