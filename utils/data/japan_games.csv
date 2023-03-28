@@ -1,0 +1,774 @@
+Filename,Title,Cart Type,Mapper Type,ROM Banks,RAM Banks,RAM Size,ROM Size,CGB Functionality,SGB Functionality,Mask ROM Ver,Region
+"Taikyoku Renju (Japan) (En,Ja).gb",TAIKYOKU RENJU,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Pachi-Slot Hisshou Guide GB (Japan) (SGB Enhanced).gb,PACHISLO GB,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,Yes,0,Japan
+Dragon Slayer - Nemuri no Oukan (Japan).gb,DORASUREGAIDEN,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Mogura de Pon! (Japan).gb,MOGURA DE PON!,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+After Burst (Japan).gb,AFTER BURST,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Goukaku Boy Series - 99 Nendo Ban Eitango Center 1500 (Japan).gb,EITANGO SENTA,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Namco Gallery Vol.3 (Japan) (SGB Enhanced).gb,GALLERY3,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Nettou Samurai Spirits - Zankurou Musouken (Japan) (SGB Enhanced).gb,ZANKUROUMUSOUKEN,MBC1,MBC1,64,0,0x0,0x100000,None,Yes,0,Japan
+Goukaku Boy Series - Shikakui Atama o Maruku Suru - Rika Battle Hen (Japan) (Special Edition).gb,SIKAKU RIKABH4J,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Itsudemo! Nyan to Wonderful (Japan) (SGB Enhanced).gb,NYANTOWONDERFUL,MBC3+TIMER+RAM+BATTERY,MBC3,16,1,0x800,0x40000,None,Yes,0,Japan
+Rockman World (Japan).gb,ROCKMAN WORLD,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Alien 3 (Japan).gb,ALIEN,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Uchiiwai - Kyoudaijingi no Puzzle Game (Japan).gb,KYOUDAI JINGI,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Dead Heat Scramble (Japan).gb,DEADHEATSCRAMBLE,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Banishing Racer (Japan).gb,BANISHING RACER,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Mini 4 Boy (Japan) (SGB Enhanced).gb,MINI4BOY,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Wedding Peach - Jamapii Panic (Japan) (SGB Enhanced).gb,WPGB,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Star Sweep (Japan) (SGB Enhanced).gb,STAR SWEEP,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,Yes,0,Japan
+Dracula Densetsu II (Japan).gb,DRACURA2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Sports Collection (Japan).gb,SPORTS COLLECT,MBC1,MBC1,32,0,0x0,0x80000,None,No,0,Japan
+Masakari Densetsu - Kintarou Action Hen (Japan).gb,KINTARO ACG,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Crayon Shin-chan 4 - Ora no Itazura Daihenshin (Japan) (SGB Enhanced).gb,GB KUREYON SHIN4,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+Hoi Hoi - Game Boy Ban (Japan).gb,HOIHOI DMG BAN,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Tiny Toon Adventures 2 (Japan).gb,TINY TOON 2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Bakuretsu Senshi Warrior (Japan).gb,WARRIOR,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Puzzle Nintama Rantarou (Japan) (SGB Enhanced).gb,NINTAMA PUZZLEGB,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Teenage Mutant Ninja Turtles (Japan).gb,TMNT,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+GB Basketball (Japan).gb,GB BASKETBALL,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Kachiuma Yosou Keiba Kizoku EX '94 (Japan).gb,KEIBAKIZOKU EX94,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+Super Mario Land 2 - 6-tsu no Kinka (Japan).gb,MARIOLAND2,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,No,0,Japan
+America Oudan Ultra Quiz Part 4 (Japan).gb,ULTRA-4,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+TwinBee da!! (Japan).gb,TWIN-BEE DA!!,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Baseball Kids (Japan).gb,BASE BALL KIDS,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Shippuu! Iron Leaguer (Japan).gb,GB IRON LEAGUER1,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Pac-Man (Japan).gb,PAC-MAN,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Masakari Densetsu - Kintarou RPG Hen (Japan) (SGB Enhanced).gb,KINTARO RPG,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Shuyaku Sentai Irem Fighter (Japan).gb,IREM FIGHTER,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Twin (Japan).gb,TWIN,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Bishoujo Senshi Sailor Moon (Japan).gb,BISHOJYOSENSI SE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Super Street Basketball (Japan).gb,S S BASKETBALL,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Monster Maker 2 - Uru no Hiken (Japan).gb,MONSTER MAKER J2,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+3-pun Yosou - Umaban Club (Japan).gb,UMABAN CLUB,MBC2+BATTERY,MBC2,4,1,0x100,0x10000,None,No,0,Japan
+Taito Chase H.Q. (Japan).gb,CHASE HQ,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Solitaire (Japan).gb,SOLITAIRE       ,MBC2+BATTERY,MBC2,4,1,0x100,0x10000,None,No,0,Japan
+Konamic Golf (Japan).gb,KONAMIC GOLF,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Tetris Plus (Japan) (SGB Enhanced).gb,TETRIS PLUS,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,Yes,0,Japan
+Thunderbirds (Japan).gb,THUNDERBIRDS,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Kawa no Nushi Tsuri 3 (Japan) (SGB Enhanced).gb,KAWANUSHI3      ,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Genjin Collection (Japan) (SGB Enhanced).gb,GENCOL,MBC1,MBC1,64,0,0x0,0x100000,None,Yes,0,Japan
+Grander Musashi RV (Japan) (SGB Enhanced).gb,GURANDERMUSASHI,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Kattobi Road (Japan).gb,KATTOBI ROAD,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+SD Sengokuden 3 - Chijou Saikyou Hen (Japan).gb,SDSENGOKUDEN3,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,No,0,Japan
+Konamic Basket (Japan).gb,KONAMIC BASKET,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Chiki Chiki Tengoku (Japan).gb,CHIKI 2 TENGOKU,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Double Yakuman Junior (Japan).gb,DOUBLEYAKUMAN JR,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Wizardry Gaiden 3 - Yami no Seiten (Japan).gb,WIZARDRY SOD,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,No,0,Japan
+Bakuchou Retrieve Master (Japan) (SGB Enhanced).gb,RETRIEVE,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+R-Type II (Japan).gb,RTYPE 2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Mickey Mouse (Japan).gb,MICKEY MOUSE,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+"Shinri Game 2, The - Oosaka Hen (Japan).gb",THE SHINRI GAME2,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Game Boy Wars Turbo - Famitsu Version (Japan) (SGB Enhanced).gb,GBWARST,MBC1+RAM+BATTERY,MBC1,16,4,0x4000,0x40000,None,Yes,0,Japan
+Go! Go! Tank (Japan).gb,GO GO TANK,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Famista (Japan).gb,FAMISTA,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Go Go Ackman (Japan) (SGB Enhanced).gb,GOGO ACKMAN     ,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Miracle Adventure of Esparks - Ushinawareta Seiseki Perivron (Japan).gb,ESPARKS,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Cadillac II (Japan).gb,CADILLAC2,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Velious II - Fukushuu no Jashin (Japan).gb,VELIOUS 2,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+"Ginga - Card & Puzzle Collection (Japan) (En,Ja).gb",GINGA,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Dragon Ball Z - Gokuu Hishouden (Japan) (SGB Enhanced).gb,GB DBZ GOKOU,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,Yes,0,Japan
+Kaisen Game - Navy Blue (Japan).gb,NAVY BLUE,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Shanghai (Japan) (Activision).gb,SHANGHAI,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Goukaku Boy Series - Z Kai Kyuukyoku no Eigo Koubun 285 (Japan).gb,ZKAIEIGOKOBUN285,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Bionic Commando (Japan).gb,BIONIC-COMMANDO,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Attack of the Killer Tomatoes (Japan).gb,KILLER TOMATOES,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Bikkuri Nekketsu Shin Kiroku! - Dokodemo Kin Medal (Japan).gb,BIKKURI NEKKETU,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Suzuki Aguri no F-1 Super Driving (Japan).gb,F1 SUPER DRIVING,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Honmei Boy (Japan).gb,HONMEI BOY,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Teenage Mutant Ninja Turtles 2 (Japan).gb,TMNT 2,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Ultima - Ushinawareta Runes (Japan).gb,RUNES OF VIRTUE,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Aretha III (Japan).gb,ARETHA3,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+SD Hiryuu no Ken Gaiden 2 (Japan) (SGB Enhanced).gb,SD HIRYUNOKEN2,MBC1,MBC1,64,0,0x0,0x100000,None,Yes,0,Japan
+Pocket Bass Fishing (Japan).gb,POCKET BASS FISH,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Mini Putt (Japan).gb,MINI PUTT,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Hiryuu no Ken Gaiden (Japan).gb,HIRYU GAIDEN,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+America Oudan Ultra Quiz Part 3 - Champion Taikai (Japan).gb,ULTRA3,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Block Kuzushi GB (Japan) (SGB Enhanced).gb,BLOCKGB,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+Pocket Love 2 (Japan) (SGB Enhanced).gb,POCKET LOVE 2,MBC1+RAM+BATTERY,MBC1,64,1,0x800,0x100000,None,Yes,0,Japan
+Nettou The King of Fighters '96 (Japan) (SGB Enhanced).gb,NETTOU KOF 96,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Mini Yonku GB Let's & Go!! - All-Star Battle Max (Japan) (SGB Enhanced).gb,MINI4WD GB2     ,MBC3+RAM+BATTERY,MBC3,64,4,0x4000,0x100000,None,Yes,0,Japan
+Mortal Kombat II - Kyuukyoku Shinken (Japan).gb,MORTAL KOMBAT II,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Tsumego Series 1 - Fujisawa Hideyuki Meiyo Kisei (Japan) (SGB Enhanced).gb,TSUMEGO_FUJISAWA,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+Ninja Ryuuken Den - Matenrou Kessen (Japan).gb,NINJA RYUKENDEN,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Pocket Monsters - Ao (Japan) (SGB Enhanced).gb,POKEMON BLUE,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Kyoro-chan Land (Japan).gb,KYORCHANLANDHIRO,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Shikinjou (Japan).gb,SHIKINJYO,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Kikou Keisatsu Metal Jack (Japan).gb,METALJACK,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Tekkyu Fight! - The Great Battle Gaiden (Japan).gb,TEKKYUFIGHT!,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+God Medicine - Fukkokuban (Japan) (SGB Enhanced).gb,GOD MEDICINE FB,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Master Karateka (Japan).gb,MASTER KARATEKA,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Ring Rage (Japan).gb,RING RAGE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Goukaku Boy GOLD - Shikakui Atama o Maruku Suru - Keisan no Tatsujin (Japan).gb,SIKAKUKEISNBC4J,MBC5+RAM+BATTERY,MBC5,64,1,0x800,0x100000,None,No,0,Japan
+Sa-Ga 2 - Hihou Densetsu (Japan).gb,SAGA2,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+GB Genjin (Japan).gb,GB GENJIN       ,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Same Game (Japan) (SGB Enhanced).gb,SAME GAME,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,Yes,0,Japan
+Penguin-kun Wars VS. (Japan).gb,PENGUINKUNWARSVS,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Initial D Gaiden (Japan) (SGB Enhanced).gb,INITIAL D GAIDEN,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,Yes,0,Japan
+Doraemon no Study Boy 5 - Shou 2 Sansuu Keisan (Japan).gb,STUDYBOY SANSU 2,MBC1,MBC1,32,0,0x0,0x80000,None,No,0,Japan
+Magic Knight Rayearth (Japan) (SGB Enhanced).gb,RAYEARTH1,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,Yes,0,Japan
+Koukiatsu Boy (Japan) (SGB Enhanced).gb,KOKIATSUBOY,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Blodia (Japan).gb,BLODIA,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Oni II - Oni Densetsu (Japan).gb,ONI 2,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Tsumeshougi - Hyakuban Shoubu (Japan).gb,THUME SHOGI,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Bomber Man GB 3 (Japan) (SGB Enhanced).gb,BOMBERMAN GB3,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Takahashi Meijin no Bouken-jima II (Japan).gb,BOUKENJIMA2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Soreyuke! Speedy Gonzales (Japan).gb,SPEEDY GONZALES,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Chibi Maruko-chan - Maruko Deluxe Theater (Japan) (SGB Enhanced).gb,MARUKODXSIATA,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+Nettou Samurai Spirits (Japan) (SGB Enhanced).gb,NETTOU SAMURAI,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Outburst (Japan).gb,OUT BURST,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Choplifter II (Japan).gb,CHOPLIFTER 2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Uchuu Senkan Yamato (Japan).gb,YAMATO,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Painter Momopie (Japan).gb,PAINTERMOMOPIE,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Pachinko Saiyuuki (Japan).gb,SAIYUUKI,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Boxing (Japan).gb,BOXING,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Zettai Muteki Raijin-Oh (Japan).gb,RAIJINOU,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Selection II - Ankoku no Fuuin (Japan).gb,SELECTION 2,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Yu Yu Hakusho Dai-2-dan - Ankoku Bujutsukai Hen (Japan).gb,YUUYUU-2,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Mysterium (Japan).gb,MYSTERIUM,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Super Chinese Land 1.2.3' (Japan) (SGB Enhanced).gb,SUPERCHINESE 123,MBC1,MBC1,64,0,0x0,0x100000,None,Yes,0,Japan
+Quiz Nihon Mukashibanashi - Athena no Hatena (Japan).gb,ATHENANOHATENA?,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Snoopy no Hajimete no Otsukai (Japan) (SGB Enhanced).gb,SNOOPY 2,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+Konami GB Collection Vol.4 (Japan) (SGB Enhanced).gb,GBCOLLECTION 4,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Burai Senshi Deluxe (Japan).gb,BURAI FIGHTER DX,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Konamic Ice Hockey (Japan).gb,KONAMICICEHOCKEY,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Yomihon Yumegoyomi - Tenjin Kaisen 2 (Japan).gb,TENJIN KAISEN 2,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Yousei Monogatari - Rod Land (Japan).gb,RODLAND,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Crayon Shin-chan 3 - Ora no Gokigen Athletic (Japan).gb,GB KUREYON SHIN3,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Uno 2 - Small World (Japan) (SGB Enhanced).gb,UNO2SMALL WORLD,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+Meitantei Conan - Chika Yuuenchi Satsujin Jiken (Japan) (SGB Enhanced).gb,DETECTIVE CONAN,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Animal Breeder 2 (Japan) (SGB Enhanced).gb,ANIMAL BREEDER2,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+From TV Animation Slam Dunk - Gakeppuchi no Kesshou League (Japan) (SGB Enhanced).gb,GB SLAM DUNK,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Aretha II (Japan).gb,ARETHA2,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,No,0,Japan
+Judge Dredd (Japan).gb,JUDGE DREDD,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Pachi-Slot Kids 3 (Japan).gb,PACHI SLOT KIDS3,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Indiana Jones - Saigo no Seisen (Japan).gb,INDIANA JONES,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Hudson Hawk (Japan).gb,HUDSON HAWK,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Ikari no Yousai 2 (Japan).gb,FORTIFIED ZONE2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Kaijuu Ou Gojira (Japan).gb,GB GODZILLA,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Sagaia (Japan).gb,SAGAIA,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Pac-Panic (Japan) (SGB Enhanced).gb,PAC-PANIC,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+Super Chinese Land (Japan).gb,SUPERCHINESELAND,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Doraemon 2 - Animal Planet Densetsu (Japan).gb,DORAEMON2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Mini 4 Boy II - Final Evolution (Japan) (SGB Enhanced).gb,MINI4BOY2,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Captain Tsubasa J - Zenkoku Seiha e no Chousen (Japan) (SGB Enhanced).gb,CAPTAIN TUBASA J,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Super Chinese Land 3 (Japan) (SGB Enhanced).gb,SUPER CHINESE 3,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Namco Gallery Vol.2 (Japan) (SGB Enhanced).gb,GALLERY2,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Tetris (Japan) (En).gb,TETRIS,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Momotarou Densetsu Gaiden (Japan).gb,MOMOTAROU GAIDEN,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,No,0,Japan
+Goukaku Boy Series - Kirihara Shoten Hinshutsu Eibunpou Gohou Mondai 1000 (Japan).gb,HINSYUTU EIBUNPO,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+X (Japan).gb,X,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,No,0,Japan
+Game Boy Gallery 2 (Japan) (SGB Enhanced).gb,GAMEBOY GALLERY2,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+GB Genjin 2 (Japan) (SGB Enhanced).gb,GBGENJIN2,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Konami GB Collection Vol.1 (Japan) (SGB Enhanced).gb,GBCOLLECTION 1,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Donkey Kong Land (Japan) (SGB Enhanced).gb,DONKEYKONGLAND,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Goukaku Boy Series - Shikakui Atama o Maruku Suru - Shakai Battle Hen (Japan) (Special Edition).gb,SIKAKSYAKAIBE3J,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Bokujou Monogatari GB (Japan) (SGB Enhanced).gb,BOKUJOU GB,MBC3+TIMER+RAM+BATTERY,MBC3,32,1,0x800,0x80000,None,Yes,0,Japan
+Aa Harimanada (Japan).gb,HARIMANADA,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Mani 4 in 1 (China) (DMG-605 CHN).gb,GB GENJIN       ,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Doraemon no Study Boy 3 - Ku Ku Master (Japan).gb,STUDYBOY KUKU 1 ,MBC1,MBC1,32,0,0x0,0x80000,None,No,0,Japan
+Pachio-kun (Japan).gb,PACHIO KUN,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Kunio-kun no Jidaigeki Da yo Zenin Shuugou! (Japan).gb,GB JIDAIGEKI,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Jinsei Game Densetsu (Japan).gb,JINSEI,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Sanrio Uranai Party (Japan).gb,SANRIOURANAI GB ,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Tenchi o Kurau (Japan).gb,TENCHIWOKURAU,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,No,0,Japan
+F1 Boy (Japan).gb,F1 BOY,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Looney Tunes - Bugs Bunny to Yukai na Nakama-tachi (Japan).gb,LOONEY TUNES,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Maerchen Club (Japan).gb,DMG-MQJ,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Taiyou no Tenshi Marlowe - Ohanabatake wa Dai-panic (Japan).gb,ANGEL MARLOWE,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Heisei Tensai Bakabon (Japan).gb,TENSAIBAKABON,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Navy Blue 90 (Japan).gb,NAVY BLUE 90,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Pachi-Slot Kids 2 (Japan).gb,PACHISLOT KIDS 2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Trappers Tengoku - Spy vs Spy (Japan).gb,TRAPPERS TENGOKU,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Goukaku Boy Series - Shikakui Atama o Maruku Suru - Sansuu Battle Hen (Japan) (Special Edition).gb,SIKAKUI S BBB4J,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+SD Gundam - SD Sengokuden - Kunitori Monogatari (Japan).gb,SDGUNDAMKUNITORI,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Konami GB Collection Vol.3 (Japan) (SGB Enhanced).gb,GBCOLLECTION 3,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Goukaku Boy GOLD - Shikakui Atama o Maruku Suru - Joushiki no Sho (Japan) (Special Edition).gb,SIKAKUJOSIKBS4J,MBC5+RAM+BATTERY,MBC5,64,1,0x800,0x100000,None,No,0,Japan
+Chalvo 55 - Super Puzzle Action (Japan).gb,CHALVO55,MBC1,MBC1,32,0,0x0,0x80000,None,No,0,Japan
+Mani 4 in 1 (China) (DMG-604 CHN).gb,RTYPE 2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Purikura Pocket 2 - Kareshi Kaizou Daisakusen (Japan) (SGB Enhanced).gb,PURIKURA POCKET2,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Lemmings (Japan).gb,LEMMINGS,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Rockman World 2 (Japan).gb, ROCKMAN WORLD2 ,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Goukaku Boy GOLD - Shikakui Atama o Maruku Suru - Joushiki no Sho (Japan).gb,SIKAKUJOSIKBJ3J,MBC5+RAM+BATTERY,MBC5,64,1,0x800,0x100000,None,No,0,Japan
+Yu Yu Hakusho Dai-4-dan - Makai Touitsu Hen (Japan) (SGB Enhanced).gb,YUUYUU-4,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Pachi-Slot World Cup '94 (Japan).gb,PACHISURO WC'94,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Chibi Maruko-chan 4 - Kore ga Nihon Da yo! Ouji-sama (Japan).gb,CHIBIMARUKO4,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Family Jockey (Japan).gb,FAMILYJOCKEY,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Pachinko Data Card - Chou Ataru-kun (Japan) (SGB Enhanced).gb,ATARUKUN,MBC5+RAM+BATTERY,MBC5,64,1,0x800,0x100000,None,Yes,0,Japan
+Brain Drain (Japan) (SGB Enhanced).gb,BRAIN DRAIN,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+Shougi Saikyou (Japan) (SGB Enhanced).gb,GB SHOUGI SAIKYO,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Pocket Monsters - Midori (Japan) (SGB Enhanced).gb,POKEMON GREEN,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Taito Variety Pack (Japan).gb,SAGAIA,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Kidou Keisatsu Patlabor - Nerawareta Machi 1990 (Japan).gb,GB PATLABOR 1,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Prince of Persia (Japan).gb,PRINCE OF PERSIA,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Chousoku Spinner (Japan) (SGB Enhanced).gb,SS SPINNER,HuC1+RAM+BATTERY,HuC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Medarot - Parts Collection 2 (Japan) (SGB Enhanced).gb,PARTSCOLLECTION2,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Super Donkey Kong GB (Japan) (SGB Enhanced).gb,SUPERDONKEYKONG ,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Final Reverse (Japan).gb,FINAL REVERSE,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Megami Tensei Gaiden - Last Bible (Japan).gb,LAST BIBLE,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Quiz Sekai wa Show by Shoubai!! (Japan).gb,SHOBAISHOBAI,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Hong Kong (Japan).gb,HONG KONG,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+P-Man GB (Japan).gb,P-MAN,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Soccer Boy (Japan).gb,SOCCER BOY,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Battle Crusher (Japan) (SGB Enhanced).gb,BATTLE CRUSHER  ,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Super Chinese Land 2 (Japan).gb,SUPER CHINESE 2,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Makai Toushi Sa-Ga (Japan).gb,SAGA,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Goukaku Boy Series - Koukou Nyuushi Derujun - Chuugaku Eijukugo 350 (Japan).gb,CJYUKUGO 350,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Captain Tsubasa VS (Japan).gb,TUBASA VS,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Teenage Mutant Ninja Turtles 3 - Turtles Kikiippatsu (Japan).gb,TMNT3,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Populous (Japan).gb,POPULOUS,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Capcom Quiz - Hatena no Daibouken (Japan).gb,CAPCOM QUIZ,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Yu-Gi-Oh! Duel Monsters (Japan) (SGB Enhanced).gb,YUGIOU,MBC1+RAM+BATTERY,MBC1,64,1,0x800,0x100000,None,Yes,0,Japan
+Solomon's Club (Japan).gb,SOLOMON'S CLUB,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Boulder Dash (Japan).gb,BOULDER DASH,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Dino Breeder (Japan) (SGB Enhanced).gb,DINO            ,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,Yes,0,Japan
+America Oudan Ultra Quiz Part 2 (Japan).gb,ULTRA2,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Little Master - Raikuban no Densetsu (Japan).gb,LITTLE MASTER,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Splitz - Nigaoe 15 Game (Japan).gb,SPLITZ,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Goukaku Boy Series - Eiken 2kyuu Level no Kaiwa Hyougen 333 (Japan).gb,EIKEN2KYUEIKAIWA,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Mickey's Chase (Japan).gb,MICKEYS CHASE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Another Bible (Japan) (SGB Enhanced).gb,ANOTHER BIBLE   ,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Shisenshou - Match-Mania (Japan).gb,SHISENSYO,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Tsumeshougi - Kanki Godan (Japan) (SGB Enhanced).gb,KANKI-TUMESHOGI ,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+Popeye (Japan).gb,POPEYE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Tecmo Bowl (Japan).gb,TECMO BOWL,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Nekojara Monogatari (Japan).gb,NEKOJARA,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Shin Nihon Pro Wrestling - Toukon Sanjuushi (Japan).gb,TOUKONSANJYUUSHI,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Nakajima Satoru - F-1 Hero GB - World Championship '91 (Japan).gb,F-1 HEROGB,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Soukoban (Japan).gb,SOUKOBAN,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Mortal Kombat & Mortal Kombat II (Japan).gb,MORTALKOMBAT DUO,MBC1,MBC1,64,0,0x0,0x100000,None,No,0,Japan
+Galaga & Galaxian (Japan) (SGB Enhanced).gb,GALAGA&GALAXIAN,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+Kiteretsu Daihyakka - Bouken Ooedo Juraki (Japan).gb,KITERETU ZYURAKI,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Chikyuu Kaihou Gun ZAS (Japan) (En).gb,ZAS,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Mickey Mouse V (Japan).gb,MICKEY 5,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Dragon Tail (Japan).gb,DRAGONTAILBIT2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Dragon Slayer I (Japan).gb,DRAGON SLAYER 1,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Tetris Flash (Japan) (SGB Enhanced).gb,TETRIS FLASH,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+Bart no Survival Camp (Japan).gb,SIMPSON ESCAPE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Seaside Volley (Japan).gb,SEASIDE VOLLEY,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Bomber King - Scenario 2 (Japan).gb,BOMBER KING S2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Mani 4 in 1 (China) (DMG-603 CHN).gb,GANBARUGA,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Soldam (Japan).gb,SOLDAM GB,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Tokio Senki - Eiyuu Retsuden (Japan).gb,TOKIO SENKI,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+Cult Master - Ultraman ni Miserarete (Japan).gb,GB CULT ULTRAMAN,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Go! Go! Hitchhike (Japan) (SGB Enhanced).gb,GO! GO! HICHHIKE,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+4-in-1 Fun Pak (Japan).gb,FUNPAK 4IN1,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Radar Mission (Japan).gb,RADARMISSION,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Oyatsu Quiz Mogu Mogu Q (Japan) (SGB Enhanced).gb,MOGU MOGU Q,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Konamic Sports in Barcelona (Japan).gb,KONAMIC SPORTS,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Rock'n! Monster!! (Japan) (SGB Enhanced).gb,ROCK'N! MONSTER!,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Altered Space - A 3-D Alien Adventure (Japan).gb,ALTERED SPACE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Peke to Poko no Daruman Busters (Japan).gb,DARUMAN BUSTERS,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Dracula Densetsu (Japan).gb,DORAKYURADENSETU,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Super Snakey (Japan) (SGB Enhanced).gb,SUPER SNAKEY,MBC1,MBC1,4,0,0x0,0x10000,None,Yes,0,Japan
+Pocket Monsters - Pikachu (Japan) (SGB Enhanced).gb,POKEMON YELLOW,MBC3+RAM+BATTERY,MBC3,64,4,0x4000,0x100000,None,Yes,0,Japan
+Nettou Real Bout Garou Densetsu Special (Japan) (SGB Enhanced).gb,REALBOUTSPECIAL,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Selection - Erabareshi Mono (Japan).gb,SELECTION,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Soccer (Japan).gb,SOCCER,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Flappy Special (Japan).gb,FLAPPY SPECIAL,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Purikura Pocket - Fukanzen Joshikousei Manual (Japan) (SGB Enhanced).gb,PURIKURA POCKET1,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Super Momotarou Dentetsu II (Japan).gb,SUPER MOMOTETU 2,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Caesars Palace (Japan).gb,CAESARS PALACE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Nettou The King of Fighters '95 (Japan) (SGB Enhanced).gb,NETTOU KOF 95,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Jikuu Senki Mu (Japan).gb,JIKUUSENKI-MU,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,No,0,Japan
+MVP Baseball (Japan).gb,CLEMENS BASEBALL,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Urusei Yatsura - Miss Tomobiki o Sagase! (Japan).gb,URUSEIYATSURA,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,No,0,Japan
+Kaseki Sousei Reborn (Japan) (SGB Enhanced).gb,KASEKI REBORN,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Famista 2 (Japan).gb,FAMISTA2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Pocket Sonar (Japan).gb,POCKETSONAR,MBC1,MBC1,32,0,0x0,0x80000,None,No,0,Japan
+Daisenryaku (Japan).gb,DAISENRYAKU HIRO,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Chou Mashin Eiyuu Den Wataru - Mazekko Monster (Japan) (SGB Enhanced).gb,MAZEKKO MONSTER,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Shin SD Gundam Gaiden - Knight Gundam Story (Japan) (SGB Enhanced).gb,GB NEW SD GUNDAM,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Lunar Lander (Japan).gb,LUNA LANDER,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Family Jockey 2 - Meiba no Kettou (Japan).gb,FAMILY JOCKEY2,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+Yoshi no Panepon (Japan) (SGB Enhanced).gb,YOSSY NO PANEPON,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Dai-2-ji Super Robot Taisen G (Japan) (SGB Enhanced).gb,SUPERROBOTWAR 2G,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Moguranya (Japan) (SGB Enhanced).gb,MOGURANYA,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Pokonyan! - Yume no Daibouken (Japan) (SGB Enhanced).gb,POKONYAN!,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+R-Type (Japan).gb,RTYPE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Puzzle Boy II (Japan).gb,PUZZLE BOY2,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Hayaoshi Quiz - Ouza Ketteisen (Japan) (SGB Enhanced).gb,HAYAOSI KUIZU,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Umi no Nushi Tsuri 2 (Japan) (SGB Enhanced).gb,UMINUSHI        ,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Money Idol Exchanger (Japan) (SGB Enhanced).gb,EXCHANGER GB,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Picross 2 (Japan) (SGB Enhanced).gb,PICROSS 2,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Monster Maker - Barcode Saga (Japan).gb,MONSTER MAKER,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Fleet Commander VS. (Japan).gb,FLEETCOMMANDERVS,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Kuusou Kagaku Sekai Gulliver Boy - Kuusou Kagaku Puzzle Purittopon!! (Japan) (SGB Enhanced).gb,DMG GARIBA-BOUI1,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Druaga no Tou (Japan).gb,GB DRUAGA 1,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Shounen Ashibe - Yuuenchi Panic (Japan).gb,SHONENASHIBE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Janshirou (Japan).gb,JANSHIRO,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Marmalade Boy (Japan) (SGB Enhanced).gb,GB MARMALADEBOY1,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Red October o Oe! (Japan).gb,RED OCTOBER,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Ranma 1-2 (Japan).gb,RANMA 1/2,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Roadster (Japan).gb,ROADSTER,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Honoo no Toukyuuji - Dodge Danpei (Japan).gb,DODGEDANPEI     ,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Game Boy Gallery (Japan) (SGB Enhanced).gb,GAMEBOY GALLERY,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,Yes,0,Japan
+Magical Taruruuto-kun 2 - Raibaa Zone Panic!! (Japan).gb,GB TARURU-TO 2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Battle Space (Japan).gb,BATTLE SPACE,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Pocket Shougi (Japan) (SGB Enhanced).gb,POCKET SHOGI,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Power Mission (Japan).gb,POWER MISSION,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Pachinko CR Daiku no Gen-san GB (Japan) (SGB Enhanced).gb,PACHINKO GENSAN,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,Yes,0,Japan
+Ishida Yoshio Tsumego Paradise (Japan).gb,TSUMEGO 01,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Elevator Action (Japan).gb,ELEVATOR ACTION,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Uoozu (Japan).gb,UOOZU,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Bomber Man GB (Japan) (SGB Enhanced).gb,BOMBERMAN GB,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Doraemon Kart (Japan) (SGB Enhanced).gb,DORAEMON KART,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,Yes,0,Japan
+Nihon Daihyou Team France de Ganbare! - J.League Supporter Soccer (Japan) (SGB Enhanced).gb,JLEAGUE,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Sengoku Ninja-kun (Japan).gb,SENGOKUNINJAKUN,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Turok - Battle of the Bionosaurs (Japan).gb,TUROK BATTLE OF,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Sa-Ga 3 - Jikuu no Hasha (Japan).gb,SAGA3,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Genki Bakuhatsu Gambaruger (Japan).gb,GANBARUGA,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Ranma 1-2 - Netsuretsu Kakutou Hen (Japan).gb,RANMA1/2 PART2,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Pocket Battle (Japan).gb,POCKET BATTLE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Ganbare Goemon - Sarawareta Ebisumaru (Japan).gb,GANBARE GOEMON,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Momotarou Dengeki 2 (Japan) (SGB Enhanced).gb,MOMOTARODENGEKI2,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Ninku (Japan) (SGB Enhanced).gb,NINKU,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Super Bikkuriman - Densetsu no Sekiban (Japan).gb,GB SUPERBIKKURI1,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Gegege no Kitarou - Youkai Souzoushu Arawaru! (Japan) (SGB Enhanced).gb,GB KITAROU,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,Yes,0,Japan
+Kizuchi da Quiz da Gen-san da! (Japan).gb,GENSANQ,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Konami GB Collection Vol.2 (Japan) (SGB Enhanced).gb,GBCOLLECTION 2,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Vattle Giuce (Japan).gb,VATTLE GIUCE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Meitantei Conan - Giwaku no Gouka Ressha (Japan) (SGB Enhanced).gb,DETECTIVCONAN2,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Game Boy Controller Kensa Cartridge (Japan).gb, DMG AGING TEST ,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Momotarou Dengeki (Japan).gb,MOMOTARO DENGEKI,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+DuckTales (Japan).gb,DUCK TALES,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Downtown - Nekketsu Koushinkyoku - Dokodemo Daiundoukai (Japan).gb,GB UNDOUKAI,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Red Arremer - Makaimura Gaiden (Japan).gb,RED ARREMER,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Tottemo! Lucky Man - Lucky Cookie Minna Daisuki!! (Japan) (SGB Enhanced).gb,GB LUCKYMAN,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+SD Sengokuden 2 - Tenka Touitsu Hen (Japan).gb,SDSENGOKUDEN2,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,No,0,Japan
+Tenjin Kaisen (Japan).gb,TENJINKAISEN,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Battle Pingpong (Japan).gb,BATTLE PINGPONG,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Ikari no Yousai (Japan).gb,IKARI NO YOUSAI,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Velious - Roland no Majuu (Japan).gb,VELIOUS,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Parodius Da! (Japan).gb,PARODIUS DA!,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Tokyo Disneyland - Fantasy Tour (Japan) (SGB Enhanced).gb,TDL FANTASYTOUR,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Hoshi no Kirby (Japan).gb,HOSHINOKA-BI,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Kirby no Block Ball (Japan) (SGB Enhanced).gb,KIRBY BLOCKBALL,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Game de Hakken!! Tamagotchi - Osutchi to Mesutchi (Japan) (SGB Enhanced).gb,GB TAMAGOTCHI 3,TAMA5,TAMA5,32,0,0x0,0x80000,None,Yes,0,Japan
+Animal Breeder (Japan) (SGB Enhanced).gb,ANIMAL BREEDER,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Super Bombliss (Japan) (SGB Enhanced).gb,SUPER BOMBLISS  ,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+Legend (Japan).gb,LEGEND,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Zerd no Densetsu 2 - Xerd!! Gishin no Ryouiki (Japan).gb,XERD!!,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,No,0,Japan
+Shippo de Bun (Japan).gb,SHIPPO DE BUN,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Yoshi no Tamago (Japan).gb,YOSSY NO TAMAGO,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Magical Taruruuto-kun (Japan).gb,GB TARURU-TO 1,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Motocross Maniacs (Japan).gb,MOTOCROSSMANIACS,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Goukaku Boy Series - Gakken - Rekishi 512 (Japan).gb,REKISI MASTER512,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Rockman World 4 (Japan).gb,ROCKMANWORLD4,MBC1,MBC1,32,0,0x0,0x80000,None,No,0,Japan
+Game Boy Wars Turbo (Japan) (SGB Enhanced).gb,GBWARST,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Popeye 2 (Japan).gb,POPEYE 2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Bishoujo Senshi Sailor Moon R (Japan).gb,GB SAILORMOON R,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Bakuchou Retsuden Shou - Hyper Fishing (Japan) (SGB Enhanced).gb,SHOU HYPER FISH,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Jinsei Game (Japan) (SGB Enhanced).gb,THE GAME OF LIFE,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,Yes,0,Japan
+Super Black Bass Pocket (Japan) (SGB Enhanced).gb,SUPER BLACK BASS,MBC1+RAM+BATTERY,MBC1,64,1,0x800,0x100000,None,Yes,0,Japan
+Contra (Japan).gb,CONTRA,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Kirby no Pinball (Japan).gb,KIRBY'S PINBALL,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,No,0,Japan
+Dragon's Lair (Japan).gb,DRAGONS LAIR    ,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Shinseiki GPX Cyber Formula (Japan).gb,CYBER FORMULA,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Pac-In-Time (Japan) (SGB Enhanced).gb,PAC-IN-TIME,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Othello World (Japan) (SGB Enhanced).gb,OTHELLO WORLD,MBC1,MBC1,4,0,0x0,0x10000,None,Yes,0,Japan
+Takahashi Meijin no Bouken-jima III (Japan).gb,BOUKENJIMA3,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Crayon Shin-chan - Ora to Shiro wa Otomodachi Da yo (Japan).gb,GB KUREYON SHIN,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Daiku no Gen-san - Robot Teikoku no Yabou (Japan).gb,GENSAN2,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Cosmo Tank (Japan).gb,COSMO TANK,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+WWF Superstars (Japan).gb,WWF SUPERSTARS,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Battle Bull (Japan).gb,BATTLE BULL,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Zen-Nihon Pro Wrestling Jet (Japan) (SGB Enhanced).gb,ZENNICHI JET,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Nintama Rantarou GB (Japan) (SGB Enhanced).gb,NINTAMA RANTARO,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Goukaku Boy Series - Koukou Nyuushi Derujun - Chuugaku Eitango 1700 (Japan).gb,CTANGO 1700,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+RoboCop (Japan).gb,ROBOCOP,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+SD Command Gundam - G-Arms (Japan).gb,GB GARMS 1,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Momotarou Collection (Japan) (SGB Enhanced).gb,MOMOCOL,MBC1+RAM+BATTERY,MBC1,64,1,0x800,0x100000,None,Yes,0,Japan
+Oni III - Kuro no Hakaishin (Japan).gb,ONI 3,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Otogibanashi Taisen (Japan) (SGB Enhanced).gb,OTOGI BANASI TAI,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,Yes,0,Japan
+Pipe Dream (Japan).gb,PIPE DREAM,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Pro Wrestling (Japan).gb,PROWRES,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Lucky Monkey (Japan).gb,LUCKY MONKEY,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Heracles no Eikou - Ugokidashita Kamigami (Japan).gb,HERCULES EIKOU,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,No,0,Japan
+Oni V - Oni wo Tsugumono (Japan) (SGB Enhanced).gb,ONI 5,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,Yes,0,Japan
+Nikkan Berutomo Club (Japan) (SGB Enhanced).gb,BERUTOMOKURABU,MBC3+TIMER+RAM+BATTERY,MBC3,32,1,0x800,0x80000,None,Yes,0,Japan
+Funny Field (Japan).gb,FUNNY FIELD,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Goukaku Boy Series - Z Kai Kyuukyoku no Eijukugo 1017 (Japan).gb,ZKAIJUKUGO1017,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Monopoly (Japan).gb,MONOPOLY,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Quarth (Japan).gb,QUARTH,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+J.League Winning Goal (Japan).gb,WINNING GOAL,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+Game de Hakken!! Tamagotchi 2 (Japan) (SGB Enhanced).gb,GB TAMAGOTCH 2,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Nada Asatarou & Kojima Takeo no Jissen Mahjong Kyoushitsu (Japan) (SGB Enhanced).gb,MAHJONGKYOUSITU,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,Yes,0,Japan
+Pro Soccer (Japan).gb,PRO SOCCER,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Purikura Pocket 3 - Talent Debut Daisakusen (Japan) (SGB Enhanced).gb,PURIKURAPOCKET3,MBC5+RAM+BATTERY,MBC5,64,1,0x800,0x100000,None,Yes,0,Japan
+Doraemon - Taiketsu HimitsuDougu!! (Japan).gb,DORAEMON,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Mikeneko Holmes no Kishidou (Japan).gb,MIKENEKO HOLMES,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Trump Boy (Japan).gb, - TRUMP  BOY - ,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Keitai Keiba Eight Special (Japan).gb,KEITAI KEIBA 8,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+Puzzle Bobble GB (Japan).gb,BUST A MOVE 2   ,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Dungeon Land (Japan).gb,DUNGEONLAND,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+Chiki Chiki Machine Mou Race (Japan).gb,CHIKI RACE GB,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Goukaku Boy Series - Z Kai Kyuukyoku no Eitango 1500 (Japan).gb,ZETAN 1500,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Pocket Kanjirou (Japan) (SGB Enhanced).gb,KANJIRO         ,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Milon no Meikyuu Kumikyoku (Japan).gb,MILON CASTLE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Teke Teke! Asmik-kun World (Japan).gb,DMG-ASJ,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+SD Gundam Gaiden - Lacroan' Heroes (Japan).gb,GB LACROANHERO 1,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+World Bowling (Japan).gb,WORLD BOWLING,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Soreyuke!! Kid (Japan).gb,GO! GO! KID,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Goukaku Boy Series - Z Kai (Reibun de Oboeru) Chuugaku Eitango 1132 (Japan).gb,ZCHUGAKUEITANGO,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Tokoro's Mahjong Jr. (Japan) (SGB Enhanced).gb,TOKORO JR,MBC1+RAM,MBC1,16,1,0x800,0x40000,None,Yes,0,Japan
+Knight Quest (Japan).gb,KNIGHT QUEST,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Nekketsu Kouha Kunio-kun - Bangai Rantou Hen (Japan).gb,KUNIO,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+BattleCity (Japan).gb,BATTLECITY,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+"Kick Boxing, The (Japan).gb",THE KICK BOXING ,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Goukaku Boy Series - Yamakawa Ichimonittou - Sekaishi B Yougo Mondaishuu (Japan).gb,YAKA SEKAISHI GB,MBC1,MBC1,32,0,0x0,0x80000,None,No,0,Japan
+Taiyou no Yuusha - Fighbird GB (Japan).gb,  FIGHBIRD  GB  ,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Street Fighter II (Japan) (SGB Enhanced).gb,STREET FIGHTER 2,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Yu Yu Hakusho (Japan).gb,YUUYUU-1,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+J.League Fighting Soccer - The King of Ace Strikers (Japan).gb,FIGHTING SOCCER,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+Ultima - Ushinawareta Runes II (Japan).gb,RUNES OF VIRTUE2,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,No,0,Japan
+Shougi (Japan).gb,SHOUGI,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Ninku Dai-2-dan - Ninku Sensou Hen (Japan) (SGB Enhanced).gb,NINKU 2,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Pachinko Time (Japan).gb,PACHINKO TIME,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Monster Maker (Japan).gb,MONSTER MAKER J,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Ray-Thunder (Japan).gb,RAY THUNDER,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Battle of Kingdom (Japan).gb,BATTLE OFKINGDOM,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Mickey Mouse II (Japan).gb,MICKEY MOUSE 2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Nemesis (Japan).gb,NEMESIS,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Undercover Cops Gaiden - Hakaishin Garumaa (Japan).gb,UNDER COVER COPS,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Crayon Shin-chan - Ora no Gokigen Collection (Japan) (SGB Enhanced).gb,GB CREYON 5,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Momotarou Collection 2 (Japan) (SGB Enhanced).gb,MOMOTARODENGEKI2,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Tom to Jerry (Japan).gb,TOM AND JERRY   ,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Rubble Saver (Japan).gb,RUBBLESA,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Kuma no Puutarou - Takara Sagashi da Ooiri Game Battle! (Japan) (SGB Enhanced).gb,KUMANOPUTARO,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Gekitou Power Modeller (Japan) (SGB Enhanced).gb,POWER MODELLER,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Bubble Bobble Junior (Japan).gb,BUBBLEBOBBLEJR,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Pocket Kyoro-chan (Japan) (SGB Enhanced).gb,POCKET KYOROCHAN,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,Yes,0,Japan
+Chou Mashin Eiyuu Den Wataru - Mazekko Monster 2 (Japan) (SGB Enhanced).gb,MAZEKKO MONSTER2,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Genjin Cottsu (Japan) (SGB Enhanced).gb,GENJINCOTTU,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Pachio-kun 2 (Japan).gb,PACHIOKUN 2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Megalit (Japan).gb,MEGALIT,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Penguin Land (Japan).gb,PENGUIN LAND,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Aoki Densetsu Shoot! (Japan) (SGB Enhanced).gb,SHOOT,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Fushigi na Blobby - Princess Blob o Sukue! (Japan).gb,FUSHIGINA BULOBI,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Namco Gallery Vol.1 (Japan) (SGB Enhanced).gb,GALLERY1,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Goukaku Boy Series - Gakken - Kanyouku Kotowaza 210 (Japan).gb,KANYOUKU,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Nanonote (Japan).gb,NANONOTE,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+Ganbare Goemon - Kurofunetou no Nazo (Japan) (SGB Enhanced).gb,GANBARE GOEMON 2,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,Yes,0,Japan
+Tekichuu Rush (Japan).gb,TEKICHU RUSH,MBC2+BATTERY,MBC2,4,1,0x100,0x10000,None,No,0,Japan
+Migrain (Japan).gb,MIGRAIN ACCLAIM,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+T2 - The Arcade Game (Japan).gb,TERMINATOR 2 TAG,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Kinnikuman - The Dream Match (Japan).gb,GB KINNIKUMAN DM,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Mahoujin Guruguru (Japan) (SGB Enhanced).gb,MAHOUJINGURUGURU,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Virtual Wars (Japan).gb,VIRTUAL WARS,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Winner's Horse (Japan).gb,WINNER'S HORSE,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Nettou World Heroes 2 Jet (Japan) (SGB Enhanced).gb,NETTOU WH2JET,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Tiny Toon Adventures (Japan).gb,TINY TOON ADVENT,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Krusty World (Japan).gb,KRUSTY,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+GB Pachi-Slot Hisshouhou! Jr (Japan).gb,PACHISLOT JR 01,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+Rubble Saver II (Japan).gb,RUBBLE SAVER 2,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Puzzle Boy (Japan).gb,PUZZLE BOY,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Pingu - Sekai de 1ban Genki na Penguin (Japan).gb,GB PINGU 1,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Street Racer (Japan).gb,STREET RACER,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Yu Yu Hakusho Dai-3-dan - Makai no Tobira Hen (Japan).gb,YUUYUU-3,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Goukaku Boy Series - Shikakui Atama o Maruku Suru - Kokugo Battle Hen (Japan).gb,SIKAKKOKUGOAJ6J,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Ippatsu Gyakuten! DX Bakenou (Japan).gb,BAKENOU,MBC1+RAM+BATTERY,MBC1,4,1,0x800,0x10000,None,No,0,Japan
+Super Robot Taisen (Japan).gb,SUPER ROBOT WAR,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Looney Tunes Series - Daffy Duck (Japan) (SGB Enhanced).gb,DAFFY DUCK,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Battle Dodge Ball (Japan).gb,BATTLE DODGEBALL,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+Nekketsu! Beach Volley Da yo Kunio-kun (Japan) (SGB Enhanced).gb,BEACH_VOLLEY,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Hon Shougi (Japan) (SGB Enhanced).gb,HON SHOGI,MBC1+RAM+BATTERY,MBC1,4,1,0x800,0x10000,None,Yes,0,Japan
+Vitamina Oukoku Monogatari (Japan).gb,VITAMINA KINGDOM,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Snoopy - Magic Show (Japan).gb,SNOOPY,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Ultraman (Japan).gb,ULTRAMAN,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Ultraman Chou Toushi Gekiden (Japan) (SGB Enhanced).gb,ULTRAMAN GEKIDEN,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Bubble Ghost (Japan).gb,BUBBLE GHOST,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Kingyo Chuuihou! 2 - Gyopi-chan o Sagase! (Japan).gb,KINGYO CHUIHOU 2,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+Bouken! Puzzle Road (Japan).gb,PUZZLE ROAD,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Magic Knight Rayearth 2nd. - The Missing Colors (Japan) (SGB Enhanced).gb,RAYEARTH2,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,Yes,0,Japan
+"New Chessmaster, The (Japan) (En,Ja).gb",NEW CHESSMASTER,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Pinball - 66hiki no Wani Daikoushin! (Japan).gb,PINBALL,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Kaeru no Tame ni Kane wa Naru (Japan).gb,KAERUNOTAMENI,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,No,0,Japan
+Hitori de Dekirumon! - Cooking Densetsu (Japan).gb,COOKING DENSETU,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Booby Boys (Japan).gb,BOOBY BOYS,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Oira Jajamaru! Sekai Daibouken (Japan).gb,OIRA JAJAMARU,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Jordan vs Bird - One on One (Japan).gb,JORDAN ONEONONE,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+J.League Big Wave Soccer (Japan) (SGB Enhanced).gb,BIG WAVE SOCCER,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,Yes,0,Japan
+NBA Jam - Tournament Edition (Japan).gb,NBA JAM TE,MBC1,MBC1,32,0,0x0,0x80000,None,No,0,Japan
+Racing Damashii (Japan).gb,RACING DAMASHII,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Kakomunja (Japan).gb,DMG-KMJ,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+DuckTales 2 (Japan).gb,DUCK TALES 2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Goukaku Boy Series - Koukou Nyuushi Derujun - Kanji Mondai no Seifuku (Japan).gb,TYUUGAKUKANJI GB,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Famista 3 (Japan).gb,FAMISTA3,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Akumajou Dracula - Shikkoku Taru Zensoukyoku - Dark Night Prelude (Japan) (SGB Enhanced).gb,DRACULA3,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,Yes,0,Japan
+Foreman for Real (Japan).gb,FOREMAN FOR REAL,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Goukaku Boy GOLD - Shikakui Atama o Maruku Suru - Nanmon no Sho (Japan).gb,SIKAKUNANMNBD4J,MBC5+RAM+BATTERY,MBC5,64,1,0x800,0x100000,None,No,0,Japan
+Kitchen Panic (Japan).gb,KITCHIN PANIC,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+"Fidgetts, The (Japan).gb",THE FIDGETTS,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Momotarou Dentetsu jr. - Zenkoku Ramen Meguri no Maki (Japan) (SGB Enhanced).gb,MOMOTETSU JR.,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Othello (Japan).gb,OTHELLO,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Hoshi no Kirby 2 (Japan) (SGB Enhanced).gb,KIRBY2,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Totsugeki Valations (Japan).gb,VALATIONS,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+RoboCop 2 (Japan).gb,ROBOCOP2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Bakenou TV '94 (Japan) (SGB Enhanced).gb,BAKENOH TV,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,Yes,0,Japan
+Pocket Stadium (Japan).gb,POCKET STADIUM,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+DX Bakenou Z (Japan).gb,BAKENOUZ,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+TV Champion (Japan) (SGB Enhanced).gb,TVCHAMPION,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Heiankyou Alien (Japan).gb,HEIANKYO ALIEN,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Ponta to Hinako no Chindouchuu - Yuujou Hen (Japan).gb,DMG-AAJ,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Hokuto no Ken - Seizetsu Juuban Shoubu (Japan).gb,HOKUTO NO KEN   ,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Kandume Monsters (Japan) (SGB Enhanced).gb,KANDUME MONSTER!,MBC3+TIMER+RAM+BATTERY,MBC3,32,1,0x800,0x80000,None,Yes,0,Japan
+Dino Breeder 2 (Japan) (SGB Enhanced).gb,DINO2           ,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Jankenman (Japan).gb,JANKENMAN,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Scotland Yard (Japan).gb,SCOTLANDYARD,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Jungle Wars (Japan).gb,JUNGLE WARS,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Pitman (Japan).gb,PITMAN,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Ishido - The Way of Stones (Japan).gb,ISHIDO JPN VER.,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Pachi-Slot Kids (Japan).gb,PACHISLOT KIDS,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+World Beach Volley - 1991 GB Cup (Japan).gb,GB BEACHVOLLEY,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Goukaku Boy Series - Shikakui Atama o Maruku Suru - Kokugo Battle Hen (Japan) (Special Edition).gb,SIKAKKOKUGOBF3J,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Snow Bros. Jr. (Japan).gb,DMG-SJJ,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Pocket Love (Japan) (SGB Enhanced).gb,POCKET LOVE,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Bomber Boy (Japan).gb,BOMBER BOY,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Super Hunchback (Japan).gb,SUPER HUNCHBACK,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Doraemon no Game Boy de Asobouyo Deluxe 10 (Japan) (SGB Enhanced).gb,DORAEMONDX10,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,Yes,0,Japan
+Ferrari (Japan).gb,FERRARI G-PRIX,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Daikaijuu Monogatari - The Miracle of the Zone (Japan) (SGB Enhanced).gb,MIRACLE OF ZONE,HuC1+RAM+BATTERY,HuC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Goukaku Boy GOLD - Shikakui Atama o Maruku Suru - Kanji no Tatsujin (Japan) (Special Edition).gb,SIKAKUKANJIBK4J,MBC5+RAM+BATTERY,MBC5,64,1,0x800,0x100000,None,No,0,Japan
+Pocket Mahjong (Japan).gb,POCKET MAHJAN,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Janshirou II - Sekai Saikyou no Janshi (Japan).gb,JANSHIRO2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Yoshi no Cookie (Japan).gb,YOSSY NO COOKIE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+NBA All Star Challenge 2 (Japan).gb,ALSTARCHALLENGE2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Renju Club (Japan) (SGB Enhanced).gb,RENJYU CLUB,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,Yes,0,Japan
+Astro Rabby (Japan).gb,ASTRO RABBY,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Mortal Kombat (Japan).gb,MORTAL KOMBAT,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+F-1 Spirit (Japan).gb,F1 SPIRIT,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Pachinko Kaguya Hime (Japan).gb,KAGUYAHIME,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Kamen Rider SD - Hashire! Mighty Riders (Japan).gb,GB MASKRIDER SD,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Goukaku Boy GOLD - Shikakui Atama o Maruku Suru - Zukei no Tatsujin (Japan).gb,SIKAKUZUKEIBZ4J,MBC5+RAM+BATTERY,MBC5,64,1,0x800,0x100000,None,No,0,Japan
+WWF King of the Ring (Japan).gb,WWFKOR,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Nada Asatarou no Powerful Mahjong - Tsugi no Itte 100 Dai (Japan).gb,NADA ASATAROU NO,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Fushigi no Dungeon - Fuurai no Shiren GB - Tsukikage Mura no Kaibutsu (Japan) (SGB Enhanced).gb,FURAINO SIREN GB,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Burning Paper (Japan).gb,BURNING PAPER,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+World Soccer GB (Japan) (SGB Enhanced).gb,WORLD SOCCER GB,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Kachiuma Yosou Keiba Kizoku EX '95 (Japan).gb,KEIBAKIZOKU EX95,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+Wizardry Gaiden 1 - Joou no Junan (Japan).gb,WIZARDRY SOQ   ,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Sanrio Carnival (Japan).gb,SANRIO CARNIVAL,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Goukaku Boy Series - Eitango Target 1900 (Japan).gb,EITANGO 1900,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+GI King! - Sanbiki no Yosouya (Japan).gb,G1KING,MBC1+RAM+BATTERY,MBC1,4,1,0x800,0x10000,None,No,0,Japan
+Contra Spirits (Japan) (SGB Enhanced).gb,CONTRA SPIRITS,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+Noobow (Japan).gb,NOOBOW,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Tumble Pop (Japan).gb,TUMBLE POP,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Game de Hakken!! Tamagotchi (Japan) (SGB Enhanced).gb,GB TAMAGOTCH 1,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Rockman World 3 (Japan).gb,ROCKMANWORLD3,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Nettou Toushinden (Japan) (SGB Enhanced).gb,NETTOU TOSHINDEN,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Karamuchou no Daijiken (Japan) (SGB Enhanced).gb,KARAMUCHO ZIKEN,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Onigashima Pachinkoten (Japan).gb,ONI-PACHINKOTEN,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Tokyo Disneyland - Mickey no Cinderella-jou Mystery Tour (Japan) (SGB Enhanced).gb,TDL MICKEY,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Soukoban 2 (Japan).gb,SOUKOBAN2,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Kachiuma Yosou Keiba Kizoku (Japan).gb,KEIBA KIZOKU,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+3 Choume no Tama - Tama and Friends - 3 Choume Obake Panic!! (Japan).gb,GB 3TAMA,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Nontan to Issho - Kurukuru Puzzle (Japan).gb,NONTAN,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Ghostbusters II (Japan).gb,GHOSTBUSTERS 2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Head On (Japan).gb,HEAD ON,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Super Chinese Fighter GB (Japan) (SGB Enhanced).gb,CHINESE FIGHTER,MBC1,MBC1,64,0,0x0,0x100000,None,Yes,0,Japan
+Pachio-kun - Puzzle Castle (Japan).gb,CASTLE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Collection Pocket (Japan) (SGB Enhanced).gb,COLLECTION POCKE,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Welcome Nakayoshi Park (Japan).gb,GB NAKAYOSHI1,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Batman - Return of the Joker (Japan).gb,BATMAN ROJ,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Doraemon no Study Boy 1 - Shou 1 Kokugo Kanji (Japan).gb,STUDYBOY KOKUGO1,MBC1,MBC1,32,0,0x0,0x80000,None,No,0,Japan
+Dragon Ball Z - Gokuu Gekitouden (Japan) (SGB Enhanced).gb,GB DBZ GOKOU 2,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Konchuu Hakase (Japan) (SGB Enhanced).gb,KONCHU HAKASE,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Osawagase! Penguin Boy (Japan).gb,PENGUIN BOY,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Gem Gem (Japan).gb,GEMGEM,MBC1+RAM+BATTERY,MBC1,4,1,0x800,0x10000,None,No,0,Japan
+Goukaku Boy Series - Shikakui Atama o Maruku Suru - Shakai Battle Hen (Japan).gb,SIKAKSYAKAIAK8J,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Aretha (Japan).gb,ARETHA,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Monster Race (Japan) (SGB Enhanced).gb,MONSTER RACE,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Pocket Densha (Japan) (SGB Enhanced).gb,POCKET DENSYA,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Spartan X (Japan).gb,SPARTAN X,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Goukaku Boy Series - Eijukugo Target 1000 (Japan).gb,EIZYUKUGO 1000,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Asmik-kun World 2 (Japan).gb,ASMIK2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Bugs Bunny Collection (Japan) (SGB Enhanced).gb,BUGS COLLECTION,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+World Cup Striker (Japan).gb,WORLD STRIKER,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Minesweeper - Soukaitei (Japan).gb,MINESWEEPER,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Gojira-kun (Japan).gb,GODZILLA,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Mogu Mogu Gombo (Japan) (SGB Enhanced).gb,DMGMOGUMOGUGOMBO,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,Yes,0,Japan
+Shanghai (Japan) (HAL Laboratory).gb,SHANGHAI,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Amida (Japan).gb,AMIDA,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Battle Unit Zeoth (Japan).gb,ZEOTH,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Parasol Henbee (Japan).gb,PARASORU HEMBEI,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Battletoads (Japan).gb,BATTLETOADS,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+NFL Quarterback Club (Japan).gb,NFL QUARTERBACK,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Mach Go Go Go (Japan) (SGB Enhanced).gb,MACH GO,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,Yes,0,Japan
+Alfred Chicken (Japan) (SGB Enhanced).gb,ALFRED CHICKEN,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Pachio-kun - Game Gallery (Japan).gb,GAME GALLERY,MBC1,MBC1,32,0,0x0,0x80000,None,No,0,Japan
+GB Genjin Land - Viva! Chikkun Oukoku (Japan).gb,GB GENJIN LAND,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Higashio Osamu Kanshuu Pro Yakyuu Stadium '91 (Japan).gb,PURO STADIUM '91,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Kinin Koumaroku Oni (Japan).gb,ONI,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Pro Mahjong Kiwame GB (Japan) (SGB Enhanced).gb,KIWAME-GB,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+Hero Shuugou!! Pinball Party (Japan).gb,PINBALL PARTY,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Medarot - Kuwagata Version (Japan) (SGB Enhanced).gb,MEDAROT KUWAGATA,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Mr. Go no Baken Tekichuu Jutsu (Japan).gb,TEKICHUJUTSU,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+"Chessmaster, The (DMG-EM) (Japan).gb",NEW CHESSMASTER,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Lolo no Daibouken (Japan).gb,LOLO,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+God Medicine - Fantasy Sekai no Tanjou (Japan).gb,GOD MEDICINE,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Sumou Fighter - Toukaidou Basho (Japan).gb,SUMOU FIGHTER,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Gamera - Daikaijuu Kuuchuu Kessen (Japan) (SGB Enhanced).gb,GAMERA DAIKAIJUU,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Shin Keiba Kizoku Pocket Jockey (Japan) (SGB Enhanced).gb,POCKET JOCKEY,MBC3+RAM+BATTERY,MBC3,32,1,0x800,0x80000,None,Yes,0,Japan
+Nectaris GB (Japan) (SGB Enhanced).gb,NECTARIS GB,HuC1+RAM+BATTERY,HuC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+"Shinri Game, The (Japan).gb",THE SHINRI GAME,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Q-bert for Game Boy (Japan).gb,Q*BERT II,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Zoop (Japan).gb,ZOOP,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Tom to Jerry Part 2 (Japan).gb,TOM AND JERRY,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Power Pro GB (Japan) (SGB Enhanced).gb,PAWAPURO GB,MBC1+RAM+BATTERY,MBC1,16,4,0x4000,0x40000,None,Yes,0,Japan
+Goukaku Boy Series - Shikakui Atama o Maruku Suru - Sansuu Battle Hen (Japan).gb,SIKAKUI S BAT,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Totsugeki! Ponkotsu Tank (Japan).gb,TOTSUGEKI TANK,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Goukaku Boy Series - Gakken - Yojijukugo 288 (Japan).gb,YOJIJUKUGO,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Trip World (Japan).gb,TRIP WORLD,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+America Oudan Ultra Quiz (Japan).gb,DMG-UQJ,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Panel no Ninja Kesamaru (Japan).gb,KESAMARU,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Bakenou V3 (Japan).gb,BAKENOH V3,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+Goukaku Boy Series - Shikakui Atama o Maruku Suru - Suuji de Asobou Sansuu Hen (Japan).gb,NITINOU SANSUU 1,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+WWF Superstars 2 (Japan).gb,SUPERWWF,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+GBKiss Mini Games (Japan).gb,GBKISS MINIGAME,HuC1+RAM+BATTERY,HuC1,16,4,0x4000,0x40000,None,No,0,Japan
+Dr. Franken (Japan).gb,DR FRANKEN,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Super Street Basketball 2 (Japan) (SGB Enhanced).gb,S S BASKET BALL2,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+Pocket Monsters - Aka (Japan) (SGB Enhanced).gb,POKEMON RED,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Bomber Man GB 2 (Japan) (SGB Enhanced).gb,BOMBER MAN GB 2,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Volley Fire (Japan).gb,VOLLEY FIRE,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Monster Race Okawari (Japan) (SGB Enhanced).gb,MON RACE OTHER,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Kingyo Chuuihou! - Wapiko no Wakuwaku Stamp Rally! (Japan).gb,GB KINGYOTYUUI 1,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Jungle no Ouja Tar-chan (Japan) (SGB Enhanced).gb,GB TAACHIYAN    ,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Saint Paradise - Saikyou no Senshi-tachi (Japan).gb,SD SEINTPARADA01,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,No,0,Japan
+Versus Hero - Kakutou Ou e no Michi (Japan).gb,VERSUS HERO,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Ayakashi no Shiro (Japan).gb,AYAKASI NO SIRO,MBC2+BATTERY,MBC2,4,1,0x100,0x10000,None,No,0,Japan
+Ganso!! Yancha Maru (Japan).gb,KID NIKI,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Rampart (Japan).gb,RAMPART_GB (JPN),MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Chibi Maruko-chan - Okozukai Daisakusen! (Japan).gb,CHIBIMARUKO,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Namco Classic (Japan).gb,NAMCOCLASSIC,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Track Meet - Mezase! Barcelona (Japan).gb,TRACK MEET HIRO,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Goukaku Boy Series - Z Kai (Reibun de Oboeru) Kyuukyoku no Kobun Tango (Japan).gb,Z KAI KOBUN   ,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Super B-Daman - Fighting Phoenix (Japan) (SGB Enhanced).gb,SUPER B DAMAN,HuC1+RAM+BATTERY,HuC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Takeda Nobuhiro no Ace Striker (Japan).gb,ACE STRIKER,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Uno - Small World (Japan).gb,UNO-SMALL WORLD,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Rentaiou (Japan).gb,RENTAIOU,MBC1+RAM+BATTERY,MBC1,4,1,0x800,0x10000,None,No,0,Japan
+Ultraman Ball (Japan) (SGB Enhanced).gb,ULTRAMAN BALL,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+"Simpsons, The - Bart no Jack to Mame no Ki (Japan).gb",SIMPSONS3,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Nangoku Shounen Papuwa-kun - Ganmadan no Yabou (Japan).gb,PAPUWAKUNN,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Hook (Japan).gb,HOOK,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Doraemon no Study Boy 4 - Shou ni Kokugo Kanji (Japan).gb,STUDYBOY KOKUGO2,MBC1,MBC1,32,0,0x0,0x80000,None,No,0,Japan
+Super Black Bass Pocket 2 (Japan) (SGB Enhanced).gb,BASS POCKET 2,MBC1+RAM+BATTERY,MBC1,64,1,0x800,0x100000,None,Yes,0,Japan
+Pachio-kun 3 (Japan).gb,PACHIOKUN 3,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Ranma 1-2 - Kakugeki Mondou!! (Japan).gb,RANMA1/2KAKUGEKI,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Koi wa Kakehiki (Japan).gb,KOI WA KAKEHIKI,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Goukaku Boy Series - Yamakawa Ichimonittou - Nihonshi B Yougo Mondaishuu (Japan).gb,YAMAKAWA NIHON,MBC1,MBC1,32,0,0x0,0x80000,None,No,0,Japan
+"Addams Family, The (Japan).gb",ADDAMS FAMILY,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Pri Pri - Primitive Princess! (Japan).gb,PRIPRI,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Pocket Bomber Man (Japan) (SGB Enhanced).gb,POKEBOM,HuC1+RAM+BATTERY,HuC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Bubble Bobble (Japan).gb,BUBBLE BOBBLE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Goukaku Boy Series - Koukou Nyuushi Derujun - Rekishi Nendai Anki Point 240 (Japan).gb,REKISINENDAI 240,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Aero Star (Japan).gb,AEROSTAR,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Card Game (Japan).gb,CARD GAME,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Higashio Osamu Kanshuu Pro Yakyuu Stadium '92 (Japan).gb,PURO STADIUM '92,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,No,0,Japan
+Dirty Racing (Japan).gb,DIRTY RACIN',MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Batman Forever (Japan).gb,BATMAN FOREVER,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Megami Tensei Gaiden - Last Bible II (Japan).gb,LAST BIBLE2,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Spot (Japan).gb,SPOT,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Midori no Makibaou (Japan) (SGB Enhanced).gb,MAKIBAO,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+J.League Live '95 (Japan) (SGB Enhanced).gb,J.LEAGUE LIVE 95,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,Yes,0,Japan
+Palamedes (Japan).gb,PALAMEDES,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Jaleco J.Cup Soccer (Japan).gb,J.CUP SOCCER,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Shanghai Pocket (Japan) (SGB Enhanced).gb,SHANGHAI POCKET,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Phantasm (Japan).gb,PHANTASM,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Makaimura Gaiden - The Demon Darkness (Japan).gb,MAKAIMURAGAIDEN,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Penta Dragon (Japan).gb,PENTADRAGON,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Oni IV - Kijin no Ketsuzoku (Japan).gb,ONI 4,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Nettou Garou Densetsu 2 - Aratanaru Tatakai (Japan) (SGB Enhanced).gb,NETTOUGAROU2,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Nihon Daihyou Team - Eikou no Eleven (Japan) (SGB Enhanced).gb,NIHON DAIHYOU   ,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Nintama Rantarou GB - Eawase Challenge Puzzle (Japan) (SGB Enhanced).gb,NINTAMA EAWASE,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Goukaku Boy Series - Nihonshi Target 201 (Japan).gb,NIHONSHI 201 GB,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Wizardry Gaiden 2 - Kodai Koutei no Noroi (Japan).gb,WIZARDRY CAE,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Mario no Picross (Japan) (SGB Enhanced).gb,MARIO'S PICROSS,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,Yes,0,Japan
+Q Billion (Japan).gb,QBILLION,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Double Yakuman II (Japan).gb,DOUBLEYAKUMAN2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Hiden Inyou Kikouhou - Ca Da (Japan).gb, ---  CADA  --- ,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Sanrio Carnival 2 (Japan).gb,SANRIO CARNIVAL2,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Koro Dice (Japan).gb,KORODICE,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Daiku no Gen-san - Ghost Building Company (Japan).gb,GENSAN,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Doraemon no Study Boy 2 - Shou 1 Sansuu Keisan (Japan).gb,STUDYBOY SANSU 1,MBC1,MBC1,32,0,0x0,0x80000,None,No,0,Japan
+SD Lupin Sansei - Kinko Yaburi Daisakusen (Japan).gb,SD LUPIN THE 3RD,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+From TV Animation Slam Dunk 2 - Zenkoku e no Tip Off (Japan) (SGB Enhanced).gb,GB SLAM DUNK 2  ,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Monster Truck (Japan).gb,MONSTERTRUCK,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Jantaku Boy (Japan).gb,JANTAKUBOY,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Sangokushi - Game Boy Ban (Japan).gb,SANGOKUSHI,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Tiny Toon Adventures - Dokidoki Sport Festival (Japan).gb,TINY TOON 3,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Saigo no Nindou (Japan).gb,NINJA SPIRIT,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Mani 4 in 1 (China) (DMG-602 CHN).gb,SAGAIA,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Puzznic (Japan).gb,PUZZNIC,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Medarot - Kabuto Version (Japan) (SGB Enhanced).gb,MEDAROT KABUTO,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Doraemon no Study Boy 6 - Gakushuu Kanji Master 1006 (Japan).gb,STUDYBOY KAN1006,MBC1,MBC1,64,0,0x0,0x100000,None,No,0,Japan
+Little Master 2 - Raikou no Kishi (Japan).gb,LITTLE MASTER 2,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Tsumeshougi - Mondai Teikyou Shougi Sekai (Japan).gb,TSUMESHOUGI,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+SD Hiryuu no Ken Gaiden (Japan) (SGB Enhanced).gb,SD HIRYUNOKEN,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Klax (Japan).gb,KLAX,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Pocket Golf (Japan).gb,POCKET GOLF     ,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Bomber Man Collection (Japan) (SGB Enhanced).gb,BOMCOL,MBC1,MBC1,64,0,0x0,0x100000,None,Yes,0,Japan
+Chibi Maruko-chan 2 - Deluxe Maruko World (Japan).gb,CHIBIMARUKO2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Game Boy Wars (Japan).gb,GBWARS,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,0,Japan
+Kenyuu Densetsu Yaiba (Japan).gb,YAIBA,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Nekketsu Koukou Dodgeball-bu - Kyouteki! Dodge Soldier no Maki (Japan).gb,DODGE BALL,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Super Pachinko Taisen (Japan) (SGB Enhanced).gb,S-PACHINKO WARS ,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Pocket Puyo Puyo Tsuu (Japan) (SGB Enhanced).gb,POCKET PUYOPUYO2,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Karakuri Kengou Den Musashi Lord (Japan).gb,GB MUSASHIROAD 1,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Double Dragon (Japan).gb,DOUBLE DRAGON,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Trump Collection GB (Japan).gb,TRUMP COLLECTION,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Chibi Maruko-chan 3 - Mezase! Game Taishou no Maki (Japan).gb,CHIBIMARUKO3,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Nobunaga no Yabou - Game Boy Ban (Japan).gb,NOBUNAGA,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+Zerd no Densetsu (Japan).gb,LEGEND OF ZERD,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,0,Japan
+Zelda no Densetsu - Yume o Miru Shima (Japan).gb,ZELDA,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,No,0,Japan
+Bass Fishing Tatsujin Techou (Japan).gb,TATSUJINTECHO,MBC1,MBC1,32,0,0x0,0x80000,None,No,0,Japan
+Yakuman (Japan).gb,YAKUMAN,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Kirby no Kirakira Kids (Japan) (SGB Enhanced).gb,KIRAKIRA KIDS,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,Yes,0,Japan
+Torpedo Range (Japan).gb,TORPEDO RANGE,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Medarot - Parts Collection (Japan) (SGB Enhanced).gb,PARTS COLLECTION,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Trump Boy II (Japan).gb, - TRUMP BOY2 - ,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Jimmy Connors no Pro Tennis Tour (Japan).gb,J CONNORS TENNIS,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Tasmania Monogatari (Japan).gb,TASMANIA STORY,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+"Hyper Black Bass '95 (Japan) (En,Ja).gb",HYPER BB 95,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Chachamaru Boukenki 3 - Abyss no Tou (Japan).gb,ABYSS NO TOU,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Goukaku Boy Series - Shikakui Atama o Maruku Suru - Rika Battle Hen (Japan).gb,SIKAKU RIKAAE8J,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Sakigake!! Otoko Juku - Meioutou Kessen (Japan).gb,GB OTOKOJYUKU 1,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Flipull (Japan).gb,FLIPULL,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Pachinko Monogatari Gaiden (Japan) (SGB Enhanced).gb,PACHINCOGAIDEN,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+Mani 4 in 1 (China) (DMG-601 CHN).gb,TETRIS SET,MBC3+TIMER+RAM+BATTERY,MBC3,16,0,0x0,0x40000,None,Yes,0,Non-Japan (0xb)
+Zoids Densetsu (Japan).gb,ZOIDS J1,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Rockman World 5 (Japan) (SGB Enhanced).gb,ROCKMANWORLD5,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Japan
+World Ice Hockey (Japan).gb,WORLD ICE HOKKEY,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Uchuu no Kishi Tekkaman Blade (Japan).gb,GB TEKKAMANBLADE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Alien vs Predator (Japan).gb,ALIEN V PREDATOR,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Akazukin Chacha (Japan) (SGB Enhanced).gb,AKAZUKIN-CHACHA,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Nemesis II (Japan).gb,NEMESIS 2,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Puyo Puyo (Japan) (SGB Enhanced).gb,PUYOPUYO,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+VS Battler (Japan).gb,VS BATTLER,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Spot - The Cool Adventure (Japan).gb,SPOT COOL ADV,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Xenon 2 - Megablast (Japan).gb,XENON 2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Cult Jump (Japan).gb,GB CULT JUMP,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Selection I & II (Japan) (SGB Enhanced).gb,SELECTION 1&2,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Dodge Boy (Japan).gb,DODGE BOY,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Super Momotarou Dentetsu (Japan).gb,MOMOTETU,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,No,0,Japan
+Double Yakuman (Japan).gb,DOUBLEYAKUMAN,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Nekketsu Koukou Soccer-bu - World Cup Hen (Japan).gb,WORLD CUP,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+"Hyper Black Bass (Japan) (En,Ja).gb",HYPER BLACKBASS,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Space Invaders (Japan).gb,SPACE INVADERS,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Navy Blue 98 (Japan).gb,NAVY BLUE 98,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Pocket Family (Japan) (SGB Enhanced).gb,POCKET_FAMILY,HuC3,HuC3,32,4,0x4000,0x80000,None,Yes,0,Japan
+Crayon Shin-chan 2 - Ora to Wanpaku Gokko Dazo (Japan).gb,GB CRAYON 2,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Chachamaru Panic (Japan).gb,CHACHAMARUPANIC,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Ultraman Club - Tekikaijuu o Hakken seyo! (Japan).gb,GB ULTRAMANCLUB1,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Nichibutsu Mahjong - Yoshimoto Gekijou (Japan).gb,MAHJONGYOSHIMOTO,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Mickey Mouse IV (Japan).gb,MICKEY 4,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Goukaku Boy Series - Koukou Nyuushi Derujun - Rika Anki Point 250 (Japan).gb,RIKA  ANKI  250,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Home Alone (Japan).gb,HOME ALONE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Frisky Tom (Japan) (SGB Enhanced).gb,FRISKY TOM,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+Cave Noire (Japan).gb,CAVE NOIRE,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Japan
+Mini Yonku GB Let's & Go!! (Japan) (SGB Enhanced).gb,MINI4WD GB      ,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Akumajou Special - Boku Dracula-kun (Japan).gb,BOKU DRACURA KUN,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Tsuri Sensei (Japan) (SGB Enhanced).gb,TURI SENSEI V1,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Japan
+Seiken Densetsu - Final Fantasy Gaiden (Japan).gb,SEIKEN DENSETSU,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,No,0,Japan
+Nakajima Satoru Kanshuu - F-1 Hero GB '92 - The Graded Driver (Japan).gb,F-1HERO GB92,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Peetan (Japan).gb,PEETAN,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan

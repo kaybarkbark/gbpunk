@@ -1,0 +1,55 @@
+Filename,Title,Cart Type,Mapper Type,ROM Banks,RAM Banks,RAM Size,ROM Size,CGB Functionality,SGB Functionality,Mask ROM Ver,Region
+Dr. Mario (World) (Rev A).gb,DR.MARIO,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,1,Japan
+"Star Wars (USA, Europe) (Rev A).gb",STAR WARS-NOA,MBC1,MBC1,8,0,0x0,0x20000,None,No,1,Non-Japan (0x1)
+Pocket Monsters - Pikachu (Japan) (Rev 2) (SGB Enhanced).gb,POKEMON YELLOW,MBC3+RAM+BATTERY,MBC3,64,4,0x4000,0x100000,None,Yes,2,Japan
+Donkey Kong (World) (Rev A) (SGB Enhanced).gb,DONKEY KONG,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,1,Japan
+"Boxxle (USA, Europe) (Rev A).gb",BOXXLE,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,1,Non-Japan (0x1)
+Pocket Monsters - Pikachu (Japan) (Rev 3) (SGB Enhanced).gb,POKEMON YELLOW,MBC3+RAM+BATTERY,MBC3,64,4,0x4000,0x100000,None,Yes,3,Japan
+Super Mario Land 2 - 6-tsu no Kinka (Japan) (Rev 1).gb,MARIOLAND2,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,No,1,Japan
+"RoboCop (USA, Europe) (Rev A).gb",ROBOCOP,MBC1,MBC1,4,0,0x0,0x10000,None,No,1,Non-Japan (0x1)
+Pocket Monsters - Aka (Japan) (Rev A) (SGB Enhanced).gb,POKEMON RED,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,1,Japan
+Tetris (World) (Rev A).gb,TETRIS,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,1,Japan
+Bokujou Monogatari GB (Japan) (Rev AB) (SGB Enhanced).gb,BOKUJOU GB,MBC3+TIMER+RAM+BATTERY,MBC3,32,1,0x800,0x80000,None,Yes,1,Japan
+Toy Story (USA) (Rev A) (SGB Enhanced).gb,TOY STORY,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,1,Non-Japan (0x1)
+Caesars Palace (USA) (Rev A).gb,CAESARS PALACE,MBC1,MBC1,8,0,0x0,0x20000,None,No,1,Non-Japan (0x1)
+Nettou Toushinden (Japan) (Rev A) (SGB Enhanced).gb,NETTOU TOSHINDEN,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,1,Japan
+Medarot - Kuwagata Version (Japan) (Rev A) (SGB Enhanced).gb,MEDAROT KUWAGATA,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,1,Japan
+Zelda no Densetsu - Yume o Miru Shima (Japan) (Rev A).gb,ZELDA,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,No,1,Japan
+Medarot - Kabuto Version (Japan) (Rev A) (SGB Enhanced).gb,MEDAROT KABUTO,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,1,Japan
+"Donkey Kong Land III (USA, Europe) (Rev A) (SGB Enhanced).gb",DONKEYKONGLAND 3,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,1,Non-Japan (0x1)
+Hyper Lode Runner (World) (Rev A).gb,HYPERLODERUNNER,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,1,Japan
+"Tetris Attack (USA, Europe) (Rev A) (SGB Enhanced).gb",TETRIS ATTACK,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,1,Non-Japan (0x1)
+F-1 Race (World) (Rev A).gb,F1RACE,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,1,Japan
+Goukaku Boy Series - Shikakui Atama o Maruku Suru - Suuji de Asobou Sansuu Hen (Japan) (Rev A).gb,NITINOU SANSUU,MBC1,MBC1,16,0,0x0,0x40000,None,No,1,Japan
+Super Mario Land 2 - 6-tsu no Kinka (Japan) (Rev 2).gb,MARIOLAND2,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,No,2,Japan
+Makai Toushi Sa-Ga (Japan) (Rev A).gb,SAGA,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,1,Japan
+Game & Watch Gallery (USA) (Rev A) (SGB Enhanced).gb,G&W GALLERY,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,Yes,1,Non-Japan (0x1)
+DX Bakenou Z (Japan) (Rev A).gb,BAKENOUZ,MBC1+RAM+BATTERY,MBC1,8,1,0x800,0x20000,None,No,1,Japan
+Bugs Bunny Collection (Japan) (Rev A) (SGB Enhanced).gb,BUGS COLLECTION,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,1,Japan
+"Legend of Zelda, The - Link's Awakening (USA, Europe) (Rev A).gb",ZELDA,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,No,1,Non-Japan (0x1)
+Motocross Maniacs (Europe) (Rev A).gb,MOTOCROSSMANIACS,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,1,Non-Japan (0x1)
+Dino Breeder (Japan) (Rev A) (SGB Enhanced).gb,DINO            ,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,None,Yes,1,Japan
+Sa-Ga 2 - Hihou Densetsu (Japan) (Rev A).gb,SAGA2,MBC1+RAM+BATTERY,MBC1,16,1,0x800,0x40000,None,No,1,Japan
+Yakuman (Japan) (Rev A).gb,YAKUMAN,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,1,Japan
+FIFA Road to World Cup 98 (Europe) (Rev A) (SGB Enhanced).gb,FIFA 98,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,1,Non-Japan (0x1)
+"Street Fighter II (USA, Europe) (Rev A) (SGB Enhanced).gb",STREET FIGHTER 2,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,1,Non-Japan (0x1)
+"Chessmaster, The (DMG-N5) (USA) (Rev A).gb",THE CHESSMASTER,MBC1,MBC1,4,0,0x0,0x10000,None,No,1,Non-Japan (0x1)
+Power Mission (Japan) (Rev A).gb,POWER MISSION,MBC1,MBC1,8,0,0x0,0x20000,None,No,1,Japan
+Goukaku Boy Series - Gakken - Yojijukugo 288 (Japan) (Rev A).gb,YOJIJUKUGO 288,MBC1,MBC1,16,0,0x0,0x40000,None,No,1,Japan
+"Legend of Zelda, The - Link's Awakening (USA, Europe) (Rev B).gb",ZELDA,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,No,2,Non-Japan (0x1)
+Pocket Monsters - Pikachu (Japan) (Rev 1) (SGB Enhanced).gb,POKEMON YELLOW,MBC3+RAM+BATTERY,MBC3,64,4,0x4000,0x100000,None,Yes,1,Japan
+Nettou Samurai Spirits (Japan) (Rev A) (SGB Enhanced).gb,NETTOU SAMURAI,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,1,Japan
+Puyo Puyo (Japan) (Rev A) (SGB Enhanced).gb,PUYOPUYO,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Japan
+Shougi Saikyou (Japan) (Rev A) (SGB Enhanced).gb,GB SHOUGI SAIKYO,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,1,Japan
+Super Mario Land (World) (Rev A).gb,SUPER MARIOLAND,MBC1,MBC1,4,0,0x0,0x10000,None,No,1,Japan
+Pocket Camera (Japan) (Rev A) (SGB Enhanced).gb,POCKETCAMERA,GB CAMERA,Game Boy Camera,64,16,0x10000,0x100000,None,Yes,1,Japan
+Hoshi no Kirby (Japan) (Rev A).gb,HOSHINOKA-BI,MBC1,MBC1,16,0,0x0,0x40000,None,No,1,Japan
+Pocket Puyo Puyo Tsuu (Japan) (Rev 1) (SGB Enhanced).gb,POCKETPUYO2APYJ,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,1,Japan
+Sanrio Uranai Party (Japan) (Rev A).gb,SANRIOURANAI,MBC1,MBC1,16,0,0x0,0x40000,None,No,1,Japan
+"Super Mario Land 2 - 6 Golden Coins (USA, Europe) (Rev A).gb",MARIOLAND2,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,No,1,Non-Japan (0x1)
+"Super Mario Land 2 - 6 Golden Coins (USA, Europe) (Rev B).gb",MARIOLAND2,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,No,2,Non-Japan (0x1)
+Konchuu Hakase (Japan) (Rev A) (SGB Enhanced).gb,KONCHU HAKASE,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,1,Japan
+"Smurfs, The (USA, Europe) (En,Fr,De) (Rev A) (SGB Enhanced).gb",SMURFS,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,1,Non-Japan (0x1)
+Power Pro GB (Japan) (Rev A) (SGB Enhanced).gb,PAWAPURO GB,MBC1+RAM+BATTERY,MBC1,16,4,0x4000,0x40000,None,Yes,1,Japan
+Pocket Monsters - Midori (Japan) (Rev A) (SGB Enhanced).gb,POKEMON GREEN,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,1,Japan
+Lemmings (Europe) (Rev A).gb,LEMMINGS,MBC1,MBC1,8,0,0x0,0x20000,None,No,1,Non-Japan (0x1)

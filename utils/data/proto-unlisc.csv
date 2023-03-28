@@ -1,0 +1,40 @@
+Filename,Title,Cart Type,Mapper Type,ROM Banks,RAM Banks,RAM Size,ROM Size,CGB Functionality,SGB Functionality,Mask ROM Ver,Region
+Spiritual Warfare (USA) (Unl).gb,,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+"4 in 1 (Europe) (4B-005, Sachen-Commin) (Unl).gb",gOT,MBC1,MBC1,16384,0,0x0,0x10000000,None,No,115,Non-Japan (0x89)
+"4 in 1 (Europe) (4B-004, Sachen-Commin) (Unl).gb",gOT,MBC1,MBC1,16384,0,0x0,0x10000000,None,No,115,Non-Japan (0x89)
+Game Boy Digital Sampling Oscilloscope (Europe) (v3.6) (GBDSO) (Unl).gb,TEMP,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,1,Japan
+King James Bible (USA) (Unl).gb,,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Game Boy Datenlogger 1 (Germany) (v1.0) (GBD1) (Unl).gb,GBD1,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,Extra CGB Functions,No,1,Japan
+X (USA) (Proto).gb,ECLIPSE,MBC1+RAM+BATTERY,MBC1,8,0,0x0,0x20000,None,No,0,Non-Japan (0x1)
+GameShark (USA) (Unl).gb,ar,MBC1+RAM,MBC1,8,0,0x0,0x20000,None,No,1,Japan
+"4 in 1 (Europe) (4B-002, Sachen) (Unl).gb",gOT,MBC1,MBC1,16384,0,0x0,0x10000000,None,No,115,Non-Japan (0x89)
+Shin Nippon Pro Wrestling - Toukon Sanjushi (Japan) (Sample).gb,TOUKONSANJYUUSHI,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+Tsumeshougi - Kanki Godan (Japan) (Beta) (SGB Enhanced).gb,KANKI-TUMESHOGI ,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Japan
+Mick & Mack as the Global Gladiators (USA) (Proto).gb,,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+F-15 Strike Eagle II (Unknown) (Proto).gb,F15 STRIKE EAGLE,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Non-Japan (0x1)
+NIV Bible & the 20 Lost Levels of Joshua (USA) (Unl).gb,,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Probotector 2 (Europe) (Beta).gb,PROBOTECTOR 2,MBC1,MBC1,8,0,0x0,0x20000,None,Yes,0,Non-Japan (0x1)
+Cosmo Tank (Japan) (Beta).gb,,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Japan
+SMARTCOM (Europe) (Unl).gb,SMARTCOM,MBC2+BATTERY,MBC2,16,1,0x100,0x40000,Extra CGB Functions,No,1,Japan
+"4 in 1 (Europe) (4B-008, Sachen) (Unl).gb",gT,HuC1+RAM+BATTERY,HuC1,16384,0,0x0,0x10000000,None,No,115,Non-Japan (0x89)
+"Spirou (Europe) (En,Fr,De,Es) (Beta) (SGB Enhanced).gb",SPIROU,MBC1,MBC1,16,0,0x0,0x40000,None,Yes,0,Non-Japan (0x1)
+Exodus - Journey to the Promised Land (USA) (Unl).gb,,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+Diablo (USA) (Proto).gb,DIABLO,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Non-Japan (0x1)
+"4 in 1 (Europe) (4B-009, Sachen) (Unl).gb",gT,HuC1+RAM+BATTERY,HuC1,16384,0,0x0,0x10000000,None,No,115,Non-Japan (0x89)
+"Donkey Kong Land III (USA, Europe) (Beta).gb",DONKEYKONGLAND 3,MBC1+RAM+BATTERY,MBC1,32,1,0x800,0x80000,None,Yes,0,Non-Japan (0x1)
+Rockman World (Japan) (En) (Beta).gb,ROCKMAN,MBC1,MBC1,16,0,0x0,0x40000,None,No,0,Japan
+Pro Action Replay (Europe) (Unl).gb,,HuC1+RAM+BATTERY,HuC1,115792089237316195423570985008687907853269984665640564039457584007913129639936,0,0x0,0x40000000000000000000000000000000000000000000000000000000000000000000,None,No,255,Non-Japan (0xff)
+Dr. Mario (World) (Beta).gb,Dr.MARIO,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+"4 in 1 (Europe) (4B-006, Sachen) (Unl).gb",gOT,MBC1,MBC1,16384,0,0x0,0x10000000,None,No,115,Non-Japan (0x89)
+Chou Mashin Eiyuu Den Wataru - Mazekko Monster (Japan) (Beta) (SGB Enhanced).gb,,MBC1+RAM+BATTERY,MBC1,32,4,0x4000,0x80000,None,Yes,0,Japan
+Ninja Taro (USA) (Beta).gb,NINJATARO,MBC2+BATTERY,MBC2,8,1,0x100,0x20000,None,No,0,Non-Japan (0x1)
+"4 in 1 (Europe) (4B-001, Sachen-Commin) (Unl).gb",gOT,MBC1,MBC1,16384,0,0x0,0x10000000,None,No,115,Non-Japan (0x89)
+Game Genie (USA) (v2.1) (Unl).gb,,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+"Jet Pack (USA, Europe) (Beta).gb",JET PACK,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Non-Japan (0x1)
+"Adventures of Pinocchio, The (Unknown) (Proto).gb",INFREY QUEST,MBC1,MBC1,4,0,0x0,0x10000,None,No,0,Japan
+Joshua & the Battle of Jericho (USA) (Unl).gb,,ROM ONLY (0x0),ROM ONLY,2,0,0x0,0x8000,None,No,0,Japan
+"Samurai Shodown (USA, Europe) (Beta) (SGB Enhanced).gb",SAMURAI SHODOWN,MBC1,MBC1,32,0,0x0,0x80000,None,Yes,0,Non-Japan (0x1)
+"4 in 1 (Europe) (En,Zh) (4B-003, Sachen-Commin) (Unl).gb",gOT,MBC1,MBC1,16384,0,0x0,0x10000000,None,No,115,Non-Japan (0x89)
+HAL Wrestling (USA) (Beta).gb,PROWRES,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Non-Japan (0x1)
+"4 in 1 (Europe) (4B-007, Sachen) (Unl).gb",gOT,MBC1,MBC1,16384,0,0x0,0x10000000,None,No,115,Non-Japan (0x89)
+"Road Rash (USA, Europe) (Beta).gb",ROAD RASH,MBC1,MBC1,8,0,0x0,0x20000,None,No,0,Non-Japan (0x1)
