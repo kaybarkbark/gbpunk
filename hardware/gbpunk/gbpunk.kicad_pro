@@ -55,7 +55,24 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        "clearance|78450000|45080000|bef92e9c-42fe-4b64-8668-2d9056b21402|2e6c8c23-c151-4669-a6eb-530c2ae087bb",
+        "clearance|78500000|45430000|29ea01c4-e23e-4085-8b24-6cef1a5b6a52|2e6c8c23-c151-4669-a6eb-530c2ae087bb",
+        "clearance|79440000|47045000|7c2e8a87-08a0-4d58-a382-c14c4cf1e698|ef67827c-e17d-4fef-b6ec-1696790f1ab3",
+        "clearance|80920000|47060000|bba8fd83-ffa2-4e30-9eff-88b6bb7bfc4e|d03b2d37-da0e-4010-80fb-5ba1c35c5672",
+        "silk_over_copper|111110000|117390000|e0b95dfb-f373-427e-863e-01c7febc584b|fefb8a5d-2874-499d-b9b7-a559ea4caa93",
+        "silk_over_copper|112110000|107390000|890d8e1f-a046-4511-990f-f9b5c382171c|5892b82d-70d8-4788-bfff-7711ac358da8",
+        "silk_over_copper|125010000|99000000|2dd4bbe6-8eed-4266-b2ae-9720803c95e0|e2500477-3202-475a-8a8c-71126a60758c",
+        "silk_over_copper|75010000|99000000|f6d74a11-18f8-46a8-af75-ea26718417ef|6467ca66-a2d4-49a8-9e37-c51ed81d276d",
+        "silk_over_copper|75400000|92890000|c22f1821-d648-4e13-b523-bc662b97e877|a84d470c-984f-4637-9712-f6c553a6a2dc",
+        "silk_over_copper|75480000|39000000|a09b8750-ff11-44a9-8d95-4bd71f19b949|791114a8-ea7f-45ef-a581-cbfb6ebdbf5d",
+        "silk_over_copper|84310000|117390000|e0b95dfb-f373-427e-863e-01c7febc584b|c4139e10-f664-4725-8712-3dbde48c1ac0",
+        "silk_over_copper|84880000|39000000|a09b8750-ff11-44a9-8d95-4bd71f19b949|a718bee7-8a77-4969-a88b-6e00a8a3b4a4",
+        "silk_over_copper|86484235|108685368|004ff77d-bd7c-408f-ad64-c94c63636029|bdb6e572-64f0-4a83-a7cd-3e92c542baf9",
+        "track_dangling|78450000|45085000|bef92e9c-42fe-4b64-8668-2d9056b21402|00000000-0000-0000-0000-000000000000",
+        "track_dangling|79440000|47045000|7c2e8a87-08a0-4d58-a382-c14c4cf1e698|00000000-0000-0000-0000-000000000000",
+        "track_dangling|80920000|47045000|bba8fd83-ffa2-4e30-9eff-88b6bb7bfc4e|00000000-0000-0000-0000-000000000000"
+      ],
       "meta": {
         "filename": "board_design_settings.json",
         "version": 2
