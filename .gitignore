@@ -1,1 +1,5 @@
 software/build/**
+.idea
+**/.idea
+**/*.pyc
+**/__pycache__
