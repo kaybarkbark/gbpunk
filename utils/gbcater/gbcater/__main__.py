@@ -1,4 +1,4 @@
-from cartridge import Cart, folder_to_csv
+from .utils import folder_to_csv
 from pathlib import Path
 
 # print(Cart.from_rom_file(Path("/home/k/Downloads/pokemon_yellow.gb")))

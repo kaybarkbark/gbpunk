@@ -6,147 +6,9 @@ import csv
 import typing
 
 from pathlib import Path
-from enum import Enum
 
-UNKNOWN_STR: str = "UNKNOWN"
-
-
-class CGBFunctionality(Enum):
-    CGBExtra = "Extra CGB Functions"
-    CGBOnly = "CGB Only"
-    CGBNone = "None"
-
-
-class Mapper(Enum):
-    Unknown = UNKNOWN_STR
-    ROM_ONLY = "ROM ONLY"
-    ROM_RAM = "ROM+RAM"
-    MBC1 = "MBC1"
-    MBC2 = "MBC2"
-    MBC3 = "MBC3"
-    MBC4 = "MBC4"
-    MBC5 = "MBC5"
-    MBC6 = "MBC6"
-    MBC7 = "MBC7"
-    MMM01 = "MMM01"
-    HuC1 = "HuC1"
-    HuC3 = "HuC3"
-    TAMA5 = "TAMA5"
-    GOWIN = "GOWIN"
-    GBCAMERA = "Game Boy Camera"
-
-
-@dataclass(frozen=True)
-class CartHardware:
-    mapper: Mapper
-    timer: bool = False
-    ram: bool = False
-    rumble: bool = False
-    sensor: bool = False
-    battery: bool = False
-
-    @classmethod
-    def from_cart(cls, data: int) -> CartHardware:
-        """Take the cart type byte and translate it into a cart type and mapper"""
-        if data == 0:
-            return CartHardware(
-                mapper=Mapper.ROM_ONLY,
-            )
-        if data == 1:
-            return CartHardware(
-                mapper=Mapper.MBC1,
-            )
-        if data == 2:
-            return CartHardware(mapper=Mapper.MBC1, ram=True)
-        if data == 3:
-            return CartHardware(mapper=Mapper.MBC1, ram=True, battery=True)
-        if data == 5:
-            return CartHardware(
-                mapper=Mapper.MBC2,
-            )
-        if data == 6:
-            return CartHardware(mapper=Mapper.MBC2, battery=True)
-        if data == 8:
-            return CartHardware(mapper=Mapper.ROM_RAM, ram=True)
-        if data == 9:
-            return CartHardware(
-                mapper=Mapper.ROM_ONLY,
-            )
-        if data == 11:
-            return CartHardware(
-                mapper=Mapper.MMM01,
-            )
-        if data == 12:
-            return CartHardware(mapper=Mapper.MMM01, ram=True)
-        if data == 13:
-            return CartHardware(mapper=Mapper.MMM01, ram=True, battery=True)
-        if data == 15:
-            return CartHardware(mapper=Mapper.MBC3, battery=True, timer=True)
-        if data == 16:
-            return CartHardware(mapper=Mapper.MBC3, battery=True, timer=True, ram=True)
-        if data == 17:
-            return CartHardware(
-                mapper=Mapper.MBC3,
-            )
-        if data == 18:
-            return CartHardware(mapper=Mapper.MBC3, ram=True)
-        if data == 19:
-            return CartHardware(mapper=Mapper.MBC3, ram=True, battery=True)
-        if data == 21:
-            return CartHardware(
-                mapper=Mapper.MBC4,
-            )
-        if data == 22:
-            return CartHardware(mapper=Mapper.MBC4, ram=True)
-        if data == 23:
-            return CartHardware(mapper=Mapper.MBC4, ram=True, battery=True)
-        if data == 25:
-            return CartHardware(
-                mapper=Mapper.MBC5,
-            )
-        if data == 26:
-            return CartHardware(mapper=Mapper.MBC5, ram=True)
-        if data == 27:
-            return CartHardware(mapper=Mapper.MBC5, ram=True, battery=True)
-        if data == 28:
-            return CartHardware(
-                mapper=Mapper.MBC5,
-                rumble=True,
-            )
-        if data == 29:
-            return CartHardware(mapper=Mapper.MBC5, rumble=True, ram=True)
-        if data == 30:
-            return CartHardware(mapper=Mapper.MBC5, rumble=True, ram=True, battery=True)
-        if data == 0x20:
-            return CartHardware(
-                mapper=Mapper.MBC6,
-            )
-        if data == 0x22:
-            return CartHardware(
-                mapper=Mapper.MBC7, rumble=True, sensor=True, ram=True, battery=True
-            )
-        if data == 252:
-            return CartHardware(
-                mapper=Mapper.GBCAMERA,
-            )
-        if data == 0xFD:
-            return CartHardware(
-                mapper=Mapper.TAMA5,
-            )
-        if data == 0xFE:
-            return CartHardware(
-                mapper=Mapper.HuC3,
-            )
-        if data == 0xFF:
-            return CartHardware(mapper=Mapper.HuC1, ram=True, battery=True)
-        return CartHardware(mapper=Mapper.Unknown)
-
-    def __str__(self):
-        return (
-            f"{self.mapper.value}{'+RAM' if self.ram else ''}{'+Timer' if self.timer else ''}"
-            f"{'+Rumble' if self.rumble else ''}{'+Battery' if self.battery else ''}"
-            f"{'+Sensor' if self.sensor else ''}"
-        )
+from .cart_hardware import CartHardware, CGBFunctionality, Mapper
+from .utils import str2bool, UNKNOWN_STR
 
 
 @dataclass(frozen=True)
@@ -185,6 +47,7 @@ class Cart:
 
     @property
     def rom_size(self) -> int:
+        """ROM size is predictable and can always be calculated by how many banks exist"""
         return self.rom_banks * self.ROM_BANKSIZE
 
     def __str__(self):
@@ -210,6 +73,44 @@ class Cart:
             return True
         return False
 
+
+    @property
+    def dict(self) -> dict:
+        """Unstructure cart data into a dictionary for JSON storage"""
+        return {
+            f"{self.title}": {
+                "rom_banks": f"{self.rom_banks}",
+                "rom_size_bytes": f"{self.rom_size}",
+                "ram_banks": f"{self.ram_banks}",
+                "ram_size_bytes": f"{self.ram_size}",
+                "cgb_func": f"{self.cgb_func.value}",
+                "sgb_flag": f"{self.sgb_flag}",
+                "region": self.region,
+                "mask_rom_ver": f"{self.mask_rom_ver}",
+                "licensee": self.licensee,
+                "old_lic_flag": self.old_licensee_flag,
+                "hardware": self.hardware.dict,
+                "weird": f"{self.is_weird}",
+            }
+        }
+
+    @classmethod
+    def from_dict(cls, ins: dict) -> Cart:
+        """Structure data from a dict into a Cartridge"""
+        title = ins.keys()[0]
+        return Cart(
+            title=title,
+            rom_banks=int(ins[title]["rom_banks"]),
+            ram_banks=int(ins[title]["ram_banks"]),
+            ram_size=int(ins[title]["ram_size_bytes"]),
+            cgb_func=CGBFunctionality(ins[title]["cgb_func"]),
+            sgb_flag=str2bool(ins[title]["sgb_flag"]),
+            region=ins[title]["region"],
+            mask_rom_ver=int(ins[title]["mask_rom_ver"]),
+            licensee=ins[title]["licensee"],
+            old_licensee_flag=str2bool(ins[title]["old_lic_flag"]),
+            hardware=CartHardware.from_dict(ins[title]["hardware"])
+        )
 
     @classmethod
     def from_bytes(cls, cart_data: bytes) -> Cart:
@@ -294,14 +195,6 @@ class Cart:
         if ram_size == 5:
             return cls.RAM_BANKSIZE * 8, 8
         return 0, 0
-
-    @classmethod
-    def get_licensee(cls, cart_data: bytes) -> str:
-        raise NotImplementedError
-
-    @classmethod
-    def get_mfg(cls, cart_data: bytes) -> str:
-        raise NotImplementedError
 
     OLD_LICENSEE_CODE = {
         0x00: "None",
@@ -454,6 +347,7 @@ class Cart:
         0xF3: "Extreme Entertainment",
         0xFF: "LJN",
     }
+    """Dict of all the legacy licensee codes. This licensee field type was only used pre-GBC"""
 
     LICENSEE_CODE = {
         "00": "none",
@@ -527,64 +421,4 @@ class Cart:
         "A4": "Konami",
         "E9": "Victor Interactive Software"
     }
-
-
-def folder_to_csv(folder: Path, output: Path):
-    """
-    Take a folder full of ROMs and catalogue them all. Useful for downloading packs from archive.org for data mining
-    """
-    with open(output, "w") as csvfile:
-        csvwriter = csv.writer(csvfile, delimiter=",")
-        csvwriter.writerow(
-            [
-                "Filename",
-                "Title",
-                "Cart Type",
-                "Mapper Type",
-                "ROM Banks",
-                "RAM Banks",
-                "RAM Size",
-                "ROM Size",
-                "Battery",
-                "Timer",
-                "Rumble",
-                "Sensor",
-                "Licensee",
-                "Old Licensee Code",
-                "CGB Functionality",
-                "SGB Functionality",
-                "Mask ROM Ver",
-                "Region",
-                "Weird",
-            ]
-        )
-        print(f"Discovered {len(list(folder.glob('**/*')))} files")
-        for file in folder.glob("**/*"):
-            if (
-                file.suffix == ".gb" or file.suffix == ".bin" or file.suffix == ".gbc"
-            ) and file.is_file:
-                cart = Cart.from_rom_file(file=file)
-                print(f"Cataloguing {cart}...")
-                csvwriter.writerow(
-                    [
-                        file.name.strip(","),
-                        cart.title.strip(","),
-                        str(cart.hardware),
-                        cart.hardware.mapper.value,
-                        str(cart.rom_banks),
-                        str(cart.ram_banks),
-                        hex(cart.ram_size),
-                        hex(cart.rom_size),
-                        str(cart.hardware.battery),
-                        str(cart.hardware.timer),
-                        str(cart.hardware.rumble),
-                        str(cart.hardware.sensor),
-                        cart.licensee,
-                        cart.old_licensee_flag,
-                        cart.cgb_func.value,
-                        str(cart.sgb_flag),
-                        cart.mask_rom_ver,
-                        cart.region,
-                        str(cart.is_weird)
-                    ]
-                )
+    """GBC licensee and later GB licensee codes. Many are unpopulated, please populate if you know them!"""
