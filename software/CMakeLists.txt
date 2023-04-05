@@ -27,6 +27,7 @@ target_sources(GBPUNK PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/mappers/mbc5.c
         ${CMAKE_CURRENT_LIST_DIR}/mappers/no_mapper.c
         ${CMAKE_CURRENT_LIST_DIR}/mappers/gbcam.c
+        ${CMAKE_CURRENT_LIST_DIR}/mappers/huc1.c
         ${CMAKE_CURRENT_LIST_DIR}/cart.c
         ${CMAKE_CURRENT_LIST_DIR}/unit_tests.c
         ${CMAKE_CURRENT_LIST_DIR}/status_led.c
