@@ -25,6 +25,7 @@ const uint8_t logo[0x30];
 #define MAPPER_MBC5           0x8
 #define MAPPER_GBCAM          0x9
 #define MAPPER_HUC1           0xA
+#define MAPPER_HUC3           0xB
 
 
 struct Cart {

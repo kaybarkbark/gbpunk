@@ -48,7 +48,8 @@ void populate_cart_info(){
         case 29: strncpy(the_cart.cart_type_str, "MBC5+RUMBLE+RAM", 15); the_cart.mapper_type = MAPPER_MBC5; break;
         case 30: strncpy(the_cart.cart_type_str, "MBC5+RUMBLE+RAM+BATTERY", 23); the_cart.mapper_type = MAPPER_MBC5; break;
         case 252: strncpy(the_cart.cart_type_str, "GB CAMERA", 9); the_cart.mapper_type = MAPPER_GBCAM; break;
-        case 255: strncpy(the_cart.cart_type_str, "HuC1+RAM+BATTERY", 16); the_cart.mapper_type = MAPPER_HUC1; break;
+        case 254: strncpy(the_cart.cart_type_str, "HuC3+RAM+BATTERY", 16); the_cart.mapper_type = MAPPER_HUC1; break;
+        case 255: strncpy(the_cart.cart_type_str, "HuC1+RAM+BATTERY", 16); the_cart.mapper_type = MAPPER_HUC3; break;
         default: the_cart.mapper_type = MAPPER_UNKNOWN; break;
     }
     if(the_cart.mapper_type == MAPPER_ROM_ONLY){
@@ -110,6 +111,14 @@ void populate_cart_info(){
         the_cart.ram_banksw_func = &gbcam_set_ram_bank;
     }
     else if(the_cart.mapper_type == MAPPER_HUC1){
+        the_cart.rom_memcpy_func = &huc1_memcpy_rom;
+        the_cart.ram_memcpy_func = &huc1_memcpy_ram;
+        the_cart.ram_memset_func = &huc1_memset_ram;
+        the_cart.ram_enable_func = &huc1_set_ram_access;
+        the_cart.rom_banksw_func = &huc1_set_rom_bank;
+        the_cart.ram_banksw_func = &huc1_set_ram_bank;
+    }
+    else if(the_cart.mapper_type == MAPPER_HUC3){
         the_cart.rom_memcpy_func = &huc1_memcpy_rom;
         the_cart.ram_memcpy_func = &huc1_memcpy_ram;
         the_cart.ram_memset_func = &huc1_memset_ram;
