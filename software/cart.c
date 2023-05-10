@@ -119,6 +119,7 @@ void populate_cart_info(){
         the_cart.ram_banksw_func = &huc1_set_ram_bank;
     }
     else if(the_cart.mapper_type == MAPPER_HUC3){
+        // HuC3 and HuC1 are backwards compatible for this
         the_cart.rom_memcpy_func = &huc1_memcpy_rom;
         the_cart.ram_memcpy_func = &huc1_memcpy_ram;
         the_cart.ram_memset_func = &huc1_memset_ram;
