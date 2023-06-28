@@ -1,4 +1,4 @@
-21647669215544577
+21629196352801787
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -90068,99 +90068,22 @@ varistor
 0
 2
 2
-gbpunk
+flashcart
 GameBoy_Cartridge_1x32_P1.50mm_Edge
 Game Boy cartridge edge connector
 gameboy cartridge
 0
 32
 32
-gbpunk
-GameBoy_Cartridge_AGB_1x32_P1.50mm_Socket_Horizontal
-Game Boy cartridge slot, Super Game Boy and Super Game Boy 2
-gameboy cartridge slot
+flashcart
+GameBoy_GamePak_CGB-002_P1.50mm_Edge
+Game Boy Game Pak (CGB) edge connector
+game boy game pak cgb gbc color edge connector
 0
+64
 32
-32
-gbpunk
-GameBoy_Cartridge_AGS_1x32-1MP_P1.50mm_Socket_Horizontal
-Game Boy cartridge slot, Game Boy Advance SP
-gameboy cartridge slot
-0
-34
-33
-gbpunk
-GameBoy_Cartridge_DMG_1x32_P1.50mm_Socket_Horizontal
-Game Boy cartridge slot, original Game Boy
-gameboy cartridge slot
-0
-32
-32
-gbpunk
-GameBoy_Cartridge_DSLite_1x32_P1.50mm_Socket_Horizontal
-Game Boy cartridge slot, DS Lite
-gameboy cartridge slot
-0
-34
-32
-gbpunk
-GameBoy_Cartridge_DX-37787_1x32_P1.50mm_Socket_Horizontal
-Game Boy cartridge slot, DealExtreme 37787
-gameboy cartridge slot
-0
-34
-32
-gbpunk
-GameBoy_Cartridge_SGB-SGB2_1x32_P1.50mm_Socket_Horizontal
-Game Boy cartridge slot, Super Game Boy and Super Game Boy 2
-gameboy cartridge slot
-0
-32
-32
-gbpunk
-HRO_TYPE-C-31-M-12
-
-
-0
-16
-16
-gbpunk
-RP2040-QFN-56
-QFN, 56 Pin (http://www.cypress.com/file/416486/download#page=40), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
-QFN DFN_QFN
-0
-70
-57
-gbpunk
-USB_Micro-B_Amphenol_10103594-0001LF_Horizontal_modified
-Micro USB Type B 10103594-0001LF, http://cdn.amphenol-icc.com/media/wysiwyg/files/drawing/10103594.pdf
-USB USB_B USB_micro USB_OTG
-0
-17
-6
-gbpunk
-cart
-
-
-0
-0
-0
-gbpunk
-gbpunk_aliexpress_gb_connector
-
-
-0
-34
-32
-gbpunk
-logo
-
-
-0
-0
-0
-gbpunk
-sussy
+flashcart
+timings
 
 
 0
