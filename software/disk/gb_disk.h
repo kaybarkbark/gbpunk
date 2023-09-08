@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 // The file entries of all the file indexes
-uint32_t file_lba_indexes[30];
+extern uint32_t file_lba_indexes[30];
 // whether host does safe-eject
 static uint8_t ejected = 0;
 
@@ -65,10 +65,10 @@ enum {
 };
 
 // Arrays that hold the fake disk data
-uint8_t DISK_reservedSection[BLOCK_SIZE];
-uint8_t DISK_fatTable[FAT_TABLE_BYTE_SIZE];
-uint8_t DISK_rootDirectory[BYTE_SIZE_ROOT_DIRECTORY];
-uint8_t DISK_status_file[STATUS_FILE_SIZE];
+extern uint8_t DISK_reservedSection[BLOCK_SIZE];
+extern uint8_t DISK_fatTable[FAT_TABLE_BYTE_SIZE];
+extern uint8_t DISK_rootDirectory[BYTE_SIZE_ROOT_DIRECTORY];
+extern uint8_t DISK_status_file[STATUS_FILE_SIZE];
 
 // Set up the memory needed for the fake disk
 void init_disk_mem();

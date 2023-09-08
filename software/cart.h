@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-const uint8_t logo[0x30];
+extern const uint8_t logo[0x30];
 
 #define CART_TYPE_ADDR        0x147 // bank 0
 #define ROM_BANK_SHIFT_ADDR 	0x148 // bank 0
@@ -46,7 +46,7 @@ struct Cart {
    char cart_type_str[30];
 }; 
 
-struct Cart the_cart;
+extern struct Cart the_cart;
 
 uint16_t cart_check(uint8_t *logo_buf);
 void populate_cart_info();

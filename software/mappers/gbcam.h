@@ -18,7 +18,7 @@
 #define LBA2PHOTO(x) ((x)/16)
 #define LBA2PHOTOOFFSET(x) ((x)%16)
 
-uint8_t bmp_header[0x76];
+extern uint8_t bmp_header[0x76];
 
 // Public functions
 void gbcam_memcpy_rom(uint8_t* dest, uint32_t rom_addr, uint32_t num);
