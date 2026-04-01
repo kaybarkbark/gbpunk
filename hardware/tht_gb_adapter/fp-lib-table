@@ -1,4 +1,0 @@
-(fp_lib_table
-  (version 7)
-  (lib (name "tht_gb_adapter")(type "KiCad")(uri "${KIPRJMOD}/tht_gb_adapter.pretty")(options "")(descr ""))
-)

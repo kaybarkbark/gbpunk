@@ -1,3 +1,0 @@
-(fp_lib_table
-  (lib (name gbpunk)(type KiCad)(uri ${KIPRJMOD}/gbpunk.pretty)(options "")(descr ""))
-)
