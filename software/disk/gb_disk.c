@@ -108,8 +108,8 @@ uint8_t DISK_reservedSection[BLOCK_SIZE] =
     0x81, 0x00,                                     // BPB_FATSz16 - Size of fat table (0x81 blocks, 66048 bytes, can hold 33024 clusters)
     0x01, 0x00,                                     // BPB_SecPerTrk: 1, this is not spinning platter drive
     0x01, 0x00,                                     // BPB_NumHeads: 1, this is not a spinning platter drive
-    0x01, 0x00, 0x00, 0x00,                         // BPB_HiddSec: Blocks before start partition (???)
-    0xFF, 0xFF, 0x03, 0x00,                         // BPB_TotSec32: Blocks in filesystem (0x3FFFF = 262143 blocks = 134217216 bytes = 1GB)
+    0x00, 0x00, 0x00, 0x00,                         // BPB_HiddSec: Must be 0 for non-partitioned (super-floppy) devices
+    0xFF, 0xFF, 0x03, 0x00,                         // BPB_TotSec32: Blocks in filesystem (0x3FFFF = 262143 blocks = ~128MB). Must match DISK_BLOCK_COUNT.
     0x00,                                           // BS_DrvNum: Low level disk service drive number (don't care, not a real drive)
     0x00,                                           // Reserved
     0x29,                                           // Use extended boot fields (volume serial number, volume label, file system type)
@@ -157,7 +157,7 @@ uint8_t DISK_fatTable[FAT_TABLE_BYTE_SIZE] ={0};
 uint8_t DISK_rootDirectory[BYTE_SIZE_ROOT_DIRECTORY] = 
 {
       // first entry is volume label
-      ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , 0x28, 0x00, 0x00, 0x00, 0x00,
+      ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , ' ' , 0x08, 0x00, 0x00, 0x00, 0x00,
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0, 0x0, 0x0, 0x0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
       // We will fill in all other entries later
 };
@@ -347,11 +347,13 @@ void init_disk(){
   rd_set_file_name(0, the_cart.title, 8, "   ");
 
   // HANDLE FAT TABLE
-  // Set first two entries to 0xFF, as per standard
-  for(uint8_t i = 0; i < 4; i++){
-    DISK_fatTable[i] = 0xFF;
-    latest_fat_entry++;
-  }
+  // FAT entry 0: low byte must match BPB media type (0xF8), high byte 0xFF
+  // FAT entry 1: 0xFFFF (end-of-chain marker)
+  DISK_fatTable[0] = 0xF8;
+  DISK_fatTable[1] = 0xFF;
+  DISK_fatTable[2] = 0xFF;
+  DISK_fatTable[3] = 0xFF;
+  latest_fat_entry = 4;
 
   // HANDLE STATUS FILE
   // Don't move this out of order! We rely on the status file 

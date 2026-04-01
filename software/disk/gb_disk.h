@@ -6,7 +6,7 @@
 // The file entries of all the file indexes
 extern uint32_t file_lba_indexes[30];
 // whether host does safe-eject
-static uint8_t ejected = 0;
+extern uint8_t ejected;
 
 // Metadata about the fake disk and its structure
 enum
@@ -15,7 +15,7 @@ enum
   ROOT_DIR_SIZE_OFFS = 28,
   ROOT_DIR_CLST_OFFS  = 26,
   ROOT_DIR_STATUS_ENTRY = 1,
-  DISK_BLOCK_COUNT  = 0x200000, // Pretend to be a 1GB drive
+  DISK_BLOCK_COUNT  = 0x3FFFF, // Must match BPB_TotSec32 (262,143 sectors = ~128MB)
   BLOCK_SIZE = 512,
   CLUSTER_BLOCK_SIZE = 8,
   CLUSTER_BYTE_SIZE = BLOCK_SIZE * CLUSTER_BLOCK_SIZE, // Assuming block and cluster size stay standard (512 and 8 respectfully) this is 4k

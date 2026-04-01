@@ -8,6 +8,8 @@
 #include "gb_disk.h"
 #include "mappers/gbcam.h"
 
+uint8_t ejected = 0;
+
 
 void software_reset()
 {
